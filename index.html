@@ -1,0 +1,17 @@
+---
+layout: default
+title: UCD Plant Biologists Learning R
+---
+
+<div class="content">
+  <div class="recent">
+    <h3>Recent Posts</h3>
+    <ul>
+      {% for post in site.posts limit: 5 %}
+      <li>
+    <a href="{{ site.baseurl }}{{ post.url }}"><strong>{{ post.title }}</strong></a>{% for cat in post.categories %} [{{ cat }}]{% endfor %}{% for tag in post.tags %} [{{ tag }}]{% endfor %} - {{ post.date | date: "%Y-%m-%d" }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

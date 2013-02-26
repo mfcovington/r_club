@@ -1,6 +1,6 @@
-name: My GitHub Pages Test Site
-baseurl: /gh-pages-test
-figurl: /gh-pages-test/figure
+name: R Club
+baseurl: /r_club
+figurl: /r_club/figure
 # permalink: /:year/:title/
 permalink: pretty
 pygments: true

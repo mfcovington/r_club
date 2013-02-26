@@ -1,5 +1,5 @@
 ---
-title: Peer-produced plots to reproduce
+title: Peer-produced plots
 layout: post
 categories: homework
 comments: true

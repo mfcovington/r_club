@@ -17,19 +17,19 @@ If the datasets don't look familiar, be sure to scroll down to the 'Data' sectio
 
 ## Challenge 1
 
-Stacey plotted movie rating (binned by density) by year.
+Stacey plotted movie rating since the dawn of cinematography (binned by density) .
 
 ![plot of chunk 2013-02-26-challenge01]({{ site.figurl }}/2013-02-26-challenge01.png)
 
 
 ## Challenge 2
 
-Ciera plotted movie rating trends over the last couple decades.
+Ciera plotted MPAA movie rating trends over the last couple decades.
 
 ![plot of chunk 2013-02-26-challenge02]({{ site.figurl }}/2013-02-26-challenge02.png)
 
 
-Hint: You need to subset the movies such that you are only considering movies with ratings since 1990.
+Hint: You need to subset the movies such that you are only considering movies with MPAA ratings since 1990.
 
 ## Challenge 3
 
@@ -49,12 +49,6 @@ Cody found a geom that can be used to compare distributions by plotting them alo
 
 For Valentine's Day, Jessica received a $20 gift card for a local gas station. Before she redeems it, she wants to find out which types of car will get her to the Bay Area and back on five gallons.
 
-
-<!-- ```
-## stat_bindot: binwidth defaulted to range/30. Use 'binwidth = x' to adjust
-## this.
-``` -->
-
 ![plot of chunk 2013-02-26-challenge05]({{ site.figurl }}/2013-02-26-challenge05.png)
 
 
@@ -71,7 +65,9 @@ To get you started, I'll show you how to use the `get_map()` function from the `
 
 ```r
 library(ggmap)
-map <- get_map(location = c(lon = -75, lat = -16), zoom = 5, maptype = "satellite")
+map <- get_map(location = c(lon = -75, lat = -16),
+               zoom = 5,
+               maptype = 'satellite')
 ```
 
 
@@ -82,7 +78,7 @@ Hints:
 
 ## Challenge 7
 
-Not one to be outdone, Stacey demonstrates that she also knows the ways of the world by plotting the geographical position of tomato species collection points on top of the entire world.
+Not one to be outdone, Stacey demonstrates that she also knows the ways of the world by plotting the geographical position of tomato species collection points on top of not just a part of South America, but on top of the *entire* world.
 
 ![plot of chunk 2013-02-26-challenge07]({{ site.figurl }}/2013-02-26-challenge07.png)
 

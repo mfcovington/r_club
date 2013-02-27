@@ -180,25 +180,38 @@ table {
 }
 
 table {
-  border: 1px solid #ccc;
+  border-collapse: collapse;
   margin-bottom: 32px;
   text-align: left;
  }
 
 th {
   font-family: 'Arvo', Helvetica, Arial, sans-serif;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: normal;
-  padding: 10px;
   background: #232323;
+  border-color: #ff0000;
+
   color: #FDFEFB;
  }
 
+th.date-col {width: 15%;}
+
+th.reading-col {width: 30%}
+
+tfoot, thead, td {text-align: center}
+
+td.reading-cell {text-align: left}
+
 td {
-  padding: 10px;
-    background: #ccc;
+  background: #FBFAF7;
+  font-size: 12px;
  }
 
+th, td {
+  border: 1px solid #ccc;
+  padding: 5px;
+}
 
 /* Wrapper */
 .wrapper {

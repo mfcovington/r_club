@@ -345,6 +345,10 @@ a.buttons:hover {
     text-align: right;
 }
 
+.related {
+    text-align: right;
+}
+
 /* Section - for main page content */
 
 section {

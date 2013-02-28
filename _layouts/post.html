@@ -8,6 +8,19 @@ layout: default
   {% endif %}
 </div>
 
+<div class = "related">
+  {% if page.related %}
+    {% for related in page.related %}
+      {% for post in site.posts %}
+        {% capture converted %}{{ related | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' }}{% endcapture %}
+        {% if post.url contains converted %}
+         <strong>related: <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></strong><br>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+</div>
+
 <div class="content">
   <div id="post">
     {{ content }}

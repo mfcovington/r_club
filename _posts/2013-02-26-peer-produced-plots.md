@@ -75,7 +75,7 @@ map <- get_map(location = c(lon = -75, lat = -16),
 Hints:
 
 - Start by plotting the map image with the `ggmap()` function from the `ggmap` library (see pg. 18 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
-- Add an additional layer with `geom_point()`
+- Add an additional layer with `geom_point()` (you'll need to specify the dataset to use inside `geom_point`)
 
 ## Challenge 7
 

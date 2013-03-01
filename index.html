@@ -22,13 +22,14 @@ title: UCD Plant Biologists Learning R
         {% if  post.categories.first == 'schedule' %}
           <tr>
             <td class="date-cell">{{ post.classdate }}</td>
-            <td class="reading-cell">{% for item in post.reading %}{{ item }}<br>{% endfor %}</td>
+            <td class="reading-cell">{% for item in post.reading %}{% if  item.last == '' %}{{ item.first }}{% else %}<a href={{ item.last }}>{{ item.first }}</a>{% endif %}<br>{% endfor %}</td>
             <td class="homework-cell">{% for item in post.homework %}<a href="{{ site.baseurl }}/homework/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% unless  item.last == '' %} &amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
             <td class="exercises-cell">{% for item in post.exercises %}<a href="{{ site.baseurl }}/exercises/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% unless  item.last == '' %}  &amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
             <td class="resources-cell">{% for item in post.resources %}<a href="{{ site.baseurl }}/resources/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ item.last }}</a><br>{% endfor %}</td>
           </tr>
         {% endif %}
       {% endfor %}
+
     </table>
   </div>
 

@@ -5,6 +5,34 @@ title: UCD Plant Biologists Learning R
 
 <div class="content">
   <div class = "schedule">
+    <h3>Test Schedule</h3>
+    <table>
+
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="reading-col">Reading</th>
+          <th class="info-col">Homework</th>
+          <th class="info-col">Exercises</th>
+          <th class="info-col">Resources</th>
+        </tr>
+      </thead>
+
+      {% for post in site.posts %}
+        {% if  post.categories.first == 'schedule' %}
+          <tr>
+            <td class="date-cell">{{ post.classdate }}</td>
+            <td class="reading-cell">{% for item in post.reading %}{{ item }}<br>{% endfor %}</td>
+            <td class="homework-cell">{% for item in post.homework %}<a href="{{ site.baseurl }}/homework/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% unless  item.last == '' %} &amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
+            <td class="exercises-cell">{% for item in post.exercises %}<a href="{{ site.baseurl }}/exercises/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% unless  item.last == '' %}  &amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
+            <td class="resources-cell">{% for item in post.resources %}<a href="{{ site.baseurl }}/resources/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ item.last }}</a><br>{% endfor %}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class = "schedule">
     <h3>Winter Schedule</h3>
 
       <table>

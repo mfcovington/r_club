@@ -6,93 +6,31 @@ title: UCD Plant Biologists Learning R
 <div class="content">
   <div class = "schedule">
     <h3>Winter Schedule</h3>
+    <table>
 
-      <table>
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="reading-col">Reading</th>
+          <th class="info-col">Homework</th>
+          <th class="info-col">Exercises</th>
+          <th class="info-col">Resources</th>
+        </tr>
+      </thead>
 
-        <thead>
+      {% for post in site.posts %}
+        {% if  post.categories.first == 'schedule' %}
           <tr>
-            <th class="date-col">Date</th>
-            <th class="reading-col">Reading</th>
-            <th class="info-col">Homework</th>
-            <th class="info-col">Exercises</th>
-            <th class="info-col">Resources</th>
+            <td class="date-cell">{{ post.classdate }}</td>
+            <td class="reading-cell">{% for item in post.reading %}{% if  item.last == '' %}{{ item.first }}{% elsif item.last contains 'http://' %}<a href={{ item.last }}>{{ item.first }}</a>{% else %}<a href="{{ site.baseurl }}/reading/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ item.first  }}</a>{% endif %}<br>{% endfor %}</td>
+            <td class="homework-cell">{% for item in post.homework %}{% unless  item.last == '' %}<a href="{{ site.baseurl }}/homework/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless  item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
+            <td class="exercises-cell">{% for item in post.exercises %}{% unless  item.last == '' %}<a href="{{ site.baseurl }}/exercises/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless  item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
+            <td class="resources-cell">{% for item in post.resources %}<a href="{{ site.baseurl }}/resources/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ item.last }}</a><br>{% endfor %}</td>
           </tr>
-        </thead>
-<!--
-        <tfoot>
-          <tr>
-            <th class="date-col">Date</th>
-            <th class="reading-col">Reading</th>
-            <th class="info-col">Homework</th>
-            <th class="info-col">Exercises</th>
-            <th class="info-col">Resources</th>
-          </tr>
-        </tfoot>
- -->
- <!--
-        <tfoot>
-          <tr>
-            <th class="date-col"></th>
-            <th class="reading-col"></th>
-            <th class="info-col"></th>
-            <th class="info-col"></th>
-            <th class="info-col"></th>
-          </tr>
-        </tfoot>
- -->
-        <tbody>
+        {% endif %}
+      {% endfor %}
 
-          <tr>
-            <td class="date-cell">2013-02-28</td>
-            <td class="reading-cell">ggplot2 ch5: 'Toolbox'</td>
-            <td class="homework-cell"><a href="{{ site.baseurl }}/homework/2013/02/26/peer-produced-plots/"><strong>Q</strong></a> &amp; <a href="{{ site.baseurl }}/solutions/2013/02/28/peer-produced-plots-solutions/"><strong>A</strong></a></td>
-            <td class="exercises-cell">Q &amp; A</td>
-            <td class="resources-cell">-</td>
-          </tr>
-
-          <tr>
-            <td class="date-cell">2013-02-14</td>
-            <td class="reading-cell">ggplot2 ch4: 'Build a plot layer by layer'</td>
-            <td class="homework-cell">Q &amp; A<br>Bonus Q &amp; A</a></td>
-            <td class="exercises-cell">Q &amp; A</td>
-            <td class="resources-cell"><a href="{{ site.baseurl }}{% post_url 2013-02-10-updating-r-and-ggplot2 %}">Updating R/ggplot2</a></td>
-          </tr>
-
-          <tr>
-            <td class="date-cell">2013-02-07</td>
-            <td class="reading-cell">ggplot2 ch3: 'Mastering the grammar'</td>
-            <td class="homework-cell">Q &amp; A</td>
-            <td class="exercises-cell">Q &amp; A</td>
-            <td class="resources-cell">-</td>
-          </tr>
-
-          <tr>
-            <td class="date-cell">2013-01-31</td>
-            <td class="reading-cell">ggplot2 ch1: 'Introduction'<br>ggplot2 ch3: 'Getting started with qplot'</td>
-            <td class="homework-cell">Q &amp; A</td>
-            <td class="exercises-cell">Q &amp; A</td>
-            <td class="resources-cell">-</td>
-          </tr>
-
-          <tr>
-            <td class="date-cell">2013-01-24</td>
-            <td class="reading-cell">&nbsp;</td>
-            <td class="homework-cell">Q &amp; A</td>
-            <td class="exercises-cell">Q &amp; A</td>
-            <td class="resources-cell">-</td>
-          </tr>
-
-          <tr>
-            <td class="date-cell">2013-01-17</td>
-            <td class="reading-cell">&nbsp;</td>
-            <td class="homework-cell">Q &amp; A</td>
-            <td class="exercises-cell">Q &amp; A</td>
-            <td class="resources-cell">-</td>
-          </tr>
-
-        </tbody>
-      </table>
-
+    </table>
   </div>
 
   <div class="recent">

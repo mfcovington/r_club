@@ -12,9 +12,9 @@ layout: default
   {% if page.related %}
     {% for related in page.related %}
       {% for post in site.posts %}
-        {% capture converted %}{{ related | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' }}{% endcapture %}
+        {% capture converted %}{{ related | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}{% endcapture %}
         {% if post.url contains converted %}
-         <strong>related: <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></strong><br>
+         related: <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a><br>
         {% endif %}
       {% endfor %}
     {% endfor %}

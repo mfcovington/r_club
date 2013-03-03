@@ -33,7 +33,7 @@
             <h4><a href="{{ site.baseurl }}/{{ category}}">{{ category}} ({{ site.categories[category] | size}})</a></h4>
             <ul>
               {% for post in site.categories[category] limit: 2 %}
-                <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> - {{ post.date | date: "%Y-%m-%d" }}</li>
+                <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
               {% endfor %}
             </ul>
           {% endfor %}
@@ -53,8 +53,8 @@
               {% unless mainCats contains cat %}
                 {% capture count %}{% increment i %}{% endcapture %}
                 {% case  count %}
-                  {% when '1' or '2' %}
-                    <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> - {{ post.date | date: "%Y-%m-%d" }}</li>
+                  {% when '0' or '1' %}
+                    <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
                 {% endcase %}
               {% endunless %}
             {% endfor %}

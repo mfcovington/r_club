@@ -46,6 +46,87 @@ footer h4 {
   margin:0px 0 0px;
 }
 
+aside.hint p, aside.hint ul, aside.hint ol {
+  margin:0 0 5px;
+}
+
+aside + aside {
+  margin-top: 20px;
+}
+
+aside.hint {
+
+    padding: 5px 10px 5px 10px;
+    background-color: rgba(0,0,0,0.05);
+    box-shadow: inset 0px 3px 3px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0px 3px 3px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: inset 0px 3px 3px;
+    -moz-border-radius: 4px;
+}
+
+/*aside.figure {
+
+    padding: 5px 10px 5px 10px;
+    background-color: rgba(0,0,0,0.05);
+    box-shadow: inset 0px 3px 3px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0px 3px 3px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: inset 0px 3px 3px;
+    -moz-border-radius: 4px;
+}*/
+
+/*aside.figure img {
+    box-shadow:  0px 3px 3px;
+    -webkit-box-shadow:  0px 3px 3px;
+    -moz-box-shadow:  0px 3px 3px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+
+}*/
+
+aside.hint pre, aside.warn pre {
+  box-shadow:  0px 3px 3px;
+  -webkit-box-shadow:  0px 3px 3px;
+  -moz-box-shadow:  0px 3px 3px;
+}
+
+aside div.highlight {
+  border-radius: 4px;
+}
+
+aside.warn {
+
+    padding: 5px 10px 5px 10px;
+    background-color: rgba(255,0,0,0.05);
+    box-shadow: inset 0px 3px 3px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0px 3px 3px;
+    -webkit-border-radius: 4px;
+    -moz-box-shadow: inset 0px 3px 3px;
+    -moz-border-radius: 4px;
+
+/*  border: 1px solid #171717;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 5px 5px #C30000;
+  -webkit-box-shadow: 5px 5px #C30000;
+  box-shadow: 5px 5px #C30000;
+  padding: 5px 5px 5px 10px;*/
+
+/*  border: 1px solid #171717;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 5px 5px #171717;
+  -webkit-box-shadow: 5px 5px #171717;
+  box-shadow: 5px 5px #171717;
+  padding: 10px;
+*/
+}
+
 p, ul, ol, table, dl {
   margin:0 0 22px;
 }
@@ -149,7 +230,7 @@ img {
   margin: 0 auto;
   max-width: 100%;
   padding: 5px;
-  margin: 10px 0 32px 0;
+  margin: 10px 0 10px 0;
   border: 1px solid #ccc;
 }
 
@@ -165,7 +246,7 @@ code, pre {
 pre {
     padding: 4px 12px;
   background: #FDFEFB;
-  border-radius:4px;
+  border-radius: 4px;
   border:1px solid #D7D8C8;
   overflow: auto;
   overflow-y: hidden;
@@ -305,7 +386,7 @@ header li {
   background: -ms-linear-gradient(top, #AF0011 0%,#820011 100%);
   background: linear-gradient(top, #AF0011 0%,#820011 100%);
 
-    border-radius:4px;
+    border-radius: 4px;
   border:1px solid #0D0D0D;
 
     -webkit-box-shadow: inset 0px 1px 1px 0 rgba(233,2,38, 1);

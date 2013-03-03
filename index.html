@@ -18,17 +18,19 @@ title: UCD Plant Biologists Learning R
         </tr>
       </thead>
 
-      {% for post in site.posts %}
-        {% if  post.categories.first == 'schedule' %}
-          <tr>
-            <td class="date-cell">{{ post.classdate }}</td>
-            <td class="reading-cell">{% for item in post.reading %}{% if  item.last == '' %}{{ item.first }}{% elsif item.last contains 'http://' %}<a href="{{ item.last }}">{{ item.first }}</a>{% else %}<a href="{{ site.baseurl }}/reading/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ item.first  }}</a>{% endif %}<br>{% endfor %}</td>
-            <td class="homework-cell">{% for item in post.homework %}{% unless  item.last == '' %}<a href="{{ site.baseurl }}/homework/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless  item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
-            <td class="exercises-cell">{% for item in post.exercises %}{% unless  item.last == '' %}<a href="{{ site.baseurl }}/exercises/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless  item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
-            <td class="resources-cell">{% for item in post.resources %}<a href="{{ site.baseurl }}/resources/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ item.last }}</a><br>{% endfor %}</td>
-          </tr>
-        {% endif %}
-      {% endfor %}
+      <tbody>
+          {% for post in site.posts %}
+            {% if post.categories.first == 'schedule' %}
+              <tr>
+                <td class="date-cell">{{ post.classdate }}</td>
+                <td class="reading-cell">{% for item in post.reading %}{% if item.last == '' %}{{ item.first }}{% elsif item.last contains 'http://' %}<a href="{{ item.last }}">{{ item.first }}</a>{% else %}<a href="{{ site.baseurl }}/reading/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ item.first  }}</a>{% endif %}<br>{% endfor %}</td>
+                <td class="homework-cell">{% for item in post.homework %}{% unless item.first == '' %}<a href="{{ site.baseurl }}/homework/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
+                <td class="exercises-cell">{% for item in post.exercises %}{% unless item.first == '' %}<a href="{{ site.baseurl }}/exercises/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
+                <td class="resources-cell">{% for item in post.resources %}<a href="{{ site.baseurl }}/resources/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ item.last }}</a><br>{% endfor %}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+      </tbody>
 
     </table>
   </div>

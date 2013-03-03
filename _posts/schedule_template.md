@@ -1,6 +1,6 @@
 ---
 title:
-layout: post
+layout: schedule
 categories: schedule
 comments: true
 author: mike

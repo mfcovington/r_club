@@ -103,7 +103,9 @@ When reproducing this plot, many people had issues with setting the border of ea
 - The color of lines, dots, borders, etc. is specified with `color` and the fill color for shapes with `fill`.
 - When you are mapping a data attribute to a graphical attribute, you specify that inside `aes()`; however, when setting a graphical attribute to a specific value, color, etc., it needs to be done *outside* of `aes()`. I've formatted the indentation pattern of the code snippets above to reinforce the fact that `x`, `y`, and, `fill` are aesthetics, but `color` is not.
 
-*note: Most of the time, ggplot2 accepts `color` and `colour` interchangeably; however, inside `scale_fill_gradientn()` is currently an exception and `colour` must be used.*
+<aside class="warn">
+**Warning:** Most of the time, ggplot2 accepts `color` and `colour` interchangeably; however, inside `scale_fill_gradientn()` is currently an exception and `colour` must be used.
+</aside>
 
 ## Challenge 2
 
@@ -157,8 +159,9 @@ To move the legend from the right-side of the figure to the bottom, we can set t
 theme.custom <- theme(legend.position = "bottom")
 ```
 
-
-*note: Remember that customizing the look of ggplots with `opts()` has been deprecated. If you are using `opts()`, find a different way to accomplish what you want. Even if `opts()` might work for you now, the functionality could change or break with any new release of ggplot2.*
+<aside class="warn">
+**Warning:** Remember that customizing the look of ggplots with `opts()` has been deprecated. If you are using `opts()`, find a different way to accomplish what you want. Even if `opts()` might work for you now, the functionality could change or break with any new release of ggplot2.
+</aside>
 
 Now that we've defined each component of **Figure 2**, we can put them together like this:
 
@@ -281,9 +284,9 @@ Hsin-Yen was curious about the terrain and altitude where various tomato species
 
 ![plot of chunk 2013-02-26-challenge06]({{ site.figurl }}/2013-02-26-challenge06.png)
 
+<aside class="hint">
 
-To get you started, I'll show you how to use the `get_map()` function from the `ggmap` library to extract a raster object of the map. (see pg. 11 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
-
+To get you started, I'll show you how to use the `get_map()` function from the `ggmap` library to extract a raster object of the map. (see pg. 11 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf)):
 
 ```r
 library(ggmap)
@@ -292,11 +295,12 @@ map <- get_map(location = c(lon = -75, lat = -16),
                maptype  = 'satellite')
 ```
 
-
-Hints:
+**Hints:**
 
 - Start by plotting the map image with the `ggmap()` function from the `ggmap` library (see pg. 18 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
 - Add an additional layer with `geom_point()` (you'll need to specify the dataset to use inside `geom_point`)
+
+</aside>
 
 #### Figure 6B:
 
@@ -331,11 +335,14 @@ Not one to be outdone, Stacey demonstrates that she also knows the ways of the w
 
 ![plot of chunk 2013-02-26-challenge07]({{ site.figurl }}/2013-02-26-challenge07.png)
 
+<aside class="hint">
 
-Hints:
+**Hints:**
 
 - Start by plotting the world map using `geom_polygon()` with a data frame created with ggplot's `map_data()` function
 - Add an additional layer with another geom
+
+</aside>
 
 #### Figure 7B:
 

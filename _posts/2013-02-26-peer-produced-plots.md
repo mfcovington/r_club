@@ -29,8 +29,9 @@ Ciera plotted MPAA movie rating trends over the last couple decades.
 
 ![plot of chunk 2013-02-26-challenge02]({{ site.figurl }}/2013-02-26-challenge02.png)
 
-
-Hint: You need to subset the movies such that you are only considering movies with MPAA ratings since 1990.
+<aside class="hint">
+**Hint:** You need to subset the movies such that you are only considering movies with MPAA ratings since 1990.
+</aside>
 
 ## Challenge 3
 
@@ -60,6 +61,7 @@ Hsin-Yen was curious about the terrain and altitude where various tomato species
 
 ![plot of chunk 2013-02-26-challenge06]({{ site.figurl }}/2013-02-26-challenge06.png)
 
+<aside class="hint">
 
 To get you started, I'll show you how to use the `get_map()` function from the `ggmap` library to extract a raster object of the map. (see pg. 11 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
 
@@ -72,10 +74,12 @@ map <- get_map(location = c(lon = -75, lat = -16),
 ```
 
 
-Hints:
+**Hints:**
 
 - Start by plotting the map image with the `ggmap()` function from the `ggmap` library (see pg. 18 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
 - Add an additional layer with `geom_point()` (you'll need to specify the dataset to use inside `geom_point`)
+
+</aside>
 
 ## Challenge 7
 
@@ -83,8 +87,10 @@ Not one to be outdone, Stacey demonstrates that she also knows the ways of the w
 
 ![plot of chunk 2013-02-26-challenge07]({{ site.figurl }}/2013-02-26-challenge07.png)
 
-
-Hints:
+<aside class="hint">
+**Hints:**
 
 - Start by plotting the world map using `geom_polygon()` with a data frame created with ggplot's `map_data()` function
 - Add an additional layer with another geom
+
+</aside>

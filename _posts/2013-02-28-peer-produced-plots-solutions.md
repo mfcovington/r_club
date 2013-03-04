@@ -7,8 +7,6 @@ duedate:
 related: 2013-02-26-peer-produced-plots
 ---
 
-***in progress***
-
 # And wits were matched.
 
 Your R Club buddies have been experimenting with ways to plot data with ggplot. Below is a sampling of their efforts. Your duty this week was to choose at least three plots and figure out how they were plotted.
@@ -406,6 +404,7 @@ To get you started, I'll show you how to use the `get_map()` function from the `
 
 
 ```r
+install.packages("ggmap")
 library(ggmap)
 map <- get_map(location = c(lon = -75, lat = -16),
                zoom     = 5,

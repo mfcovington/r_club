@@ -7,8 +7,6 @@ duedate:
 related: 2013-02-26-peer-produced-plots
 ---
 
-***in progress***
-
 # And wits were matched.
 
 Your R Club buddies have been experimenting with ways to plot data with ggplot. Below is a sampling of their efforts. Your duty this week was to choose at least three plots and figure out how they were plotted.
@@ -27,24 +25,67 @@ library(ggplot2)
 
 In addition to the Tomato Dataset that we've been using, people have made plots with the `movies` and `mpg` datasets (which come with ggplot2 and are, therefore, loaded with `library(ggplot2)`). If the datasets don't look familiar, be sure to scroll down to the 'Data' section of the [ggplot2 docs](http://docs.ggplot2.org/current/).
 
+## Approach to solving challenges
+
+When trying to figure out how to write the code for a plot, I recommend making a quick set of observations:
+
+<aside class="hint">
+
+1. Which dataset is being used?
+2. Which aesthetics (`x`, `color`, `shape`, etc.) are *mapped* to which variables (length, treatment, species, etc.)?
+    - Look for x-/y-axis labels (histograms, density plots, etc. only use a single variable, so `y` won't be mapped to anything).
+    - Look for legend labels.
+    - Not only can an aesthetic be mapped to a variable, but also to a transformed variable (e.g., `log(length)`) or the output from a multi-variable equation (e.g., `(length * width) / sqrt(mass)`).
+3. Which aesthetics are *set* to constants?
+    - These may not be readily apparent until after you've made an initial plot and notice differences between it and the plot you are trying to reproduce.
+4. Which geoms are being used?
+5. Is the plot faceted? If so, by which variable(s)?
+    - Look at the labels along the top-most and/or right-most panels for clues to which variables were used for faceting.
+6. Is a non-cartesian coordinate system being used?
+    - I'm just including this for completeness since we have not yet looked at different coordinate systems.
+
+</aside>
+
+For many plots, you can take this information and plug it into some ggplot functions to get a decent first draft. Next you are ready to make a couple more observations to make further improvements:
+
+- Are any custom color, size, etc. scales being used? If so, is the relevant data discrete or continuous?
+- Have labels been customized?
+
+Taken together, these observations essentially serve as pseudocode for the plot in question.
+
 ## Challenge 1
 
-Stacey plotted movie rating since the dawn of cinematography (binned by density) .
+Stacey used the [movies dataset](http://docs.ggplot2.org/current/movies.html) to plot movie rating since the dawn of cinematography (binned by density) .
 
 #### Figure 1A:
 
 ![plot of chunk 2013-02-26-challenge01]({{ site.figurl }}/2013-02-26-challenge01.png)
 
 
-**Figure 1A** uses `stat_binhex()` to plot movie `rating` by `year`. As described in the [docs](http://docs.ggplot2.org/current/stat_binhex.html), `stat_binhex` bins a 2-dimensional plane into hexagons. By default, the hexagons are colored based on the number of counts in each hexagon; however, Stacey manually set the `fill = ..density..` when she made her plot:
+<aside class="hint">
+
+1. dataset: `movies`
+2. mappings:
+    - `x`: year
+    - `y`: rating
+    - `fill`: density
+3. settings:
+    - `color`: black (This isn't really noticeable until you build the plot and find that there are no black borders on the hexagons)
+4. geom(s): `geom_hex()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
+
+Based on our observations, we see that **Figure 1A** uses `geom_hex()` (which bins a 2-dimensional plane into hexagons) to plot movie `rating` by `year`. By default, the hexagons are colored based on the number of counts in each hexagon; however, Stacey manually set the `fill = ..density..` when she made her plot:
 
 
 ```r
 ggplot(movies) +
-  stat_binhex(aes(x    = year,
-                  y    = rating,
-                  fill = ..density..),
-              color = "black") +
+  geom_hex(aes(x    = year,
+               y    = rating,
+               fill = ..density..),
+           color = "black") +
   scale_fill_gradientn(colours = rainbow(7))
 ```
 
@@ -56,9 +97,9 @@ In this case, the only real difference between counts and density is seen with t
 
 ```r
 ggplot(movies) +
-  stat_binhex(aes(x = year,
-                  y = rating),
-              color = "black") +
+  geom_hex(aes(x = year,
+               y = rating),
+           color = "black") +
   scale_fill_gradientn(colours = rainbow(7))
 ```
 
@@ -72,9 +113,9 @@ However, if we were to instead make this plot faceted, we begin to see the diffe
 
 ```r
 ggplot(movies) +
-  stat_binhex(aes(x = year,
-                  y = rating),
-              color = "black") +
+  geom_hex(aes(x = year,
+               y = rating),
+           color = "black") +
   scale_fill_gradientn(colours = rainbow(7)) +
   facet_grid(. ~ Drama)
 ```
@@ -87,10 +128,10 @@ ggplot(movies) +
 
 ```r
 ggplot(movies) +
-  stat_binhex(aes(x    = year,
-                  y    = rating,
-                  fill = ..density..),
-              color = "black") +
+  geom_hex(aes(x    = year,
+               y    = rating,
+               fill = ..density..),
+           color = "black") +
   scale_fill_gradientn(colours = rainbow(7)) +
   facet_grid(. ~ Drama)
 ```
@@ -101,7 +142,7 @@ ggplot(movies) +
 When reproducing this plot, many people had issues with setting the border of each hexbin to black. To set the color successfully, you need to remember two things:
 
 - The color of lines, dots, borders, etc. is specified with `color` and the fill color for shapes with `fill`.
-- When you are mapping a data attribute to a graphical attribute, you specify that inside `aes()`; however, when setting a graphical attribute to a specific value, color, etc., it needs to be done *outside* of `aes()`. I've formatted the indentation pattern of the code snippets above to reinforce the fact that `x`, `y`, and, `fill` are aesthetics, but `color` is not.
+- When you are mapping an aesthetic to a variable (of your dataset), you specify that inside `aes()`; however, when setting an aesthetic to a constant value, color, etc., it needs to be done *outside* of `aes()`. I've formatted the indentation pattern of the code snippets above to reinforce the fact that `x`, `y`, and, `fill` are aesthetics, but `color` is not.
 
 <aside class="warn">
 **Warning:** Most of the time, ggplot2 accepts `color` and `colour` interchangeably; however, inside `scale_fill_gradientn()` is currently an exception and `colour` must be used.
@@ -116,7 +157,20 @@ Ciera plotted MPAA movie rating trends over the last couple decades.
 ![plot of chunk 2013-02-26-challenge02]({{ site.figurl }}/2013-02-26-challenge02.png)
 
 
-We need to start by sub-setting the movies such that we are only considering movies with MPAA ratings since 1990.
+<aside class="hint">
+
+1. dataset: `movies`
+2. mappings:
+    - `x`: year
+    - `fill`: MPAA rating
+3. settings: NA
+4. geom(s): `geom_density()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
+
+We need to start by sub-setting the movies such that we are only considering movies with MPAA ratings since 1990. Here are two equally valid ways to subset the data:
 
 
 ```r
@@ -124,9 +178,15 @@ movies.mpaa.new <- subset(movies, mpaa != "" & year >= 1990)
 ```
 
 
-For this plot, we'll assign each part of the plot to a separate variable and then combine them to generate the plot.
 
-For the base of the plot, we specify the data subset (`movies.mpaa.new`) that we just created and map the aesthetics `x` and `fill`. Unlike `stat_binhex()` plots, `color` in a `geom_density()` plot defaults to black so we don't need to set it.
+```r
+movies.mpaa.new <- movies[movies$mpaa != "" & movies$year >= 1990, ]
+```
+
+
+There are multiple ways to assemble the code for building a plot. To emphasize the different layers/components of a ggplot2-generated figure, we'll assign each part of the plot to a separate variable and then combine them to generate **Figure 2**.
+
+For the base of the plot, we specify the data subset (`movies.mpaa.new`) that we just created and map the aesthetics `x` and `fill`. Unlike `geom_hex()` plots, `color` in a `geom_density()` plot defaults to black so we don't need to set it.
 
 
 ```r
@@ -159,6 +219,7 @@ To move the legend from the right-side of the figure to the bottom, we can set t
 theme.custom <- theme(legend.position = "bottom")
 ```
 
+
 <aside class="warn">
 **Warning:** Remember that customizing the look of ggplots with `opts()` has been deprecated. If you are using `opts()`, find a different way to accomplish what you want. Even if `opts()` might work for you now, the functionality could change or break with any new release of ggplot2.
 </aside>
@@ -170,6 +231,7 @@ Now that we've defined each component of **Figure 2**, we can put them together 
 base + density + label + theme.custom
 ```
 
+
 I won't bother actually plotting this here, because it will be identical to **Figure 2**; however, I hope you can see the potential here for highly-readable modular customization. Rather than copy and pasting a big chunk of code for making small changes to create new plots, you can assign to variables any parts that you want to remain constant between your plots.
 
 ## Challenge 3
@@ -179,6 +241,25 @@ Miguel is a huge fan of the written word. One of his life goals is to bridge the
 #### Figure 3A:
 
 ![plot of chunk 2013-02-26-challenge03]({{ site.figurl }}/2013-02-26-challenge03.png)
+
+
+<aside class="hint">
+
+1. dataset: `tomato`
+2. mappings:
+    - `x`: altitude
+    - `y`: hypocotyl length
+    - `label`: species (this is a `geom_text`-specific aesthetic)
+    - `color`: treatment
+    - `size`: leaf number
+3. settings:
+    - `angle`: 30° (This isn't really noticeable until you build the plot and find that the text is horizontal)
+4. geom(s): `geom_text()`
+5. facets: who
+6. coordinates: cartesian
+
+</aside>
+
 
 **Figure 3A** can be generated with:
 
@@ -238,6 +319,23 @@ Cody found a geom that can be used to compare distributions by plotting them alo
 ![plot of chunk 2013-02-26-challenge04]({{ site.figurl }}/2013-02-26-challenge04.png)
 
 
+<aside class="hint">
+
+1. dataset: `tomato`
+2. mappings:
+    - `x`: leaf length
+    - `y`: leaf width
+    - `color`: who
+3. settings: NA
+4. geom(s):
+    - `geom_point()`
+    - `geom_rug()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
+
+
 
 ```r
 ggplot(tomato, aes(x      = leafleng,
@@ -259,6 +357,21 @@ For Valentine's Day, Jessica received a $20 gift card for a local gas station. B
 
 ![plot of chunk 2013-02-26-challenge05]({{ site.figurl }}/2013-02-26-challenge05.png)
 
+
+<aside class="hint">
+
+1. dataset: `mpg`
+2. mappings:
+    - `x`: class
+    - `y`: highway mpg
+    - `fill`: manufacturer
+    - `color`: manufacturer (The default border color for `geom_dotplot()` dots is black)
+3. settings: NA
+4. geom(s): `geom_dotplot()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
 
 
 ```r
@@ -284,16 +397,20 @@ Hsin-Yen was curious about the terrain and altitude where various tomato species
 
 ![plot of chunk 2013-02-26-challenge06]({{ site.figurl }}/2013-02-26-challenge06.png)
 
+
 <aside class="hint">
 
 To get you started, I'll show you how to use the `get_map()` function from the `ggmap` library to extract a raster object of the map. (see pg. 11 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf)):
 
+
 ```r
+install.packages("ggmap")
 library(ggmap)
 map <- get_map(location = c(lon = -75, lat = -16),
                zoom     = 5,
                maptype  = 'satellite')
 ```
+
 
 **Hints:**
 
@@ -334,6 +451,7 @@ Not one to be outdone, Stacey demonstrates that she also knows the ways of the w
 #### Figure 7A:
 
 ![plot of chunk 2013-02-26-challenge07]({{ site.figurl }}/2013-02-26-challenge07.png)
+
 
 <aside class="hint">
 

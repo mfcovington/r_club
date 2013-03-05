@@ -8,4 +8,4 @@ author: mike
 
 # Nothing to see here
 
-This is a placeholder for a future page. You don't belong here... yet.
+This is a placeholder for a future page. You don't belong here... yet!

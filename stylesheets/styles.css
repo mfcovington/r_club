@@ -101,11 +101,11 @@ aside.hover {
 }
 
 aside.hover:hover{
-    box-shadow: inset 0px 3px 3px #C30000;
+    box-shadow: inset 0px 3px 3px #171717;
 
-    -webkit-box-shadow: inset 0px 3px 3px #C30000;
+    -webkit-box-shadow: inset 0px 3px 3px #171717;
 
-    -moz-box-shadow: inset 0px 3px 3px #C30000;
+    -moz-box-shadow: inset 0px 3px 3px #171717;
 
 
 }

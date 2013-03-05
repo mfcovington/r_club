@@ -1,6 +1,4 @@
 _site/*
-codedump/*
-rmd/*
-cache/*
-classdocs/*
-ggmapTemp.png
+_codedump/*
+_rmd/*
+_classdocs/*

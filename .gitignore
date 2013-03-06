@@ -2,3 +2,4 @@ _site/*
 _codedump/*
 _rmd/*
 _classdocs/*
+.Rapp.history

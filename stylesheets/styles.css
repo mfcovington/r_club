@@ -364,7 +364,7 @@ td.reading-cell {text-align: left}
 
 /* Wrapper */
 .wrapper {
-  width:960px;
+  width:1200px;
 }
 
 
@@ -492,7 +492,7 @@ a.buttons:hover {
 /* Section - for main page content */
 
 section {
-  width:550px;
+  width:790px;
   float:right;
   padding-bottom:50px;
 }
@@ -507,6 +507,31 @@ footer {
   bottom:10px;
     padding-left: 50px;
 }
+
+@media print, screen and (max-width: 1200px) {
+
+  section {
+    width:670px;
+  }
+
+  .wrapper {
+    width:1080px;
+  }
+
+}
+
+@media print, screen and (max-width: 1080px) {
+
+  section {
+    width:550px;
+  }
+
+  .wrapper {
+    width:960px;
+  }
+
+}
+
 
 @media print, screen and (max-width: 960px) {
 

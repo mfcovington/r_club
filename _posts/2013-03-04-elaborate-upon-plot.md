@@ -4,7 +4,7 @@ layout: post
 categories: homework
 comments: true
 duedate: 2013-03-07
-related:
+related: 2013-03-14-elaborate-upon-plot-solutions
 ---
 
 # Standing on the shoulders of giants

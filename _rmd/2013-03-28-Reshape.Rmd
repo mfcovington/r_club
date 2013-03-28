@@ -1,0 +1,78 @@
+---
+title: Reshape
+layout: post
+categories: resources
+comments: true
+duedate:
+---
+
+Reshape
+========================================================
+Often your data is collected in a format that is not convenient for analysis.  In particular in R usually you want one observation per row--we will call this *long* format.  However in excel it is common for each column to correspond to a different set of observations--we will consider this *wide* format.  Consider:
+```{r wide format}
+#generate mock data frame in wide format
+wide <- data.frame(
+  
+            wildtype=rnorm(10,4),
+            phyA=rnorm(10,6),
+            phyB=rnorm(10,7),
+            det1=rnorm(10,2))
+wide
+```
+
+This might seem reasonable but it is the wrong format if, for example, you wanted to use `ggplot`, `lm`, `lme`, etc.
+
+Functions in the **reshape** package will convert from the wide format to the long format and back.
+
+Melt
+----
+`melt()` is used to change from the wide format to the long format.
+```{r melt example 1}
+library(reshape)
+long <- melt(wide)
+head(long)
+tail(long)
+```
+
+### Melt arguments: id.vars and measure.vars
+Your data frame might contain metadata that needs to be preserved for each data observation.  For example if the hypocotyls in the above example came from two different plates we would want to know which plate each observation came from in the melted data frame. We can use the `id.vars` argument to specify which columns contain identification information that should be kept with each observation in a row.  Alternatively we can use the `measure.vars` to specify the columns that contain measurements.
+```{r melt example 2}
+wide$plate <- rep(c("A","B"),each=5)
+wide
+long <- melt(wide,id.vars="plate")
+head(long)
+#alternatively specify the meaurement variables:
+long <- melt(wide,measure.vars=c("wildtype","phyA","phyB","det1"))
+#you can also use column numbers
+long <- melt(wide,measure.vars=1:4)
+```
+
+### Melt arguments: variable_name
+The `variable_name` argument allows us to specify a column name for the new column that will contain the previous column names once the data frame is melted.  
+```{r melt example 3}
+long <- melt(wide,id.vars="plate",variable_name="genotype")
+head(long)
+```
+### Additional melt functions
+The above examples demonstrate melt as it applies to data frames.  There are additional methods for arrays and lists.  See `?melt` for details.
+
+Cast
+----
+The `cast()` function is used to summarize data that is in the *long* format.  Here we specify a formula where each variable listed will form a new dimension.
+```{r cast example 2}
+#use cast to summarize by mean.
+cast(long, plate ~ genotype, mean)
+cast(long, genotype ~ plate, mean) #changing the order changes the orientation.
+```
+### We can specify that we want margin means
+```{r cast example 3}
+cast(long,plate ~ genotype, mean,margins=T)
+```
+### A "." in the formula species no variables.
+```{r cast example 4}
+cast(long, plate ~ .) #with no function specified this just counts the number of observations
+cast(long, plate ~ .,mean)
+cast(long, genotype ~ ., mean)
+```
+
+*Posted by Julin Maloof*

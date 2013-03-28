@@ -79,3 +79,4 @@ as.character(my.boolean)
 as.logical(c("T","True","true","TRUE","F","False","FALSE","false","not logical"))
 ```
 
+*Posted by Juln Maloof*

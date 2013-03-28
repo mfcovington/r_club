@@ -282,3 +282,4 @@ as.logical(c("T", "True", "true", "TRUE", "F", "False", "FALSE", "false", "not l
 ```
 
 
+*Posted by Juln Maloof*

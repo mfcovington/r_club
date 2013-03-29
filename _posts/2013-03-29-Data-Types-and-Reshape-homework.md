@@ -1,5 +1,5 @@
 ---
-title: Homework: Data Types and Reshape
+title: Homework--Data Types and Reshape
 layout: post
 categories: homework
 comments: true

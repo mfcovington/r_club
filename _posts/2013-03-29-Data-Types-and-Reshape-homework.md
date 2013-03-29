@@ -36,6 +36,7 @@ Change the order of levels in "trasformation" to be Sh1, Sh2, Sh3, Ba1, Ba3
 
 ## Section 2: Reshape
 The remaining questions deal with the *reshape* package and the tomato dataset.
+
 * Read my post on reshape [on the Rclub website](http://mfcovington.github.com/r_club/resources/2013/03/28/Reshape/)
 * Additional information on reshape is in section 9.2 of the ggplot book
 * import the standard tomato data set.

@@ -10,7 +10,7 @@ R Homework for April 4, 2013
 ========================================================
 
 ## Section 1: Data Types
-Questions 1 to 6 refer to the file [ELF3s_bolting_Rclub.csv](https://github.com/mfcovington/r_club/blob/gh-pages/data/ELF3s_bolting_Rclub.csv.zip). Import it now.
+Questions 1 to 6 refer to the file [ELF3s\_bolting\_Rclub.csv](http://mfcovington.github.com/r_club{{downloads/ELF3s_bolting_Rclub.csv.zip}}). Import it now.
 
 ### Q1
 What data types are represented in each column?

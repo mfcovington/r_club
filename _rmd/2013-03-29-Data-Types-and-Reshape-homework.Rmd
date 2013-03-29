@@ -9,7 +9,8 @@ duedate: 2013-04-04
 R Homework for April 4, 2013
 ========================================================
 
-## Questions 1 to 6 refer to the file (`ELF3s_bolting_Rclub.csv`)[https://github.com/mfcovington/r_club/blob/gh-pages/data/ELF3s_bolting_Rclub.csv]. Import it now.
+## Section 1: Data Types
+Questions 1 to 6 refer to the file (ELF3s_bolting_Rclub.csv)[https://github.com/mfcovington/r_club/blob/gh-pages/data/ELF3s_bolting_Rclub.csv]. Import it now.
 
 Q1
 --
@@ -39,7 +40,7 @@ Q6
 --
 Change the order of levels in "trasformation" to be Sh1, Sh2, Sh3, Ba1, Ba3
 
-## The remaining questions deal with the `reshape` package and the tomato dataset.
+## The remaining questions deal with the *reshape* package and the tomato dataset.
 * Read my post on reshape [on the Rclub website](http://mfcovington.github.com/r_club/resources/2013/03/28/Reshape/)
 * Additional information on reshape is in section 9.2 of the ggplot book
 * import the standard tomato data set.

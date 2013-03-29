@@ -86,7 +86,7 @@ df
 df$genotype
 #or get any subset by []
 df[3,2] #second column, third row
-df[,hyp.length]
+df['hyp.length']
 #testing
 is.data.frame(df)
 #converting
@@ -117,6 +117,6 @@ is.data.frame(my.list[[2]])
 #compare with
 is.data.frame(my.list[2])
 #unlist() sometimes is helpful
-is.data.frame(unlist(my.list[2]))
+unlist(my.list[2])
 ```
 *Posted by Julin Maloof*

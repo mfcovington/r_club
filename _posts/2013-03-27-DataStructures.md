@@ -260,11 +260,15 @@ df[3, 2]  #second column, third row
 ```
 
 ```r
-df[, hyp.length]
+df["hyp.length"]
 ```
 
 ```
-## Error: object 'hyp.length' not found
+##   hyp.length
+## 1         10
+## 2          3
+## 3          9
+## 4          2
 ```
 
 ```r
@@ -470,11 +474,14 @@ is.data.frame(my.list[2])
 
 ```r
 # unlist() sometimes is helpful
-is.data.frame(unlist(my.list[2]))
+unlist(my.list[2])
 ```
 
 ```
-## [1] FALSE
+##   my.df.genotype1   my.df.genotype2   my.df.genotype3   my.df.genotype4 
+##                 2                 1                 2                 1 
+## my.df.hyp.length1 my.df.hyp.length2 my.df.hyp.length3 my.df.hyp.length4 
+##                10                 3                 9                 2
 ```
 
 *Posted by Julin Maloof*

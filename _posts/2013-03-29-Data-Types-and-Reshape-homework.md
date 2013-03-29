@@ -3,7 +3,7 @@ title: Homework: Data Types and Reshape
 layout: post
 categories: homework
 comments: true
-duedate: 2013-03-29
+duedate: 2013-04-04
 ---
 
 R Homework for April 4, 2013

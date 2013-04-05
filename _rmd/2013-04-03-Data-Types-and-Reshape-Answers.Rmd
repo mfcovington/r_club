@@ -15,7 +15,7 @@ Questions 1 to 6 refer to the file [ELF3s\_bolting\_Rclub.csv]({{ site.baseurl }
 
 ### Q1
 What data types are represented in each column?
-```{r Q1}
+```{r 2013-04-03-Data-Solutions-Q1}
 data <- read.csv("~/Documents/Teaching/RClub/webSite/downloads/ELF3s_bolting_Rclub.csv")
 
 #one way is to do a summary and figure it out from the way the output is formatted
@@ -25,7 +25,12 @@ summary(data)
 
 #alternative:
 str(data)
+
+
+
 ```
+
+
 
 ### Q2
 a) Are there any columns that you think have the wrong data type?
@@ -41,7 +46,7 @@ c) Why?
 ### Q3
 How would you change the columns to their correct types?
 
-```{r Q3}
+```{r 2013-04-03-Data-Solutions-Q3}
 #For row and flat:
 data$flat <- as.factor(data$flat)
 data$row <- as.factor(data$row)
@@ -56,6 +61,9 @@ as.numeric(data$diameter)
 
 #instead:
 as.numeric(as.character(data$diameter))
+
+#or:
+as.numeric(levels(data$diameter)[data$diameter])
 
 #The warning tells us that there was a problem in the conversion, 
 #this is probably our problem observation
@@ -89,7 +97,7 @@ data_mod <- transform(data,
 
 ### Q4
 Are there any obvious mistakes in this data frame beyond what you might have found in answering Q3?
-```{r Q4}
+```{r 2013-04-03-Data-Solutions-Q4}
 
 #quick check is with summary
 summary(data)
@@ -128,14 +136,14 @@ data[data$n_leaves>50,]
 
 ### Q5
 Make the "Sha" genotype the reference level for the genotype column
-```{r Q5}
+```{r 2013-04-03-Data-Solutions-Q5}
 data$genotype <- relevel(data$genotype,ref="Sha")
 ```
 
 
 ### Q6
 Change the order of levels in "trasformation" to be Sh1, Sh2, Sh3, Ba1, Ba3
-```{r Q6}
+```{r 2013-04-03-Data-Solutions-Q6}
 data$genotype <- factor(data$genotype,levels=c("Sh1", "Sh2", "Sh3", "Ba1", "Ba3"))
 ```
 
@@ -153,7 +161,7 @@ tomato <- read.csv("~/Documents/Teaching/RClub/TomatoRClub.csv")
 
 ### Q7
 What are the id variables and measure variables in the Tomato data set?
-```{r Q7}
+```{r 2013-04-03-Data-Solutions-Q7}
 head(tomato)
 #id.vars: shelf, flat, col, row, acs, trt, ndvi, lat, lon, alt, species, who
 #measure vars: hyp, int1, int2, int3, int4, intleng, totleng, petleng, leafleng, leafwid, leafnum
@@ -162,7 +170,7 @@ head(tomato)
 
 ### Q8
 Subset the tomato data set to keep the int1-int4 measurements and the relevant metadata.
-```{r Q8}
+```{r 2013-04-03-Data-Solutions-Q8}
 tom.small <- tomato[,c(1:6,10:13,20:25)]
 head(tom.small)
 ```
@@ -170,7 +178,7 @@ head(tom.small)
 
 ### Q9
 Without melting or casting your new data frame, calculate the mean of each internode. *Hint: use `apply()`*
-```{r Q9}
+```{r 2013-04-03-Data-Solutions-Q9}
 apply(tom.small[,7:10],2,mean,na.rm=T)
 
 #OR
@@ -181,7 +189,7 @@ colMeans(tom.small[,7:10],na.rm=T) #Thanks Upendra
 
 ### Q10
 Melt the new data frame.
-```{r Q10}
+```{r 2013-04-03-Data-Solutions-Q10}
 tom.melt <- melt(tom.small,measure.vars=7:10,variable_name="internode")
 summary(tom.melt)
 ```
@@ -189,13 +197,13 @@ summary(tom.melt)
 ### Q11
 Use cast to obtain the mean for each internode.
 Q11
-```{r Q11}
+```{r 2013-04-03-Data-Solutions-Q11}
 cast(tom.melt, ~ internode, mean, na.rm=T)
 ```
 
 ### Q12
 Use cast to obtain the mean for each internode for each species.
-```{r Q12}
+```{r 2013-04-03-Data-Solutions-Q12}
 cast(tom.melt,  internode ~ species, mean, na.rm=T)
 ```
 
@@ -207,7 +215,7 @@ cast(tom.melt,  internode ~ species ~ trt, mean, na.rm=T)
 
 ### Q14
 Create a boxplot for each combination of species, internode, and treatment.
-```{r Q14}
+```{r 2013-04-03-Data-Solutions-Q14}
 pl <- ggplot(tom.melt,aes(x=internode,y=value,color=trt))
 pl <- pl + geom_boxplot()
 pl + facet_grid(species ~ .,scales="free_y")
@@ -215,7 +223,7 @@ pl + facet_grid(species ~ .,scales="free_y")
 
 ##Bonus: unmelt your data with cast
 If you include an indexing variable in your original data frame, you can use case to unmelt it.
-```{r unmelt}
+```{r 2013-04-03-Data-Solutions-unmelt}
 tom.small$index <- 1:nrow(tom.small)
 tom.melt2 <- melt(tom.small,measure.vars=7:10)
 head(tom.melt2)

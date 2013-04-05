@@ -356,7 +356,7 @@ pl <- ggplot(melt.data, aes(x = variable, y = value))
 pl + geom_jitter() + facet_wrap(~variable, scales = "free_y")
 ```
 
-![plot of chunk 2013-04-03-Data-Solutions-Q4](figure/2013-04-03-Data-Solutions-Q4.png) 
+![plot of chunk 2013-04-03-Data-Solutions-Q4]({{ site.figurl }}/2013-04-03-Data-Solutions-Q4.png) 
 
 ```r
 
@@ -658,7 +658,7 @@ pl + facet_grid(species ~ ., scales = "free_y")
 ## Warning: Removed 22 rows containing non-finite values (stat_boxplot).
 ```
 
-![plot of chunk 2013-04-03-Data-Solutions-Q14](figure/2013-04-03-Data-Solutions-Q14.png) 
+![plot of chunk 2013-04-03-Data-Solutions-Q14]({{ site.figurl }}/2013-04-03-Data-Solutions-Q14.png) 
 
 
 ##Bonus: unmelt your data with cast

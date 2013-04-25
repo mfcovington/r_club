@@ -1,0 +1,821 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Elaborate upon a plot (solutions)</title>
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/styles.css">
+    <link rel="shortcut icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <script src="/r_club/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38722088-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="/r_club/">R Club</a></h1>
+        <h2 class="header">Elaborate upon a plot (solutions)</h2>
+      </header>
+      <section>
+        <div class = "duedate">
+  
+</div>
+
+<div class = "related">
+  
+    
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+         related: <a href="/r_club/homework/2013/03/04/elaborate-upon-plot/">Elaborate upon a plot</a><br>
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+    
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+         related: <a href="/r_club/exercises/2013/03/21/restyle/">Re-style peers' R code</a><br>
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+    
+  
+</div>
+
+<div class="content">
+  <div id="post">
+    <h1>Prep</h1>
+<div class="highlight"><pre><code class="r">tomato <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&quot;TomatoR2CSHL.csv&quot;</span><span class="p">,</span> header <span class="o">=</span> <span class="k-Variable">T</span><span class="p">,</span> sep <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="p">)</span>
+tomato <span class="o">&lt;-</span> na.omit<span class="p">(</span>tomato<span class="p">)</span>
+library<span class="p">(</span>ggplot2<span class="p">)</span>
+</code></pre></div>
+<h1>Kaisa</h1>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>ggmap<span class="p">)</span>
+map <span class="o">&lt;-</span> get_map<span class="p">(</span>location <span class="o">=</span> c<span class="p">(</span>lon <span class="o">=</span> <span class="m">-70</span><span class="p">,</span> lat <span class="o">=</span> <span class="m">-16</span><span class="p">),</span>
+               zoom <span class="o">=</span> <span class="m">5</span><span class="p">,</span>
+               maptype <span class="o">=</span> <span class="s">&#39;hybrid&#39;</span><span class="p">)</span>
+ggmap<span class="p">(</span>map<span class="p">)</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>aes<span class="p">(</span>x      <span class="o">=</span> lon<span class="p">,</span>
+                 y      <span class="o">=</span> lat<span class="p">,</span>
+                 colour <span class="o">=</span> alt<span class="p">),</span>
+             data       <span class="o">=</span> tomato<span class="p">,</span>
+             size       <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="o">+</span>
+             facet_grid<span class="p">(</span>. <span class="o">~</span> species<span class="p">)</span> <span class="o">+</span>
+             scale_colour_continuous<span class="p">(</span>   low  <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">,</span>
+                                        high <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">)</span> <span class="o">+</span>
+             labs<span class="p">(</span>  title <span class="o">=</span> expression<span class="p">(</span>paste<span class="p">(</span><span class="s">&quot;Altitude and location of sampled &quot;</span><span class="p">,</span> italic<span class="p">(</span><span class="s">&quot;Solanum&quot;</span><span class="p">),</span> <span class="s">&quot; accessions&quot;</span><span class="p">)),</span>
+                        x <span class="o">=</span> <span class="s">&quot;Longitude&quot;</span><span class="p">,</span>
+                        y <span class="o">=</span> <span class="s">&quot;Latitude&quot;</span><span class="p">,</span>
+                   colour <span class="o">=</span> <span class="s">&quot;Altitude (m)&quot;</span><span class="p">)</span> <span class="o">+</span>
+            theme<span class="p">(</span> aspect.ratio <span class="o">=</span> <span class="m">1</span><span class="p">,</span>
+                   strip.text.x <span class="o">=</span> element_text<span class="p">(</span>face<span class="o">=</span><span class="s">&quot;italic&quot;</span><span class="p">))</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate01.png" alt="plot of chunk 2013-03-14-elaborate01"></p>
+
+<h1>Stacey</h1>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>RColorBrewer<span class="p">)</span>
+myColors <span class="o">&lt;-</span> c<span class="p">(</span>brewer.pal<span class="p">(</span><span class="m">12</span><span class="p">,</span> <span class="s">&quot;Set3&quot;</span><span class="p">),</span> <span class="s">&quot;#00008B&quot;</span><span class="p">,</span> <span class="s">&quot;#FF00FF&quot;</span><span class="p">,</span> <span class="s">&quot;#698B22&quot;</span><span class="p">)</span>
+colScale <span class="o">&lt;-</span> scale_colour_manual<span class="p">(</span>name<span class="o">=</span><span class="s">&quot;manufacturer&quot;</span><span class="p">,</span> values<span class="o">=</span>myColors<span class="p">)</span>
+colScaleFill <span class="o">&lt;-</span> scale_fill_manual<span class="p">(</span>name<span class="o">=</span><span class="s">&quot;manufacturer&quot;</span><span class="p">,</span> values<span class="o">=</span>myColors<span class="p">)</span>
+mpg.class <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="o">=</span>mpg<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>class<span class="p">,</span> y<span class="o">=</span>hwy<span class="p">,</span> fill<span class="o">=</span>manufacturer<span class="p">,</span> color<span class="o">=</span>manufacturer<span class="p">))</span>
+mpg.class <span class="o">+</span> geom_dotplot<span class="p">(</span>binaxis<span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span> stackdir<span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span> dotsize<span class="o">=</span><span class="m">.8</span><span class="p">,</span> position<span class="o">=</span><span class="s">&quot;dodge&quot;</span><span class="p">,</span> binwidth<span class="o">=</span><span class="m">.5</span><span class="p">)</span> <span class="o">+</span> labs<span class="p">(</span>x<span class="o">=</span><span class="s">&quot;Class&quot;</span><span class="p">,</span> y<span class="o">=</span><span class="s">&quot;Highway (mpg)&quot;</span><span class="p">)</span> <span class="o">+</span>
+  colScale <span class="o">+</span> colScaleFill <span class="o">+</span>
+  theme<span class="p">(</span>aspect.ratio<span class="o">=</span><span class="m">.5</span><span class="p">,</span> text <span class="o">=</span> element_text<span class="p">(</span>size<span class="o">=</span><span class="m">15</span><span class="p">),</span> axis.text.x <span class="o">=</span> element_text<span class="p">(</span>angle<span class="o">=</span><span class="m">45</span><span class="p">))</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate02.png" alt="plot of chunk 2013-03-14-elaborate02"></p>
+
+<h1>Amanda</h1>
+
+<p>I decided S. chmielewskii is my favorite species and wanted to explore the relationship between sun/shade internode and petiole length at different altitudes</p>
+<div class="highlight"><pre><code class="r">data_chm <span class="o">&lt;-</span> subset<span class="p">(</span>tomato<span class="p">,</span> tomato<span class="o">$</span>species<span class="o">==</span><span class="s">&quot;S. chmielewskii&quot;</span><span class="p">)</span>
+data_chm<span class="o">$</span>species <span class="o">&lt;-</span> factor<span class="p">(</span>data_chm<span class="o">$</span>species<span class="p">)</span>
+c_AS <span class="o">&lt;-</span> ggplot<span class="p">(</span>data_chm<span class="p">,</span> aes<span class="p">(</span>petleng<span class="p">,</span> intleng<span class="p">,</span> colour<span class="o">=</span>trt<span class="p">))</span>
+c_AS <span class="o">&lt;-</span> c_AS <span class="o">+</span> geom_point<span class="p">()</span> <span class="o">+</span>
+                facet_grid<span class="p">(</span>.<span class="o">~</span>alt<span class="p">)</span> <span class="o">+</span>
+                ggtitle<span class="p">(</span><span class="s">&quot;Relationship between internode and petiole length \n in S. chmielewskii based on altitude&quot;</span><span class="p">)</span> <span class="o">+</span>
+                xlab<span class="p">(</span><span class="s">&quot;Petiole length (mm)&quot;</span><span class="p">)</span> <span class="o">+</span>
+                ylab<span class="p">(</span><span class="s">&quot;Internode length (mm)&quot;</span><span class="p">)</span> <span class="o">+</span>
+                labs<span class="p">(</span>color <span class="o">=</span> <span class="s">&quot;Treatment&quot;</span><span class="p">)</span> <span class="o">+</span>
+                theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">2.5</span><span class="p">,</span>
+                    axis.text.x  <span class="o">=</span> element_text<span class="p">(</span>angle <span class="o">=</span> <span class="m">45</span><span class="p">))</span>
+c_AS
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate03.png" alt="plot of chunk 2013-03-14-elaborate03"></p>
+
+<h1>Miguel</h1>
+<div class="highlight"><pre><code class="r">p<span class="o">&lt;-</span>ggplot<span class="p">(</span>tomato<span class="p">,</span> aes<span class="p">(</span>x      <span class="o">=</span> leafleng<span class="p">,</span>
+                   y      <span class="o">=</span> leafwid<span class="p">,</span>
+                   colour <span class="o">=</span> who<span class="p">))</span>
+p <span class="o">+</span>geom_point<span class="p">()</span> <span class="o">+</span>
+  geom_rug<span class="p">()</span> <span class="o">+</span>
+  labs<span class="p">(</span>x <span class="o">=</span> <span class="s">&quot;Leaf Length (mm)&quot;</span><span class="p">,</span>
+       y <span class="o">=</span> <span class="s">&quot;Leaf Width (mm)&quot;</span><span class="p">,</span>
+       title<span class="o">=</span><span class="s">&quot;Leaf Shape distribution&quot;</span><span class="p">,</span>
+       colour<span class="o">=</span><span class="s">&quot;SAMPLER&quot;</span><span class="p">)</span> <span class="o">+</span>
+  theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">1</span><span class="p">)</span><span class="o">+</span>
+  annotate<span class="p">(</span><span class="s">&quot;rect&quot;</span><span class="p">,</span>xmin<span class="o">=</span><span class="m">58</span><span class="p">,</span> xmax<span class="o">=</span><span class="m">98</span><span class="p">,</span>ymin<span class="o">=</span><span class="m">70</span><span class="p">,</span> ymax<span class="o">=</span><span class="m">92</span><span class="p">,</span> alpha<span class="o">=</span><span class="m">0.3</span><span class="p">)</span><span class="o">+</span>
+  annotate<span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span> x<span class="o">=</span><span class="m">85</span><span class="p">,</span> y<span class="o">=</span><span class="m">67</span><span class="p">,</span> label<span class="o">=</span><span class="s">&quot;Clorophyl analysis&quot;</span><span class="p">)</span><span class="o">+</span>
+  geom_smooth<span class="p">(</span>se<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> colour<span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> linetype<span class="o">=</span><span class="m">2</span> <span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate04.png" alt="plot of chunk 2013-03-14-elaborate04"></p>
+
+<h1>Palmer</h1>
+
+<p>Goal: to make better for old people with failing eyes and colorblindness,
+increase point size, change shape and color, remove gray background, increase font, bold font, add fit lines</p>
+<div class="highlight"><pre><code class="r">cbbPalette <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;#000000&quot;</span><span class="p">,</span> <span class="s">&quot;#E69F00&quot;</span><span class="p">,</span> <span class="s">&quot;#56B4E9&quot;</span><span class="p">,</span> <span class="s">&quot;#009E73&quot;</span><span class="p">,</span> <span class="s">&quot;#F0E442&quot;</span><span class="p">,</span> <span class="s">&quot;#0072B2&quot;</span><span class="p">,</span> <span class="s">&quot;#D55E00&quot;</span><span class="p">,</span> <span class="s">&quot;#CC79A7&quot;</span><span class="p">)</span>
+ggplot<span class="p">(</span>tomato<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span> leafleng<span class="p">,</span>
+                   y<span class="o">=</span> leafwid<span class="p">,</span>
+                   colour <span class="o">=</span> who<span class="p">,</span> shape<span class="o">=</span>who<span class="p">))</span> <span class="o">+</span>
+  theme_bw<span class="p">()</span> <span class="o">+</span>
+  theme<span class="p">(</span>panel.grid.major <span class="o">=</span> element_line<span class="p">(</span>colour <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">,</span> size<span class="o">=</span><span class="m">2</span><span class="p">))</span><span class="o">+</span>
+  theme<span class="p">(</span>panel.border <span class="o">=</span> element_rect<span class="p">(</span>colour <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">,</span> size <span class="o">=</span><span class="m">2</span><span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>size<span class="o">=</span><span class="m">3</span><span class="p">)</span> <span class="o">+</span>
+  geom_rug<span class="p">()</span> <span class="o">+</span>
+  labs<span class="p">(</span>x <span class="o">=</span> <span class="s">&quot;Leaf Length (mm)&quot;</span><span class="p">,</span>
+       y <span class="o">=</span> <span class="s">&quot;Leaf Width (mm)&quot;</span><span class="p">)</span> <span class="o">+</span>
+  theme<span class="p">(</span>axis.title.x <span class="o">=</span> element_text<span class="p">(</span>face<span class="o">=</span><span class="s">&quot;bold&quot;</span><span class="p">,</span> colour<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> size<span class="o">=</span><span class="m">20</span><span class="p">),</span>
+        axis.text.x  <span class="o">=</span> element_text<span class="p">(</span>angle<span class="o">=</span><span class="m">90</span><span class="p">,</span> colour<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> vjust<span class="o">=</span><span class="m">0.5</span><span class="p">,</span> size<span class="o">=</span><span class="m">16</span><span class="p">))</span> <span class="o">+</span>
+  theme<span class="p">(</span>axis.title.y <span class="o">=</span> element_text<span class="p">(</span>face<span class="o">=</span><span class="s">&quot;bold&quot;</span><span class="p">,</span> colour<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> size<span class="o">=</span><span class="m">20</span><span class="p">),</span>
+      axis.text.y  <span class="o">=</span> element_text<span class="p">(</span>angle<span class="o">=</span><span class="m">0</span><span class="p">,</span> colour<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> vjust<span class="o">=</span><span class="m">0.5</span><span class="p">,</span> size<span class="o">=</span><span class="m">16</span><span class="p">))</span><span class="o">+</span>
+  theme<span class="p">(</span>legend.title <span class="o">=</span> element_text<span class="p">(</span>colour<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> size<span class="o">=</span><span class="m">16</span><span class="p">,</span> face<span class="o">=</span><span class="s">&quot;bold&quot;</span><span class="p">))</span> <span class="o">+</span>
+theme<span class="p">(</span>legend.text <span class="o">=</span> element_text<span class="p">(</span>colour<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> size<span class="o">=</span><span class="m">16</span><span class="p">,</span> face<span class="o">=</span><span class="s">&quot;bold&quot;</span><span class="p">))</span> <span class="o">+</span>
+  geom_smooth<span class="p">(</span>method<span class="o">=</span>lm<span class="p">,</span> size<span class="o">=</span><span class="m">2</span><span class="p">)</span> <span class="o">+</span>
+  scale_fill_manual<span class="p">(</span>values<span class="o">=</span>cbbPalette<span class="p">)</span><span class="o">+</span>
+scale_colour_manual<span class="p">(</span>values<span class="o">=</span>cbbPalette<span class="p">)</span><span class="o">+</span>
+  theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate05.png" alt="plot of chunk 2013-03-14-elaborate05"></p>
+
+<p>After, it&#39;s less lovely but more visible!</p>
+
+<h1>Jessica</h1>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>gridExtra<span class="p">)</span>
+library<span class="p">(</span>gtable<span class="p">)</span>
+<span class="c1">#1 draw a plot with the leaf number legend</span>
+plot1 <span class="o">&lt;-</span>  ggplot<span class="p">(</span>tomato<span class="p">)</span> <span class="o">+</span>
+        geom_point<span class="p">(</span>aes<span class="p">(</span>alt<span class="p">,</span> hyp<span class="p">,</span>
+                   size  <span class="o">=</span> leafnum<span class="p">))</span> <span class="o">+</span>
+    labs<span class="p">(</span> size <span class="o">=</span> <span class="s">&quot;Leaf Number&quot;</span> <span class="p">)</span> <span class="o">+</span>
+    theme_bw<span class="p">(</span>base_size <span class="o">=</span> <span class="m">12</span><span class="p">,</span> base_family <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span>
+    theme <span class="p">(</span>legend.key <span class="o">=</span> element_rect<span class="p">(</span>colour <span class="o">=</span> <span class="s">&quot;white&quot;</span><span class="p">))</span>
+<span class="c1"># Extract the leaf number legend - leg1</span>
+leg1 <span class="o">&lt;-</span> gtable_filter<span class="p">(</span>ggplot_gtable<span class="p">(</span>ggplot_build<span class="p">(</span>plot1<span class="p">)),</span> <span class="s">&quot;guide-box&quot;</span><span class="p">)</span>
+<span class="c1">#2 draw a plot with the species legend</span>
+<span class="c1"># List of colors http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf</span>
+plot2 <span class="o">&lt;-</span>  ggplot<span class="p">(</span>tomato<span class="p">)</span> <span class="o">+</span>
+    geom_point<span class="p">(</span>aes<span class="p">(</span>alt<span class="p">,</span> hyp<span class="p">,</span>
+                   color <span class="o">=</span> species<span class="p">))</span> <span class="o">+</span>
+    labs<span class="p">(</span> color <span class="o">=</span> <span class="s">&quot;Species&quot;</span> <span class="p">)</span> <span class="o">+</span>
+    theme_bw<span class="p">(</span>base_size <span class="o">=</span> <span class="m">12</span><span class="p">,</span> base_family <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span>
+    theme <span class="p">(</span>legend.key <span class="o">=</span> element_rect<span class="p">(</span>colour <span class="o">=</span> <span class="s">&quot;white&quot;</span><span class="p">),</span>
+           legend.text <span class="o">=</span> element_text<span class="p">(</span> face <span class="o">=</span> <span class="s">&quot;italic&quot;</span><span class="p">))</span> <span class="o">+</span>
+    scale_colour_manual<span class="p">(</span>values <span class="o">=</span> c<span class="p">(</span><span class="s">&quot;darkgoldenrod1&quot;</span><span class="p">,</span> <span class="s">&quot;darkorchid2&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">,</span><span class="s">&quot;blue2&quot;</span><span class="p">,</span> <span class="s">&quot;mediumseagreen&quot;</span><span class="p">))</span>
+<span class="c1"># Extract the species legend - leg2</span>
+leg2 <span class="o">&lt;-</span> gtable_filter<span class="p">(</span>ggplot_gtable<span class="p">(</span>ggplot_build<span class="p">(</span>plot2<span class="p">)),</span> <span class="s">&quot;guide-box&quot;</span><span class="p">)</span>
+<span class="c1"># Draw a plot with no legends - plot</span>
+plotNoLegends <span class="o">&lt;-</span>  ggplot<span class="p">(</span>tomato<span class="p">)</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>aes<span class="p">(</span>alt<span class="p">,</span> hyp<span class="p">,</span>
+                   size  <span class="o">=</span> leafnum<span class="p">,</span>
+                   color <span class="o">=</span> species<span class="p">))</span> <span class="o">+</span>
+  facet_grid<span class="p">(</span>. <span class="o">~</span> who<span class="p">)</span> <span class="o">+</span>
+  theme_bw<span class="p">(</span>base_size <span class="o">=</span> <span class="m">12</span><span class="p">,</span> base_family <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span>
+  theme <span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">1.5</span><span class="p">,</span>
+         legend.position <span class="o">=</span> <span class="s">&quot;none&quot;</span><span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&quot;Tomato Data in Words&quot;</span><span class="p">,</span>
+       x     <span class="o">=</span> <span class="s">&quot;Altitude (m)&quot;</span><span class="p">,</span>
+       y     <span class="o">=</span> <span class="s">&quot;Hypocotyl Length (mm)&quot;</span><span class="p">)</span> <span class="o">+</span>
+   scale_colour_manual<span class="p">(</span>values <span class="o">=</span> c<span class="p">(</span><span class="s">&quot;darkgoldenrod1&quot;</span><span class="p">,</span> <span class="s">&quot;darkorchid2&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">,</span><span class="s">&quot;blue2&quot;</span><span class="p">,</span> <span class="s">&quot;mediumseagreen&quot;</span><span class="p">))</span>
+<span class="c1">#If I use this it puts the legends side by side</span>
+plotAllTogether <span class="o">&lt;-</span> arrangeGrob<span class="p">(</span>plotNoLegends<span class="p">,</span> leg1<span class="p">,</span>
+          widths <span class="o">=</span> unit.c<span class="p">(</span>unit<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="s">&quot;npc&quot;</span><span class="p">)</span> <span class="o">-</span> leg1<span class="o">$</span>width<span class="p">,</span> leg1<span class="o">$</span>width<span class="p">),</span> nrow <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+plotAllTogether <span class="o">&lt;-</span> arrangeGrob<span class="p">(</span>plotAllTogether<span class="p">,</span> leg2<span class="p">,</span>
+          widths <span class="o">=</span> unit.c<span class="p">(</span>unit<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="s">&quot;npc&quot;</span><span class="p">)</span> <span class="o">-</span> leg2<span class="o">$</span>width<span class="p">,</span> leg2<span class="o">$</span>width<span class="p">),</span> nrow <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+grid.newpage<span class="p">()</span>
+grid.draw<span class="p">(</span>plotAllTogether<span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate06a.png" alt="plot of chunk 2013-03-14-elaborate06a"></p>
+<div class="highlight"><pre><code class="r"><span class="c1"># Now I want to try to get them stacked</span>
+grid.arrange<span class="p">(</span>plotNoLegends<span class="p">,</span> arrangeGrob<span class="p">(</span>leg1<span class="p">,</span> leg2<span class="p">,</span> ncol<span class="o">=</span><span class="m">1</span><span class="p">),</span>
+                    ncol<span class="o">=</span><span class="m">2</span><span class="p">,</span> widths<span class="o">=</span>c<span class="p">(</span><span class="m">1.5</span><span class="p">,</span><span class="m">0.5</span><span class="p">))</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate06b.png" alt="plot of chunk 2013-03-14-elaborate06b"></p>
+<div class="highlight"><pre><code class="r"><span class="c1"># Well now they are stacked but they are spaced a little far apart for my taste, but I</span>
+<span class="c1"># cannot figure out how to get them spaced closer together.</span>
+</code></pre></div>
+<h1>Hsin-Yen</h1>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>maps<span class="p">)</span>
+world <span class="o">=</span> map_data<span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">)</span>
+MAP <span class="o">=</span> ggplot<span class="p">(</span>world<span class="p">,</span> aes<span class="p">(</span>long<span class="p">,</span> lat<span class="p">),</span>group<span class="o">=</span>group<span class="p">)</span>
+Polygon <span class="o">=</span> geom_polygon<span class="p">(</span>aes<span class="p">(</span>group <span class="o">=</span> group<span class="p">),</span> colour<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span>size<span class="o">=</span><span class="m">0.2</span><span class="p">)</span>
+Points <span class="o">=</span> geom_point<span class="p">(</span>data<span class="o">=</span>tomato<span class="p">,</span>aes<span class="p">(</span>lon<span class="p">,</span> lat<span class="p">,</span> shape<span class="o">=</span>species<span class="p">,</span> colour<span class="o">=</span>species<span class="p">),</span>size<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+Theme <span class="o">=</span> theme<span class="p">(</span>aspect.ratio<span class="o">=</span><span class="m">0.8</span><span class="p">)</span>
+MAP<span class="o">+</span>Polygon<span class="o">+</span>Theme<span class="o">+</span>Points<span class="o">+</span>coord_map<span class="p">(</span><span class="s">&quot;ortho&quot;</span><span class="p">,</span> orientation<span class="o">=</span>c<span class="p">(</span><span class="m">-21</span><span class="p">,</span> <span class="m">-70</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate07.png" alt="plot of chunk 2013-03-14-elaborate07"></p>
+
+<h1>Polly</h1>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>ggmap<span class="p">)</span>
+map <span class="o">&lt;-</span> get_map<span class="p">(</span>location <span class="o">=</span> c<span class="p">(</span>lon <span class="o">=</span> <span class="m">-75</span><span class="p">,</span> lat <span class="o">=</span> <span class="m">-16</span><span class="p">),</span> zoom     <span class="o">=</span> <span class="m">5</span><span class="p">,</span>
+              maptype  <span class="o">=</span> <span class="s">&#39;roadmap&#39;</span> <span class="p">)</span>
+ggmap<span class="p">(</span>map<span class="p">)</span> <span class="o">+</span>
+ geom_point<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> lon<span class="p">,</span> y <span class="o">=</span> lat<span class="p">,</span> colour <span class="o">=</span> alt<span class="p">),</span> data <span class="o">=</span> tomato<span class="p">,</span> size <span class="o">=</span> <span class="m">0.6</span><span class="p">)</span> <span class="o">+</span>
+ facet_grid<span class="p">(</span>species <span class="o">~</span> .<span class="p">)</span> <span class="o">+</span>
+ scale_colour_continuous<span class="p">(</span>low  <span class="o">=</span> <span class="s">&quot;blue&quot;</span><span class="p">,</span> high <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">)</span> <span class="o">+</span>
+ labs<span class="p">(</span>x <span class="o">=</span> <span class="s">&quot;Longitude&quot;</span><span class="p">,</span> y <span class="o">=</span><span class="s">&quot;Latitude&quot;</span><span class="p">,</span> colour <span class="o">=</span> <span class="s">&quot;Altitude&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate08.png" alt="plot of chunk 2013-03-14-elaborate08"></p>
+
+<h1>Moran</h1>
+<div class="highlight"><pre><code class="r"><span class="c1">#Optimized Ciera</span>
+submovies <span class="o">&lt;-</span> subset<span class="p">(</span>movies<span class="p">,</span> mpaa <span class="o">!=</span><span class="s">&quot;&quot;</span> <span class="o">&amp;</span> year<span class="o">&gt;=</span><span class="m">1990</span><span class="p">)</span>
+ciera <span class="o">&lt;-</span> ggplot<span class="p">(</span>submovies<span class="p">,</span> aes<span class="p">(</span>year<span class="p">,</span>
+                              fill <span class="o">=</span> mpaa<span class="p">,</span>
+                              colour <span class="o">=</span> mpaa<span class="p">))</span><span class="o">+</span>
+  geom_density<span class="p">(</span>name<span class="o">=</span> <span class="s">&quot;MPAA&quot;</span><span class="p">,</span> alpha  <span class="o">=</span> <span class="m">0.35</span><span class="p">)</span>
+<span class="c1">#neo</span>
+neoceira <span class="o">&lt;-</span> ciera<span class="o">+</span>
+  ylab<span class="p">(</span><span class="s">&quot;Density&quot;</span><span class="p">)</span><span class="o">+</span>
+  xlab<span class="p">(</span><span class="s">&quot;Year&quot;</span><span class="p">)</span><span class="o">+</span>
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;NeoCiera&#39;</span><span class="p">)</span><span class="o">+</span>
+  theme_bw<span class="p">()</span><span class="o">+</span>
+  theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">1</span><span class="p">,</span>
+        legend.position <span class="o">=</span> c<span class="p">(</span><span class="m">.1</span><span class="p">,</span><span class="m">.85</span><span class="p">),</span>
+        legend.background <span class="o">=</span> element_blank<span class="p">(),</span>
+        panel.grid.major <span class="o">=</span> element_blank<span class="p">(),</span>
+        legend.text <span class="o">=</span> element_text<span class="p">(</span>size <span class="o">=</span> <span class="m">20</span><span class="p">),</span>
+        plot.title <span class="o">=</span> element_text<span class="p">(</span>size <span class="o">=</span> <span class="m">30</span><span class="p">)</span>
+  <span class="p">)</span>
+<span class="c1">#more</span>
+r <span class="o">=</span> subset<span class="p">(</span>submovies<span class="p">,</span> mpaa<span class="o">==</span><span class="s">&quot;R&quot;</span><span class="p">)</span>
+rD <span class="o">=</span> density<span class="p">(</span>r<span class="o">$</span>year<span class="p">)</span>
+rDy <span class="o">=</span> rD<span class="o">$</span>y
+rDm <span class="o">=</span> subset<span class="p">(</span>rDy<span class="p">,</span> rDy <span class="o">==</span> max<span class="p">(</span>rDy<span class="p">))</span>
+<span class="c1">#</span>
+nc <span class="o">=</span> subset<span class="p">(</span>submovies<span class="p">,</span> mpaa<span class="o">==</span><span class="s">&quot;NC-17&quot;</span><span class="p">)</span>
+ncD <span class="o">=</span> density<span class="p">(</span>nc<span class="o">$</span>year<span class="p">)</span>
+ncDy <span class="o">=</span> ncD<span class="o">$</span>y
+ncDm <span class="o">=</span> subset<span class="p">(</span>ncDy<span class="p">,</span> ncDy <span class="o">==</span> max<span class="p">(</span>ncDy<span class="p">))</span>
+<span class="c1">#</span>
+pg <span class="o">=</span> subset<span class="p">(</span>submovies<span class="p">,</span> mpaa<span class="o">==</span><span class="s">&quot;PG&quot;</span><span class="p">)</span>
+pgD <span class="o">=</span> density<span class="p">(</span>pg<span class="o">$</span>year<span class="p">)</span>
+pgDy <span class="o">=</span> pgD<span class="o">$</span>y
+pgDm <span class="o">=</span> subset<span class="p">(</span>pgDy<span class="p">,</span> pgDy <span class="o">==</span> max<span class="p">(</span>pgDy<span class="p">))</span>
+<span class="c1">#</span>
+pg13 <span class="o">=</span> subset<span class="p">(</span>submovies<span class="p">,</span> mpaa<span class="o">==</span><span class="s">&quot;PG-13&quot;</span><span class="p">)</span>
+pg13D <span class="o">=</span> density<span class="p">(</span>pg13<span class="o">$</span>year<span class="p">)</span>
+pg13Dy <span class="o">=</span> pg13D<span class="o">$</span>y
+pg13Dm <span class="o">=</span> subset<span class="p">(</span>pg13Dy<span class="p">,</span> pg13Dy <span class="o">==</span> max<span class="p">(</span>pg13Dy<span class="p">))</span>
+<span class="c1">#</span>
+y <span class="o">=</span> c<span class="p">(</span>rDm<span class="p">,</span> ncDm<span class="p">,</span> pgDm<span class="p">,</span> pg13Dm<span class="p">)</span>
+x <span class="o">=</span> c<span class="p">(</span><span class="m">1999</span><span class="p">,</span> <span class="m">1995</span><span class="p">,</span> <span class="m">1997</span><span class="p">,</span> <span class="m">2001</span><span class="p">)</span>
+label <span class="o">=</span> c<span class="p">(</span><span class="s">&quot;R&quot;</span><span class="p">,</span> <span class="s">&quot;NC-17&quot;</span><span class="p">,</span> <span class="s">&quot;PG&quot;</span><span class="p">,</span> <span class="s">&quot;PG-13&quot;</span><span class="p">)</span>
+<span class="c1">#</span>
+neoceira <span class="o">+</span> annotate<span class="p">(</span><span class="s">&#39;text&#39;</span><span class="p">,</span> x<span class="o">=</span>x<span class="p">,</span> y<span class="o">=</span>y<span class="p">,</span> label <span class="o">=</span> label<span class="p">)</span><span class="o">+</span>
+  annotate<span class="p">(</span><span class="s">&#39;point&#39;</span><span class="p">,</span> x<span class="o">=</span>x<span class="p">,</span> y<span class="o">=</span>y<span class="p">,</span> label<span class="o">=</span>label<span class="p">,</span>
+           size <span class="o">=</span> <span class="m">7</span><span class="p">,</span> colour <span class="o">=</span> <span class="s">&#39;yellow&#39;</span><span class="p">,</span> alpha <span class="o">=</span><span class="m">0.35</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate09.png" alt="plot of chunk 2013-03-14-elaborate09"></p>
+
+<h1>Cody</h1>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>ggmap<span class="p">)</span>
+NAM <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;NAM_lat_long_data.csv&quot;</span><span class="p">)</span>
+head<span class="p">(</span>NAM<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   Ecotype_name           Location   lat    long
+## 1          Jea             France 43.68   7.333
+## 2        Ita_1            Morocco 34.00  -4.200
+## 3         Ct_1              Italy 37.52  15.067
+## 4        Cvi_0 Cape_verdi_islands 15.11 -23.617
+## 5        Bur_0            Ireland 53.05  -9.100
+## 6        Blh_1     Czechoslovakia 48.83  16.749
+</code></pre></div><div class="highlight"><pre><code class="r">nam_map <span class="o">&lt;-</span> get_map<span class="p">(</span>location<span class="o">=</span> c<span class="p">(</span>lon <span class="o">=</span> <span class="m">30</span><span class="p">,</span> lat <span class="o">=</span> <span class="m">35</span><span class="p">),</span>
+                zoom<span class="o">=</span><span class="m">3</span><span class="p">,</span>
+               maptype <span class="o">=</span> <span class="s">&#39;satellite&#39;</span><span class="p">)</span>
+ggmap<span class="p">(</span>nam_map<span class="p">)</span> <span class="o">+</span>
+geom_point<span class="p">(</span>colour<span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> size<span class="o">=</span> <span class="m">3</span><span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>long<span class="p">,</span> y<span class="o">=</span>lat<span class="p">),</span> data<span class="o">=</span>NAM<span class="p">)</span> <span class="o">+</span>
+geom_text<span class="p">(</span>data <span class="o">=</span> NAM<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> long<span class="p">,</span> y <span class="o">=</span> lat<span class="p">,</span> label <span class="o">=</span> Ecotype_name<span class="p">),</span>
+          size <span class="o">=</span> <span class="m">5</span><span class="p">,</span> vjust <span class="o">=</span> <span class="m">0</span><span class="p">,</span> hjust <span class="o">=</span> <span class="m">-0.25</span><span class="p">,</span> colour<span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span> <span class="o">+</span>
+theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span>
+labs<span class="p">(</span>title<span class="o">=</span><span class="s">&quot;Arabidopsis NAM Population Parental Origins&quot;</span><span class="p">,</span>
+            x<span class="o">=</span><span class="s">&quot;Longitude&quot;</span><span class="p">,</span> y<span class="o">=</span><span class="s">&quot;Latitude&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate10.png" alt="plot of chunk 2013-03-14-elaborate10"></p>
+
+<h1>Upendra</h1>
+<div class="highlight"><pre><code class="r"><span class="c1"># Figure 2:</span>
+movies_new<span class="o">&lt;-</span>subset<span class="p">(</span>movies<span class="p">,</span> mpaa<span class="o">!=</span><span class="s">&quot;&quot;</span> <span class="o">&amp;</span> year<span class="o">&gt;=</span><span class="m">1990</span><span class="p">)</span>
+ggplot<span class="p">(</span>movies_new<span class="p">,</span> aes<span class="p">(</span>year<span class="p">,</span> fill <span class="o">=</span> mpaa<span class="p">))</span> <span class="o">+</span> stat_density<span class="p">(</span>aes<span class="p">(</span>y <span class="o">=</span> ..density..<span class="p">),</span> position <span class="o">=</span> <span class="s">&quot;fill&quot;</span><span class="p">,</span> color <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">)</span> <span class="o">+</span> xlim<span class="p">(</span><span class="m">1990</span><span class="p">,</span> <span class="m">2005</span><span class="p">)</span> <span class="o">+</span> theme<span class="p">(</span>legend.position <span class="o">=</span> <span class="s">&quot;bottom&quot;</span><span class="p">)</span> <span class="o">+</span> labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&quot;The Density Distribution of MPAA Rated Films from 1990-2005&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate11a.png" alt="plot of chunk 2013-03-14-elaborate11a"></p>
+<div class="highlight"><pre><code class="r"><span class="c1"># Figure 4:</span>
+ggplot<span class="p">(</span>tomato<span class="p">,</span> aes<span class="p">(</span>leafleng<span class="p">,</span> leafwid<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">(</span>aes<span class="p">(</span>colour <span class="o">=</span> who<span class="p">))</span> <span class="o">+</span> theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="o">+</span> labs<span class="p">(</span>x<span class="o">=</span><span class="s">&quot;Leaf Length(mm)&quot;</span><span class="p">,</span> y<span class="o">=</span><span class="s">&quot;Leaf Width(mm)&quot;</span><span class="p">)</span> <span class="o">+</span> stat_smooth<span class="p">(</span>geom <span class="o">=</span> <span class="s">&quot;errorbar&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate11b.png" alt="plot of chunk 2013-03-14-elaborate11b"></p>
+
+<h1>Donnelly</h1>
+<div class="highlight"><pre><code class="r">mymov3 <span class="o">&lt;-</span> subset<span class="p">(</span>x<span class="o">=</span>movies<span class="p">,</span> year<span class="o">&gt;</span><span class="m">1990</span> <span class="o">&amp;</span> mpaa <span class="o">!=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+mymov3<span class="o">$</span>Comedy2 <span class="o">&lt;-</span> factor<span class="p">(</span>mymov3<span class="o">$</span>Comedy<span class="p">,</span> labels <span class="o">=</span> c<span class="p">(</span><span class="s">&quot;Not Funny&quot;</span><span class="p">,</span> <span class="s">&quot;Hilarity Ensues&quot;</span><span class="p">))</span>
+mymov3<span class="o">$</span>Animation2 <span class="o">&lt;-</span> factor<span class="p">(</span>mymov3<span class="o">$</span>Animation<span class="p">,</span> labels <span class="o">=</span> c<span class="p">(</span><span class="s">&quot;Real Humans&quot;</span><span class="p">,</span> <span class="s">&quot;Drawn Together&quot;</span><span class="p">))</span>
+mymov3<span class="o">$</span>rating2 <span class="o">&lt;-</span> round<span class="p">(</span>mymov3<span class="o">$</span>rating<span class="p">)</span>
+mymov3<span class="o">$</span>rating2 <span class="o">&lt;-</span> c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+ggplot<span class="p">(</span>data <span class="o">=</span> mymov3<span class="p">,</span> mapping <span class="o">=</span> aes<span class="p">(</span> x <span class="o">=</span> year<span class="p">,</span>  fill <span class="o">=</span> mpaa<span class="p">,</span> linetype <span class="o">=</span> as.factor<span class="p">(</span>rating2<span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="o">+</span>
+  geom_density<span class="p">(</span>alpha<span class="o">=</span><span class="m">0.4</span><span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>title<span class="o">=</span><span class="s">&quot;Excellent Animated Comedies\nAppropriate for Kids or Adults&quot;</span> <span class="p">)</span> <span class="o">+</span>
+  theme<span class="p">(</span>legend.position <span class="o">=</span> <span class="s">&quot;bottom&quot;</span><span class="p">)</span> <span class="o">+</span>
+  facet_grid<span class="p">(</span>Comedy2<span class="o">~</span>Animation2<span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-03-14-elaborate12.png" alt="plot of chunk 2013-03-14-elaborate12"></p>
+
+  </div>
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'rclub'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+      </section>
+      <footer>
+
+        <div class="categories">
+          
+          <h3>Categories</h3>
+          
+            <h4><a href="/r_club/homework">homework (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/homework/2013/03/29/Data-Types-and-Reshape-homework/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/homework/2013/03/04/elaborate-upon-plot/">Elaborate upon a plot</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/exercises">exercises (1)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/exercises/2013/03/21/restyle/">Re-style peers' R code</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/solutions">solutions (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/solutions/2013/04/03/Data-Types-and-Reshape-Answers/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/solutions/2013/03/14/elaborate-upon-plot-solutions/">Elaborate upon a plot (solutions)</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/resources">resources (6)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/resources/2013/03/28/Reshape/">Reshape</a></li>
+              
+                <li><a href="/r_club/resources/2013/03/27/DataTypes/">Data Types</a></li>
+              
+            </ul>
+          
+
+          
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+          <h4><a href="/r_club/other">other (13)</a></h4>
+
+          <ul>
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/schedule/2013/03/28/2013-03-28/">2013-03-28</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/errata/2013/03/05/ch5-errata/">ggplot2 Chapter 5 errata</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+          </ul>
+        </div>
+
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

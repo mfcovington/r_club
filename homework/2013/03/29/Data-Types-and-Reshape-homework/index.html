@@ -1,0 +1,439 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Homework--Data Types and Reshape</title>
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/styles.css">
+    <link rel="shortcut icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <script src="/r_club/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38722088-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="/r_club/">R Club</a></h1>
+        <h2 class="header">Homework--Data Types and Reshape</h2>
+      </header>
+      <section>
+        <div class = "duedate">
+  
+    <h3>due by: 2013-04-04</h3>
+  
+</div>
+
+<div class = "related">
+  
+</div>
+
+<div class="content">
+  <div id="post">
+    <h1>R Homework for April 4, 2013</h1>
+
+<h2>Section 1: Data Types</h2>
+
+<p>Questions 1 to 6 refer to the file <a href="/r_club/downloads/ELF3s_bolting_Rclub.csv">ELF3s_bolting_Rclub.csv</a>. Import it now.</p>
+
+<h3>Q1</h3>
+
+<p>What data types are represented in each column?</p>
+
+<h3>Q2</h3>
+
+<p>a) Are there any columns that you think have the wrong data type?  </p>
+
+<p>b) Which ones? </p>
+
+<p>c) Why?</p>
+
+<h3>Q3</h3>
+
+<p>How would you change the columns to their correct types?</p>
+
+<h3>Q4</h3>
+
+<p>Are there any obvious mistakes in this data frame beyond what you might have found in answering Q3?</p>
+
+<h3>Q5</h3>
+
+<p>Make the &quot;Sha&quot; genotype the reference level for the genotype column</p>
+
+<h3>Q6</h3>
+
+<p>Change the order of levels in &quot;trasformation&quot; to be Sh1, Sh2, Sh3, Ba1, Ba3</p>
+
+<h2>Section 2: Reshape</h2>
+
+<p>The remaining questions deal with the <em>reshape</em> package and the tomato dataset.</p>
+
+<ul>
+<li>Read my post on reshape <a href="http://mfcovington.github.com/r_club/resources/2013/03/28/Reshape/">on the Rclub website</a></li>
+<li>Additional information on reshape is in section 9.2 of the ggplot book</li>
+<li>import the standard tomato data set.</li>
+</ul>
+
+<h3>Q7</h3>
+
+<p>What are the id variables and measure variables in the Tomato data set?</p>
+
+<h3>Q8</h3>
+
+<p>Subset the tomato data set to keep the int1-int4 measurements and the relevant metadata.</p>
+
+<h3>Q9</h3>
+
+<p>Without melting or casting your new data frame, calculate the mean of each internode. <em>Hint: use <code>apply()</code></em></p>
+
+<h3>Q10</h3>
+
+<p>Melt the new data frame.</p>
+
+<h3>Q11</h3>
+
+<p>Use cast to obtain the mean for each internode.</p>
+
+<h3>Q12</h3>
+
+<p>Use cast to obtain the mean for each internode for each species.</p>
+
+<h3>Q13</h3>
+
+<p>Use cast to obtain the mean for each internode for each species under each treatment.</p>
+
+<h3>Q14</h3>
+
+<p>Create a boxplot for each combination of species, internode, and treatment.</p>
+
+  </div>
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'rclub'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+      </section>
+      <footer>
+
+        <div class="categories">
+          
+          <h3>Categories</h3>
+          
+            <h4><a href="/r_club/homework">homework (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/homework/2013/03/29/Data-Types-and-Reshape-homework/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/homework/2013/03/04/elaborate-upon-plot/">Elaborate upon a plot</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/exercises">exercises (1)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/exercises/2013/03/21/restyle/">Re-style peers' R code</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/solutions">solutions (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/solutions/2013/04/03/Data-Types-and-Reshape-Answers/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/solutions/2013/03/14/elaborate-upon-plot-solutions/">Elaborate upon a plot (solutions)</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/resources">resources (6)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/resources/2013/03/28/Reshape/">Reshape</a></li>
+              
+                <li><a href="/r_club/resources/2013/03/27/DataTypes/">Data Types</a></li>
+              
+            </ul>
+          
+
+          
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+          <h4><a href="/r_club/other">other (13)</a></h4>
+
+          <ul>
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/schedule/2013/03/28/2013-03-28/">2013-03-28</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/errata/2013/03/05/ch5-errata/">ggplot2 Chapter 5 errata</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+          </ul>
+        </div>
+
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

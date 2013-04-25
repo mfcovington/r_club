@@ -1,7 +1,0 @@
-name: R Club
-baseurl: /r_club
-figurl: /r_club/figure
-permalink: pretty
-pygments: true
-markdown: redcarpet
-auto: true

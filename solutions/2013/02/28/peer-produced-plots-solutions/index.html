@@ -1,0 +1,870 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Peer-produced plots (solutions)</title>
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/styles.css">
+    <link rel="shortcut icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <script src="/r_club/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38722088-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="/r_club/">R Club</a></h1>
+        <h2 class="header">Peer-produced plots (solutions)</h2>
+      </header>
+      <section>
+        <div class = "duedate">
+  
+</div>
+
+<div class = "related">
+  
+    
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+         related: <a href="/r_club/homework/2013/02/26/peer-produced-plots/">Peer-produced plots</a><br>
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+        
+        
+      
+    
+  
+</div>
+
+<div class="content">
+  <div id="post">
+    <h1>And wits were matched.</h1>
+
+<p>Your R Club buddies have been experimenting with ways to plot data with ggplot. Below is a sampling of their efforts. Your duty this week was to choose at least three plots and figure out how they were plotted.</p>
+
+<h2>Getting ready</h2>
+
+<p>We&#39;ll start by reading in the Tomato Dataset and getting rid of <code>NA</code> values.</p>
+<div class="highlight"><pre><code class="r">tomato <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&quot;TomatoR2CSHL.csv&quot;</span><span class="p">,</span> header <span class="o">=</span> <span class="k-Variable">T</span><span class="p">,</span> sep <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="p">)</span>
+tomato <span class="o">&lt;-</span> na.omit<span class="p">(</span>tomato<span class="p">)</span>
+library<span class="p">(</span>ggplot2<span class="p">)</span>
+</code></pre></div>
+<p>In addition to the Tomato Dataset that we&#39;ve been using, people have made plots with the <code>movies</code> and <code>mpg</code> datasets (which come with ggplot2 and are, therefore, loaded with <code>library(ggplot2)</code>). If the datasets don&#39;t look familiar, be sure to scroll down to the &#39;Data&#39; section of the <a href="http://docs.ggplot2.org/current/">ggplot2 docs</a>.</p>
+
+<h2>Approach to solving challenges</h2>
+
+<p>When trying to figure out how to write the code for a plot, I recommend making a quick set of observations:</p>
+
+<p><aside class="hint"></p>
+
+<ol>
+<li>Which dataset is being used?</li>
+<li>Which aesthetics (<code>x</code>, <code>color</code>, <code>shape</code>, etc.) are <em>mapped</em> to which variables (length, treatment, species, etc.)?
+
+<ul>
+<li>Look for x-/y-axis labels (histograms, density plots, etc. only use a single variable, so <code>y</code> won&#39;t be mapped to anything).</li>
+<li>Look for legend labels.</li>
+<li>Not only can an aesthetic be mapped to a variable, but also to a transformed variable (e.g., <code>log(length)</code>) or the output from a multi-variable equation (e.g., <code>(length * width) / sqrt(mass)</code>).</li>
+</ul></li>
+<li>Which aesthetics are <em>set</em> to constants?
+
+<ul>
+<li>These may not be readily apparent until after you&#39;ve made an initial plot and notice differences between it and the plot you are trying to reproduce.</li>
+</ul></li>
+<li>Which geoms are being used?</li>
+<li>Is the plot faceted? If so, by which variable(s)?
+
+<ul>
+<li>Look at the labels along the top-most and/or right-most panels for clues to which variables were used for faceting.</li>
+</ul></li>
+<li>Is a non-cartesian coordinate system being used?
+
+<ul>
+<li>I&#39;m just including this for completeness since we have not yet looked at different coordinate systems.</li>
+</ul></li>
+</ol>
+
+<p></aside></p>
+
+<p>For many plots, you can take this information and plug it into some ggplot functions to get a decent first draft. Next you are ready to make a couple more observations to make further improvements:</p>
+
+<ul>
+<li>Are any custom color, size, etc. scales being used? If so, is the relevant data discrete or continuous?</li>
+<li>Have labels been customized?</li>
+</ul>
+
+<p>Taken together, these observations essentially serve as pseudocode for the plot in question.</p>
+
+<h2>Challenge 1</h2>
+
+<p>Stacey used the <a href="http://docs.ggplot2.org/current/movies.html">movies dataset</a> to plot movie rating since the dawn of cinematography (binned by density) .</p>
+
+<h4>Figure 1A:</h4>
+
+<p><img src="/r_club/figure/2013-02-26-challenge01.png" alt="plot of chunk 2013-02-26-challenge01"></p>
+
+<p><aside class="hint"></p>
+
+<ol>
+<li>dataset: <code>movies</code></li>
+<li>mappings:
+
+<ul>
+<li><code>x</code>: year</li>
+<li><code>y</code>: rating</li>
+<li><code>fill</code>: density</li>
+</ul></li>
+<li>settings:
+
+<ul>
+<li><code>color</code>: black (This isn&#39;t really noticeable until you build the plot and find that there are no black borders on the hexagons)</li>
+</ul></li>
+<li>geom(s): <code>geom_hex()</code></li>
+<li>facets: NA</li>
+<li>coordinates: cartesian</li>
+</ol>
+
+<p></aside></p>
+
+<p>Based on our observations, we see that <strong>Figure 1A</strong> uses <code>geom_hex()</code> (which bins a 2-dimensional plane into hexagons) to plot movie <code>rating</code> by <code>year</code>. By default, the hexagons are colored based on the number of counts in each hexagon; however, Stacey manually set the <code>fill = ..density..</code> when she made her plot:</p>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>movies<span class="p">)</span> <span class="o">+</span>
+  geom_hex<span class="p">(</span>aes<span class="p">(</span>x    <span class="o">=</span> year<span class="p">,</span>
+               y    <span class="o">=</span> rating<span class="p">,</span>
+               fill <span class="o">=</span> ..density..<span class="p">),</span>
+           color <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">)</span> <span class="o">+</span>
+  scale_fill_gradientn<span class="p">(</span>colours <span class="o">=</span> rainbow<span class="p">(</span><span class="m">7</span><span class="p">))</span>
+</code></pre></div>
+<p>In this case, the only real difference between counts and density is seen with the scale bar in the legend. Below (<strong>Fig. 1B</strong>) is the same plot, but with the default fill (i.e., counts) being used. The graphical regions of the plot <strong>Figures 1A</strong> and <strong>1B</strong> are identical.</p>
+
+<h4>Figure 1B:</h4>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>movies<span class="p">)</span> <span class="o">+</span>
+  geom_hex<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> year<span class="p">,</span>
+               y <span class="o">=</span> rating<span class="p">),</span>
+           color <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">)</span> <span class="o">+</span>
+  scale_fill_gradientn<span class="p">(</span>colours <span class="o">=</span> rainbow<span class="p">(</span><span class="m">7</span><span class="p">))</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-02-26-challenge01b.png" alt="plot of chunk 2013-02-26-challenge01b"></p>
+
+<p>However, if we were to instead make this plot faceted, we begin to see the difference between the &#39;counts&#39; and &#39;density&#39;. The next two figures are faceted by whether the movie being considered is a drama. The first one shows that with the default method, the fill color is scaled relative to all the data for the entire plot (<strong>Fig. 1C</strong>), whereas mapping <code>fill = ..density..</code> results in the data within each panel being scaled relative to the relevant panel (<strong>Fig. 1D</strong>).</p>
+
+<h4>Figure 1C:</h4>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>movies<span class="p">)</span> <span class="o">+</span>
+  geom_hex<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> year<span class="p">,</span>
+               y <span class="o">=</span> rating<span class="p">),</span>
+           color <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">)</span> <span class="o">+</span>
+  scale_fill_gradientn<span class="p">(</span>colours <span class="o">=</span> rainbow<span class="p">(</span><span class="m">7</span><span class="p">))</span> <span class="o">+</span>
+  facet_grid<span class="p">(</span>. <span class="o">~</span> Drama<span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-02-26-challenge01c.png" alt="plot of chunk 2013-02-26-challenge01c"></p>
+
+<h4>Figure 1D:</h4>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>movies<span class="p">)</span> <span class="o">+</span>
+  geom_hex<span class="p">(</span>aes<span class="p">(</span>x    <span class="o">=</span> year<span class="p">,</span>
+               y    <span class="o">=</span> rating<span class="p">,</span>
+               fill <span class="o">=</span> ..density..<span class="p">),</span>
+           color <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">)</span> <span class="o">+</span>
+  scale_fill_gradientn<span class="p">(</span>colours <span class="o">=</span> rainbow<span class="p">(</span><span class="m">7</span><span class="p">))</span> <span class="o">+</span>
+  facet_grid<span class="p">(</span>. <span class="o">~</span> Drama<span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-02-26-challenge01d.png" alt="plot of chunk 2013-02-26-challenge01d"></p>
+
+<p>When reproducing this plot, many people had issues with setting the border of each hexbin to black. To set the color successfully, you need to remember two things:</p>
+
+<ul>
+<li>The color of lines, dots, borders, etc. is specified with <code>color</code> and the fill color for shapes with <code>fill</code>.</li>
+<li>When you are mapping an aesthetic to a variable (of your dataset), you specify that inside <code>aes()</code>; however, when setting an aesthetic to a constant value, color, etc., it needs to be done <em>outside</em> of <code>aes()</code>. I&#39;ve formatted the indentation pattern of the code snippets above to reinforce the fact that <code>x</code>, <code>y</code>, and, <code>fill</code> are aesthetics, but <code>color</code> is not.</li>
+</ul>
+
+<p><aside class="warn">
+<strong>Warning:</strong> Most of the time, ggplot2 accepts <code>color</code> and <code>colour</code> interchangeably; however, inside <code>scale_fill_gradientn()</code> is currently an exception and <code>colour</code> must be used.
+</aside></p>
+
+<h2>Challenge 2</h2>
+
+<p>Ciera plotted MPAA movie rating trends over the last couple decades.</p>
+
+<h4>Figure 2:</h4>
+
+<p><img src="/r_club/figure/2013-02-26-challenge02.png" alt="plot of chunk 2013-02-26-challenge02"></p>
+
+<p><aside class="hint"></p>
+
+<ol>
+<li>dataset: <code>movies</code></li>
+<li>mappings:
+
+<ul>
+<li><code>x</code>: year</li>
+<li><code>fill</code>: MPAA rating</li>
+</ul></li>
+<li>settings: NA</li>
+<li>geom(s): <code>geom_density()</code></li>
+<li>facets: NA</li>
+<li>coordinates: cartesian</li>
+</ol>
+
+<p></aside></p>
+
+<p>We need to start by sub-setting the movies such that we are only considering movies with MPAA ratings since 1990. Here are two equally valid ways to subset the data:</p>
+<div class="highlight"><pre><code class="r">movies.mpaa.new <span class="o">&lt;-</span> subset<span class="p">(</span>movies<span class="p">,</span> mpaa <span class="o">!=</span> <span class="s">&quot;&quot;</span> <span class="o">&amp;</span> year <span class="o">&gt;=</span> <span class="m">1990</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="r">movies.mpaa.new <span class="o">&lt;-</span> movies<span class="p">[</span>movies<span class="o">$</span>mpaa <span class="o">!=</span> <span class="s">&quot;&quot;</span> <span class="o">&amp;</span> movies<span class="o">$</span>year <span class="o">&gt;=</span> <span class="m">1990</span><span class="p">,</span> <span class="p">]</span>
+</code></pre></div>
+<p>There are multiple ways to assemble the code for building a plot. To emphasize the different layers/components of a ggplot2-generated figure, we&#39;ll assign each part of the plot to a separate variable and then combine them to generate <strong>Figure 2</strong>.</p>
+
+<p>For the base of the plot, we specify the data subset (<code>movies.mpaa.new</code>) that we just created and map the aesthetics <code>x</code> and <code>fill</code>. Unlike <code>geom_hex()</code> plots, <code>color</code> in a <code>geom_density()</code> plot defaults to black so we don&#39;t need to set it.</p>
+<div class="highlight"><pre><code class="r">base <span class="o">&lt;-</span> ggplot<span class="p">(</span>movies.mpaa.new<span class="p">,</span>
+               aes<span class="p">(</span>x    <span class="o">=</span> year<span class="p">,</span>
+                   fill <span class="o">=</span> mpaa<span class="p">))</span>
+</code></pre></div>
+<p>Next, we specify the <code>geom_density()</code> layer. In order to see the densities for each MPAA rating, we need to change <code>alpha</code> (the transparency setting). For her plot, Ciera set <code>alpha = 1/2</code>. Note that it is not inside <code>aes()</code>, because we are setting it to an absolute value rather than mapping it to a data attribute. Also, we must place it inside <code>geom_density()</code>, not <code>ggplot()</code>. Typically, you only specify the dataset and aesthetics with <code>ggplot()</code>.</p>
+<div class="highlight"><pre><code class="r">density <span class="o">&lt;-</span> geom_density<span class="p">(</span>alpha <span class="o">=</span> <span class="m">1</span><span class="o">/</span><span class="m">2</span><span class="p">)</span>
+</code></pre></div>
+<p>Using <code>labs()</code>, we can customize the labels for the entire plot, the axes, and/or the legend scales.</p>
+<div class="highlight"><pre><code class="r">label <span class="o">&lt;-</span> labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&quot;The Density Distribution of MPAA Rated Films from 1990-2005&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>To move the legend from the right-side of the figure to the bottom, we can set the <code>legend.position</code> element with <code>theme()</code>.</p>
+<div class="highlight"><pre><code class="r">theme.custom <span class="o">&lt;-</span> theme<span class="p">(</span>legend.position <span class="o">=</span> <span class="s">&quot;bottom&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><aside class="warn">
+<strong>Warning:</strong> Remember that customizing the look of ggplots with <code>opts()</code> has been deprecated. If you are using <code>opts()</code>, find a different way to accomplish what you want. Even if <code>opts()</code> might work for you now, the functionality could change or break with any new release of ggplot2.
+</aside></p>
+
+<p>Now that we&#39;ve defined each component of <strong>Figure 2</strong>, we can put them together like this:</p>
+<div class="highlight"><pre><code class="r">base <span class="o">+</span> density <span class="o">+</span> label <span class="o">+</span> theme.custom
+</code></pre></div>
+<p>I won&#39;t bother actually plotting this here, because it will be identical to <strong>Figure 2</strong>; however, I hope you can see the potential here for highly-readable modular customization. Rather than copy and pasting a big chunk of code for making small changes to create new plots, you can assign to variables any parts that you want to remain constant between your plots.</p>
+
+<h2>Challenge 3</h2>
+
+<p>Miguel is a huge fan of the written word. One of his life goals is to bridge the gap between science and literature. He made this plot in hopes of advancing this cause.</p>
+
+<h4>Figure 3A:</h4>
+
+<p><img src="/r_club/figure/2013-02-26-challenge03.png" alt="plot of chunk 2013-02-26-challenge03"></p>
+
+<p><aside class="hint"></p>
+
+<ol>
+<li>dataset: <code>tomato</code></li>
+<li>mappings:
+
+<ul>
+<li><code>x</code>: altitude</li>
+<li><code>y</code>: hypocotyl length</li>
+<li><code>label</code>: species (this is a <code>geom_text</code>-specific aesthetic)</li>
+<li><code>color</code>: treatment</li>
+<li><code>size</code>: leaf number</li>
+</ul></li>
+<li>settings:
+
+<ul>
+<li><code>angle</code>: 30° (This isn&#39;t really noticeable until you build the plot and find that the text is horizontal)</li>
+</ul></li>
+<li>geom(s): <code>geom_text()</code></li>
+<li>facets: who</li>
+<li>coordinates: cartesian</li>
+</ol>
+
+<p></aside></p>
+
+<p><strong>Figure 3A</strong> can be generated with:</p>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>tomato<span class="p">,</span> aes<span class="p">(</span>x     <span class="o">=</span> alt<span class="p">,</span>
+                   y     <span class="o">=</span> hyp<span class="p">,</span>
+                   size  <span class="o">=</span> leafnum<span class="p">,</span>
+                   label <span class="o">=</span> species<span class="p">,</span>
+                   color <span class="o">=</span> trt<span class="p">,</span>
+                   angle <span class="o">=</span> <span class="m">30</span><span class="p">))</span> <span class="o">+</span>
+  geom_text<span class="p">()</span> <span class="o">+</span>
+  facet_grid<span class="p">(</span>. <span class="o">~</span> who<span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&quot;TOMATO DATA IN WORDS&quot;</span><span class="p">,</span>
+       x     <span class="o">=</span> <span class="s">&quot;ALTITUDE&quot;</span><span class="p">,</span>
+       y     <span class="o">=</span> <span class="s">&quot;HYPOCOTYL LENGTH&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Here, we see <code>geom_text()</code> in action. As usual, we start by specifying the dataset and aesthetics within <code>ggplot()</code>. If you look closely, you&#39;ll notice that <code>angle</code> is the exception to the rule regarding mapping vs. setting. Even though we are setting <code>angle = 30</code> rather than mapping it to a parameter from the dataset, it must be placed inside <code>aes()</code>. Putting it in what should be the proper place (<code>geom_text(angle = 30)</code>), causes the words to be plotted at a 30° angle, but also results in the letters in the legend to be angled as shown in <strong>Figure 3B</strong>.</p>
+
+<h4>Figure 3B:</h4>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>tomato<span class="p">,</span> aes<span class="p">(</span>x     <span class="o">=</span> alt<span class="p">,</span>
+                   y     <span class="o">=</span> hyp<span class="p">,</span>
+                   size  <span class="o">=</span> leafnum<span class="p">,</span>
+                   label <span class="o">=</span> species<span class="p">,</span>
+                   color <span class="o">=</span> trt<span class="p">))</span> <span class="o">+</span>
+  geom_text<span class="p">(</span>angle <span class="o">=</span> <span class="m">30</span><span class="p">)</span> <span class="o">+</span>
+  facet_grid<span class="p">(</span>. <span class="o">~</span> who<span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&quot;TOMATO DATA IN WORDS&quot;</span><span class="p">,</span>
+       x     <span class="o">=</span> <span class="s">&quot;ALTITUDE&quot;</span><span class="p">,</span>
+       y     <span class="o">=</span> <span class="s">&quot;HYPOCOTYL LENGTH&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-02-26-challenge03b.png" alt="plot of chunk 2013-02-26-challenge03b"></p>
+
+<p>I think either approach is reasonable, but the legend in <strong>Figure 3A</strong> looks a bit more clean to me. As for the other parts of the code, note how <code>labs()</code> is used to specify labels for the entire plot and both axes. A less elegant, yet completely functional alternative approach is:</p>
+<div class="highlight"><pre><code class="r"><span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&quot;TOMATO DATA IN WORDS&quot;</span><span class="p">)</span> <span class="o">+</span>
+  xlab<span class="p">(</span><span class="s">&quot;ALTITUDE&quot;</span><span class="p">)</span> <span class="o">+</span>
+  ylab<span class="p">(</span><span class="s">&quot;HYPOCOTYL LENGTH&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2>Challenge 4</h2>
+
+<p>Cody found a geom that can be used to compare distributions by plotting them along the axes. Can you find it, too?</p>
+
+<h4>Figure 4:</h4>
+
+<p><img src="/r_club/figure/2013-02-26-challenge04.png" alt="plot of chunk 2013-02-26-challenge04"></p>
+
+<p><aside class="hint"></p>
+
+<ol>
+<li>dataset: <code>tomato</code></li>
+<li>mappings:
+
+<ul>
+<li><code>x</code>: leaf length</li>
+<li><code>y</code>: leaf width</li>
+<li><code>color</code>: who</li>
+</ul></li>
+<li>settings: NA</li>
+<li>geom(s):
+
+<ul>
+<li><code>geom_point()</code></li>
+<li><code>geom_rug()</code></li>
+</ul></li>
+<li>facets: NA</li>
+<li>coordinates: cartesian</li>
+</ol>
+
+<p></aside></p>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>tomato<span class="p">,</span> aes<span class="p">(</span>x      <span class="o">=</span> leafleng<span class="p">,</span>
+                   y      <span class="o">=</span> leafwid<span class="p">,</span>
+                   colour <span class="o">=</span> who<span class="p">))</span> <span class="o">+</span>
+    geom_point<span class="p">()</span> <span class="o">+</span>
+    geom_rug<span class="p">()</span> <span class="o">+</span>
+    labs<span class="p">(</span>x <span class="o">=</span> <span class="s">&quot;Leaf Length (mm)&quot;</span><span class="p">,</span>
+         y <span class="o">=</span> <span class="s">&quot;Leaf Width (mm)&quot;</span><span class="p">)</span> <span class="o">+</span>
+    theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</code></pre></div>
+<h2>Challenge 5</h2>
+
+<p>For Valentine&#39;s Day, Jessica received a $20 gift card for a local gas station. Before she redeems it, she wants to find out which types of car will get her to the Bay Area and back on five gallons.</p>
+
+<h4>Figure 5:</h4>
+
+<p><img src="/r_club/figure/2013-02-26-challenge05.png" alt="plot of chunk 2013-02-26-challenge05"></p>
+
+<p><aside class="hint"></p>
+
+<ol>
+<li>dataset: <code>mpg</code></li>
+<li>mappings:
+
+<ul>
+<li><code>x</code>: class</li>
+<li><code>y</code>: highway mpg</li>
+<li><code>fill</code>: manufacturer</li>
+<li><code>color</code>: manufacturer (The default border color for <code>geom_dotplot()</code> dots is black)</li>
+</ul></li>
+<li>settings: NA</li>
+<li>geom(s): <code>geom_dotplot()</code></li>
+<li>facets: NA</li>
+<li>coordinates: cartesian</li>
+</ol>
+
+<p></aside></p>
+<div class="highlight"><pre><code class="r">ggplot<span class="p">(</span>mpg<span class="p">,</span> aes<span class="p">(</span>x      <span class="o">=</span> class<span class="p">,</span>
+                y      <span class="o">=</span> hwy<span class="p">,</span>
+                colour <span class="o">=</span> manufacturer<span class="p">,</span>
+                fill   <span class="o">=</span> manufacturer<span class="p">))</span> <span class="o">+</span>
+  geom_dotplot<span class="p">(</span>binaxis      <span class="o">=</span> <span class="s">&quot;y&quot;</span><span class="p">,</span>
+               stackdir     <span class="o">=</span> <span class="s">&quot;center&quot;</span><span class="p">,</span>
+               binpositions <span class="o">=</span> <span class="s">&quot;all&quot;</span><span class="p">)</span> <span class="o">+</span>
+  labs <span class="p">(</span>x <span class="o">=</span> <span class="s">&quot;Class&quot;</span><span class="p">,</span>
+        y <span class="o">=</span> <span class="s">&quot;Highway (mpg)&quot;</span><span class="p">)</span> <span class="o">+</span>
+  theme<span class="p">(</span>aspect.ratio <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
+        axis.text.x  <span class="o">=</span> element_text<span class="p">(</span>angle <span class="o">=</span> <span class="m">45</span><span class="p">))</span>
+</code></pre></div>
+<h2>Challenge 6</h2>
+
+<p>Hsin-Yen was curious about the terrain and altitude where various tomato species have been found in the wild.</p>
+
+<h4>Figure 6A:</h4>
+
+<p><img src="/r_club/figure/2013-02-26-challenge06.png" alt="plot of chunk 2013-02-26-challenge06"></p>
+
+<p><aside class="hint"></p>
+
+<p>To get you started, I&#39;ll show you how to use the <code>get_map()</code> function from the <code>ggmap</code> library to extract a raster object of the map. (see pg. 11 of the <a href="http://cran.r-project.org/web/packages/ggmap/ggmap.pdf"><code>ggmap</code> documentation</a>):</p>
+<div class="highlight"><pre><code class="r">install.packages<span class="p">(</span><span class="s">&quot;ggmap&quot;</span><span class="p">)</span>
+library<span class="p">(</span>ggmap<span class="p">)</span>
+map <span class="o">&lt;-</span> get_map<span class="p">(</span>location <span class="o">=</span> c<span class="p">(</span>lon <span class="o">=</span> <span class="m">-75</span><span class="p">,</span> lat <span class="o">=</span> <span class="m">-16</span><span class="p">),</span>
+               zoom     <span class="o">=</span> <span class="m">5</span><span class="p">,</span>
+               maptype  <span class="o">=</span> <span class="s">&#39;satellite&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Hints:</strong></p>
+
+<ul>
+<li>Start by plotting the map image with the <code>ggmap()</code> function from the <code>ggmap</code> library (see pg. 18 of the <a href="http://cran.r-project.org/web/packages/ggmap/ggmap.pdf"><code>ggmap</code> documentation</a>)</li>
+<li>Add an additional layer with <code>geom_point()</code> (you&#39;ll need to specify the dataset to use inside <code>geom_point</code>)</li>
+</ul>
+
+<p></aside></p>
+
+<h4>Figure 6B:</h4>
+<div class="highlight"><pre><code class="r">ggmap<span class="p">(</span>map<span class="p">)</span>
+</code></pre></div>
+<p><img src="/r_club/figure/2013-02-26-challenge06b.png" alt="plot of chunk 2013-02-26-challenge06b"></p>
+<div class="highlight"><pre><code class="r">ggmap<span class="p">(</span>map<span class="p">)</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>aes<span class="p">(</span>x      <span class="o">=</span> lon<span class="p">,</span>
+                 y      <span class="o">=</span> lat<span class="p">,</span>
+                 colour <span class="o">=</span> alt<span class="p">),</span>
+             data <span class="o">=</span> tomato<span class="p">,</span>
+             size <span class="o">=</span> <span class="m">2</span><span class="p">)</span> <span class="o">+</span>
+  facet_grid<span class="p">(</span>. <span class="o">~</span> species<span class="p">)</span> <span class="o">+</span>
+  scale_colour_continuous<span class="p">(</span>low  <span class="o">=</span> <span class="s">&quot;white&quot;</span><span class="p">,</span>
+                          high <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2>Challenge 7</h2>
+
+<p>Not one to be outdone, Stacey demonstrates that she also knows the ways of the world by plotting the geographical position of tomato species collection points on top of not just a part of South America, but on top of the <em>entire</em> world.</p>
+
+<h4>Figure 7A:</h4>
+
+<p><img src="/r_club/figure/2013-02-26-challenge07.png" alt="plot of chunk 2013-02-26-challenge07"></p>
+
+<p><aside class="hint"></p>
+
+<p><strong>Hints:</strong></p>
+
+<ul>
+<li>Start by plotting the world map using <code>geom_polygon()</code> with a data frame created with ggplot&#39;s <code>map_data()</code> function</li>
+<li>Add an additional layer with another geom</li>
+</ul>
+
+<p></aside></p>
+
+<h4>Figure 7B:</h4>
+<div class="highlight"><pre><code class="r">world <span class="o">&lt;-</span> map_data<span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">)</span>
+worldmap <span class="o">&lt;-</span> ggplot<span class="p">(</span>world<span class="p">,</span> aes<span class="p">(</span>x     <span class="o">=</span> long<span class="p">,</span>
+                              y     <span class="o">=</span> lat<span class="p">,</span>
+                              group <span class="o">=</span> group<span class="p">))</span> <span class="o">+</span>
+  geom_polygon<span class="p">(</span>fill   <span class="o">=</span> <span class="s">&quot;white&quot;</span><span class="p">,</span>
+               colour <span class="o">=</span> <span class="s">&quot;black&quot;</span><span class="p">)</span>
+worldmap
+</code></pre></div>
+<p><img src="/r_club/figure/2013-02-26-challenge07a.png" alt="plot of chunk 2013-02-26-challenge07a"></p>
+<div class="highlight"><pre><code class="r">worldmap <span class="o">+</span>
+  geom_point<span class="p">(</span>aes<span class="p">(</span>x     <span class="o">=</span> lon<span class="p">,</span>
+                 y     <span class="o">=</span> lat<span class="p">,</span>
+                 group <span class="o">=</span> <span class="kc">NULL</span><span class="p">),</span>
+             data  <span class="o">=</span> tomato<span class="p">,</span>
+             size  <span class="o">=</span> <span class="m">2</span><span class="p">,</span>
+             color <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
+</code></pre></div>
+  </div>
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'rclub'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+      </section>
+      <footer>
+
+        <div class="categories">
+          
+          <h3>Categories</h3>
+          
+            <h4><a href="/r_club/homework">homework (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/homework/2013/03/29/Data-Types-and-Reshape-homework/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/homework/2013/03/04/elaborate-upon-plot/">Elaborate upon a plot</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/exercises">exercises (1)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/exercises/2013/03/21/restyle/">Re-style peers' R code</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/solutions">solutions (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/solutions/2013/04/03/Data-Types-and-Reshape-Answers/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/solutions/2013/03/14/elaborate-upon-plot-solutions/">Elaborate upon a plot (solutions)</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/resources">resources (6)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/resources/2013/03/28/Reshape/">Reshape</a></li>
+              
+                <li><a href="/r_club/resources/2013/03/27/DataTypes/">Data Types</a></li>
+              
+            </ul>
+          
+
+          
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+          <h4><a href="/r_club/other">other (13)</a></h4>
+
+          <ul>
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/schedule/2013/03/28/2013-03-28/">2013-03-28</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/errata/2013/03/05/ch5-errata/">ggplot2 Chapter 5 errata</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+          </ul>
+        </div>
+
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

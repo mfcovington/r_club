@@ -1,0 +1,499 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Reshape</title>
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/styles.css">
+    <link rel="shortcut icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <script src="/r_club/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38722088-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="/r_club/">R Club</a></h1>
+        <h2 class="header">Reshape</h2>
+      </header>
+      <section>
+        <div class = "duedate">
+  
+</div>
+
+<div class = "related">
+  
+</div>
+
+<div class="content">
+  <div id="post">
+    <h1>Reshape</h1>
+
+<p>Often your data is collected in a format that is not convenient for analysis.  In particular in R usually you want one observation per row--we will call this <em>long</em> format.  However in excel it is common for each column to correspond to a different set of observations--we will consider this <em>wide</em> format.  Consider:</p>
+<div class="highlight"><pre><code class="r"><span class="c1">#generate mock data frame in wide format</span>
+wide <span class="o">&lt;-</span> data.frame<span class="p">(</span>
+
+            wildtype<span class="o">=</span>rnorm<span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="m">4</span><span class="p">),</span>
+            phyA<span class="o">=</span>rnorm<span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="m">6</span><span class="p">),</span>
+            phyB<span class="o">=</span>rnorm<span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="m">7</span><span class="p">),</span>
+            det1<span class="o">=</span>rnorm<span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+wide
+</code></pre></div><div class="highlight"><pre><code class="text">##    wildtype  phyA  phyB    det1
+## 1     4.607 6.246 7.076  1.1473
+## 2     3.363 6.025 6.946  1.0420
+## 3     3.507 5.925 5.828 -0.8757
+## 4     4.846 6.071 8.055  1.3214
+## 5     4.391 7.573 6.592  2.3292
+## 6     5.120 6.008 8.177  4.3900
+## 7     4.369 6.445 7.955  1.5134
+## 8     2.887 3.669 7.276  1.5529
+## 9     4.862 5.859 8.543  0.6698
+## 10    3.885 4.244 8.238  1.3819
+</code></pre></div>
+<p>This might seem reasonable but it is the wrong format if, for example, you wanted to use <code>ggplot</code>, <code>lm</code>, <code>lme</code>, etc.</p>
+
+<p>Functions in the <strong>reshape</strong> package will convert from the wide format to the long format and back.</p>
+
+<h2>Melt</h2>
+
+<p><code>melt()</code> is used to change from the wide format to the long format.</p>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>reshape<span class="p">)</span>
+long <span class="o">&lt;-</span> melt<span class="p">(</span>wide<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">## Using as id variables
+</code></pre></div><div class="highlight"><pre><code class="r">head<span class="p">(</span>long<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   variable value
+## 1 wildtype 4.607
+## 2 wildtype 3.363
+## 3 wildtype 3.507
+## 4 wildtype 4.846
+## 5 wildtype 4.391
+## 6 wildtype 5.120
+</code></pre></div><div class="highlight"><pre><code class="r">tail<span class="p">(</span>long<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##    variable  value
+## 35     det1 2.3292
+## 36     det1 4.3900
+## 37     det1 1.5134
+## 38     det1 1.5529
+## 39     det1 0.6698
+## 40     det1 1.3819
+</code></pre></div>
+<h3>Melt arguments: id.vars and measure.vars</h3>
+
+<p>Your data frame might contain metadata that needs to be preserved for each data observation.  For example if the hypocotyls in the above example came from two different plates we would want to know which plate each observation came from in the melted data frame. We can use the <code>id.vars</code> argument to specify which columns contain identification information that should be kept with each observation in a row.  Alternatively we can use the <code>measure.vars</code> to specify the columns that contain measurements.</p>
+<div class="highlight"><pre><code class="r">wide<span class="o">$</span>plate <span class="o">&lt;-</span> rep<span class="p">(</span>c<span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">),</span> each <span class="o">=</span> <span class="m">5</span><span class="p">)</span>
+wide
+</code></pre></div><div class="highlight"><pre><code class="text">##    wildtype  phyA  phyB    det1 plate
+## 1     4.607 6.246 7.076  1.1473     A
+## 2     3.363 6.025 6.946  1.0420     A
+## 3     3.507 5.925 5.828 -0.8757     A
+## 4     4.846 6.071 8.055  1.3214     A
+## 5     4.391 7.573 6.592  2.3292     A
+## 6     5.120 6.008 8.177  4.3900     B
+## 7     4.369 6.445 7.955  1.5134     B
+## 8     2.887 3.669 7.276  1.5529     B
+## 9     4.862 5.859 8.543  0.6698     B
+## 10    3.885 4.244 8.238  1.3819     B
+</code></pre></div><div class="highlight"><pre><code class="r">long <span class="o">&lt;-</span> melt<span class="p">(</span>wide<span class="p">,</span> id.vars <span class="o">=</span> <span class="s">&quot;plate&quot;</span><span class="p">)</span>
+head<span class="p">(</span>long<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   plate variable value
+## 1     A wildtype 4.607
+## 2     A wildtype 3.363
+## 3     A wildtype 3.507
+## 4     A wildtype 4.846
+## 5     A wildtype 4.391
+## 6     B wildtype 5.120
+</code></pre></div><div class="highlight"><pre><code class="r"><span class="c1"># alternatively specify the meaurement variables:</span>
+long <span class="o">&lt;-</span> melt<span class="p">(</span>wide<span class="p">,</span> measure.vars <span class="o">=</span> c<span class="p">(</span><span class="s">&quot;wildtype&quot;</span><span class="p">,</span> <span class="s">&quot;phyA&quot;</span><span class="p">,</span> <span class="s">&quot;phyB&quot;</span><span class="p">,</span> <span class="s">&quot;det1&quot;</span><span class="p">))</span>
+<span class="c1"># you can also use column numbers</span>
+long <span class="o">&lt;-</span> melt<span class="p">(</span>wide<span class="p">,</span> measure.vars <span class="o">=</span> <span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">)</span>
+</code></pre></div>
+<h3>Melt arguments: variable_name</h3>
+
+<p>The <code>variable_name</code> argument allows us to specify a column name for the new column that will contain the previous column names once the data frame is melted.  </p>
+<div class="highlight"><pre><code class="r">long <span class="o">&lt;-</span> melt<span class="p">(</span>wide<span class="p">,</span> id.vars <span class="o">=</span> <span class="s">&quot;plate&quot;</span><span class="p">,</span> variable_name <span class="o">=</span> <span class="s">&quot;genotype&quot;</span><span class="p">)</span>
+head<span class="p">(</span>long<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   plate genotype value
+## 1     A wildtype 4.607
+## 2     A wildtype 3.363
+## 3     A wildtype 3.507
+## 4     A wildtype 4.846
+## 5     A wildtype 4.391
+## 6     B wildtype 5.120
+</code></pre></div>
+<h3>Additional melt functions</h3>
+
+<p>The above examples demonstrate melt as it applies to data frames.  There are additional methods for arrays and lists.  See <code>?melt</code> for details.</p>
+
+<h2>Cast</h2>
+
+<p>The <code>cast()</code> function is used to summarize data that is in the <em>long</em> format.  Here we specify a formula where each variable listed will form a new dimension.</p>
+<div class="highlight"><pre><code class="r"><span class="c1"># use cast to summarize by mean.</span>
+cast<span class="p">(</span>long<span class="p">,</span> plate <span class="o">~</span> genotype<span class="p">,</span> mean<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   plate wildtype  phyA  phyB   det1
+## 1     A    4.143 6.368 6.899 0.9928
+## 2     B    4.224 5.245 8.038 1.9016
+</code></pre></div><div class="highlight"><pre><code class="r">cast<span class="p">(</span>long<span class="p">,</span> genotype <span class="o">~</span> plate<span class="p">,</span> mean<span class="p">)</span>  <span class="c1">#changing the order changes the orientation.</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   genotype      A     B
+## 1 wildtype 4.1429 4.224
+## 2     phyA 6.3678 5.245
+## 3     phyB 6.8993 8.038
+## 4     det1 0.9928 1.902
+</code></pre></div>
+<h3>We can specify that we want margin means</h3>
+<div class="highlight"><pre><code class="r">cast<span class="p">(</span>long<span class="p">,</span> plate <span class="o">~</span> genotype<span class="p">,</span> mean<span class="p">,</span> margins <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   plate wildtype  phyA  phyB   det1 (all)
+## 1     A    4.143 6.368 6.899 0.9928 4.601
+## 2     B    4.224 5.245 8.038 1.9016 4.852
+## 3 (all)    4.184 5.806 7.469 1.4472 4.726
+</code></pre></div>
+<h3>A &quot;.&quot; in the formula species no variables.</h3>
+<div class="highlight"><pre><code class="r">cast<span class="p">(</span>long<span class="p">,</span> plate <span class="o">~</span> .<span class="p">)</span>  <span class="c1">#with no function specified this just counts the number of observations</span>
+</code></pre></div><div class="highlight"><pre><code class="text">## Aggregation requires fun.aggregate: length used as default
+</code></pre></div><div class="highlight"><pre><code class="text">##   plate (all)
+## 1     A    20
+## 2     B    20
+</code></pre></div><div class="highlight"><pre><code class="r">cast<span class="p">(</span>long<span class="p">,</span> plate <span class="o">~</span> .<span class="p">,</span> mean<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   plate (all)
+## 1     A 4.601
+## 2     B 4.852
+</code></pre></div><div class="highlight"><pre><code class="r">cast<span class="p">(</span>long<span class="p">,</span> genotype <span class="o">~</span> .<span class="p">,</span> mean<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##   genotype (all)
+## 1 wildtype 4.184
+## 2     phyA 5.806
+## 3     phyB 7.469
+## 4     det1 1.447
+</code></pre></div>
+<p><em>Posted by Julin Maloof</em></p>
+
+  </div>
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'rclub'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+      </section>
+      <footer>
+
+        <div class="categories">
+          
+          <h3>Categories</h3>
+          
+            <h4><a href="/r_club/homework">homework (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/homework/2013/03/29/Data-Types-and-Reshape-homework/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/homework/2013/03/04/elaborate-upon-plot/">Elaborate upon a plot</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/exercises">exercises (1)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/exercises/2013/03/21/restyle/">Re-style peers' R code</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/solutions">solutions (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/solutions/2013/04/03/Data-Types-and-Reshape-Answers/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/solutions/2013/03/14/elaborate-upon-plot-solutions/">Elaborate upon a plot (solutions)</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/resources">resources (6)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/resources/2013/03/28/Reshape/">Reshape</a></li>
+              
+                <li><a href="/r_club/resources/2013/03/27/DataTypes/">Data Types</a></li>
+              
+            </ul>
+          
+
+          
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+          <h4><a href="/r_club/other">other (13)</a></h4>
+
+          <ul>
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/schedule/2013/03/28/2013-03-28/">2013-03-28</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/errata/2013/03/05/ch5-errata/">ggplot2 Chapter 5 errata</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+          </ul>
+        </div>
+
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

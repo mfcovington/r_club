@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Updating R and ggplot2</title>
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/styles.css">
+    <link rel="shortcut icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/r_club/favicon.ico" type="image/x-icon">
+    <script src="/r_club/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38722088-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="/r_club/">R Club</a></h1>
+        <h2 class="header">Updating R and ggplot2</h2>
+      </header>
+      <section>
+        <div class = "duedate">
+  
+</div>
+
+<div class = "related">
+  
+</div>
+
+<div class="content">
+  <div id="post">
+    <h1>Check your current version of R and ggplot2</h1>
+
+<p>Run the following:</p>
+<div class="highlight"><pre><code class="r">library<span class="p">(</span>ggplot2<span class="p">)</span>
+sessionInfo<span class="p">()</span>
+</code></pre></div>
+<p>The output should look something like this:</p>
+<div class="highlight"><pre><code class="text">R version 2.15.2 (2012-10-26)
+Platform: x86_64-apple-darwin9.8.0/x86_64 (64-bit)
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+[1] ggplot2_0.9.3
+
+loaded via a namespace (and not attached):
+ [1] colorspace_1.2-1   dichromat_2.0-0    digest_0.6.2       grid_2.15.2        gtable_0.1.2       labeling_0.1       MASS_7.3-23        munsell_0.4
+ [9] plyr_1.8           proto_0.3-10       RColorBrewer_1.0-5 reshape2_1.2.2     scales_0.2.3       stringr_0.6.2
+</code></pre></div>
+<p>As of February 10, 2013, the current version of R is <code>2.15.2</code> and the current version of ggplot is <code>ggplot2_0.9.3</code> (found under &#39;other attached packages&#39;).</p>
+
+<p>If you have the most recent version of R, but your ggplot2 is somehow out of date, run: <code>update.packages(&quot;ggplot2&quot;)</code>. (Or if you don&#39;t have ggplot2 installed, run <code>install.packages(&quot;ggplot2&quot;)</code>)</p>
+
+<p>If both R and ggplot2 are old, first install the current version of R and then update your packages.</p>
+
+<h1>Installing R</h1>
+
+<ol>
+<li>Go to <a href="http://cran.r-project.org/">http://cran.r-project.org/</a></li>
+<li>Install the current version of R by clicking the the appropriate &quot;Download R for[insert your OS here]&quot; and following the prompts</li>
+</ol>
+
+<h1>Updating your R packages</h1>
+
+<ol>
+<li>Open R (If you use RStudio, open the actual R program, not the RStudio interface)</li>
+<li>In your menus, navigate to Packages &amp; Data / Package Installer (or, in OS X, press <code>alt+cmd+i</code>)</li>
+<li>Select a repository [CRAN (binaries), BioConductor (binaries), etc.]</li>
+<li>Click &#39;Get List&#39;</li>
+<li>Click magnifying glass icon next to Package Search box
+
+<ul>
+<li>In drop-down menu, click &#39;Select packages from R 2.XX&#39; (should be the version from which you just updated)</li>
+</ul></li>
+<li>Click &#39;install dependencies&#39; checkbox</li>
+<li>Click &#39;Install Selected&#39; button</li>
+<li>Depending on how many packages you have installed (and how many dependencies each has), you may want to go eat a sammich</li>
+<li>Go back to step 2 and repeat for other repositories (this is only necessary if you&#39;ve manually added repositories, such as when installing BioConductor)</li>
+</ol>
+
+<p>If you had BioConductor installed, running the following might update some packages that weren&#39;t updated with the previous approach:</p>
+<div class="highlight"><pre><code class="r">source<span class="p">(</span><span class="s">&quot;http://bioconductor.org/biocLite.R&quot;</span><span class="p">)</span>
+biocLite<span class="p">(</span><span class="s">&quot;BiocUpgrade&quot;</span><span class="p">)</span>
+</code></pre></div>
+  </div>
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'rclub'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+      </section>
+      <footer>
+
+        <div class="categories">
+          
+          <h3>Categories</h3>
+          
+            <h4><a href="/r_club/homework">homework (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/homework/2013/03/29/Data-Types-and-Reshape-homework/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/homework/2013/03/04/elaborate-upon-plot/">Elaborate upon a plot</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/exercises">exercises (1)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/exercises/2013/03/21/restyle/">Re-style peers' R code</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/solutions">solutions (4)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/solutions/2013/04/03/Data-Types-and-Reshape-Answers/">Homework--Data Types and Reshape</a></li>
+              
+                <li><a href="/r_club/solutions/2013/03/14/elaborate-upon-plot-solutions/">Elaborate upon a plot (solutions)</a></li>
+              
+            </ul>
+          
+            <h4><a href="/r_club/resources">resources (6)</a></h4>
+            <ul>
+              
+                <li><a href="/r_club/resources/2013/03/28/Reshape/">Reshape</a></li>
+              
+                <li><a href="/r_club/resources/2013/03/27/DataTypes/">Data Types</a></li>
+              
+            </ul>
+          
+
+          
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+            
+            
+              
+            
+          
+          <h4><a href="/r_club/other">other (13)</a></h4>
+
+          <ul>
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/schedule/2013/03/28/2013-03-28/">2013-03-28</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+                    <li><a href="/r_club/errata/2013/03/05/ch5-errata/">ggplot2 Chapter 5 errata</a></li>
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+              
+              
+                
+                
+              
+            
+          </ul>
+        </div>
+
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

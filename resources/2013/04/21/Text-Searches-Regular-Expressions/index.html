@@ -47,7 +47,7 @@
   <div id="post">
     <h1>String Searching and Manipulation</h1>
 
-<p>R has extensive tools for searching for text (string) patterns and performing substitutions.  These can be very helpful in manipulation of large data sets.  </p>
+<p>R has extensive tools for searching for text (string) patterns and performing substitutions.  These can be very helpful in manipulation of large data sets.</p>
 
 <p>These functions can search for exact matches or can make use of an extensive syntax for wildcards, known as <em>regular expressions</em>.  I will first describe the search functions and then explain regular expressions.</p>
 
@@ -73,7 +73,7 @@ grep<span class="p">(</span>pattern <span class="o">=</span> <span class="s">&qu
 <span class="c1"># determine the number of states that have &#39;i&#39; in them.</span>
 sum<span class="p">(</span>grepl<span class="p">(</span>pattern <span class="o">=</span> <span class="s">&quot;i&quot;</span><span class="p">,</span> x <span class="o">=</span> state.name<span class="p">,</span> ignore.case <span class="o">=</span> <span class="k-Variable">T</span><span class="p">))</span>
 </code></pre></div>
-<p><strong>Exercise 1:</strong> Can you figure out how to count the number of states that do not have an &quot;i&quot; in their name (without changing the search pattern)?  There are at least two easy ways.</p>
+<p><strong>Exercise 1:</strong> Can you figure out how to count the number of states that do not have an <code>i</code> in their name (without changing the search pattern)?  There are at least two easy ways.</p>
 
 <h3><code>match()</code></h3>
 
@@ -98,7 +98,7 @@ favorites<span class="p">[</span>favorites <span class="o">%in%</span> citrus<sp
 <div class="highlight"><pre><code class="r"><span class="c1"># lets say that we wanted to replace &#39;W&#39; with the phrase &#39;_DoubleU_&#39;</span>
 sub<span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="s">&quot;_DoubleU_&quot;</span><span class="p">,</span> state.name<span class="p">,</span> ignore.case <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Excerise 2:</strong> Try replacing all of the &quot;i&quot;s with &quot;y&quot;s.  Are results what you expected? Why or why not?</p>
+<p><strong>Excerise 2:</strong> Try replacing all of the <code>i</code>s with <code>y</code>s.  Are results what you expected? Why or why not?</p>
 
 <h3><code>gsub()</code></h3>
 
@@ -115,30 +115,33 @@ sub<span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">,
 <p>Regexp have codes to match certain <em>classes</em> of characters.</p>
 
 <ul>
-<li>.  Matches any single character</li>
-<li>\w Matches any character that would be found in a &quot;word&quot; including digits (excludes punctuation and white space)</li>
-<li>\W Is the opposite of \w and matches any non-word character</li>
-<li>\d Matches any digit character</li>
-<li>\D Matches any non-digit character</li>
-<li>\s Matches any white space character</li>
-<li>\S Matches any non space character</li>
+<li><code>.</code>  Matches any single character</li>
+<li><code>\w</code> Matches any character that would be found in a &quot;word&quot; including digits (excludes punctuation and white space)</li>
+<li><code>\W</code> Is the opposite of \w and matches any non-word character</li>
+<li><code>\d</code> Matches any digit character</li>
+<li><code>\D</code> Matches any non-digit character</li>
+<li><code>\s</code> Matches any white space character</li>
+<li><code>\S</code> Matches any non space character</li>
 </ul>
 
-<p>The following match specific characters or locations but are worth mentioning here:
-* ^  Matches the beginning of a line
-* $  Matches the end of a line
-* \t tab character
-* \n return character</p>
+<p>The following match specific characters or locations but are worth mentioning here:</p>
+
+<ul>
+<li><code>^</code>  Matches the beginning of a line</li>
+<li><code>$</code>  Matches the end of a line</li>
+<li><code>\t</code> tab character</li>
+<li><code>\n</code> return character</li>
+</ul>
 
 <p>Unless you use additional modifications described below, these match a single character.</p>
 
-<p>How would we find state names that have two &quot;a&quot;s separated by a single additional character?</p>
+<p>How would we find state names that have two <code>a</code>s separated by a single additional character?</p>
 <div class="highlight"><pre><code class="r">data<span class="p">(</span>state<span class="p">)</span>
 grep<span class="p">(</span><span class="s">&quot;a.a&quot;</span><span class="p">,</span> state.name<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">,</span> ignore.case <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Exercise 3:</strong> Find state names that have a space in their names.</p>
 
-<p><strong>Exercise 4:</strong> Find state names that begin with &quot;M&quot;</p>
+<p><strong>Exercise 4:</strong> Find state names that begin with <code>M</code></p>
 
 <h3>Character classes II</h3>
 
@@ -147,20 +150,20 @@ grep<span class="p">(</span><span class="s">&quot;a.a&quot;</span><span class="p
 <p>For example, to find all of the state names that end with a vowel:</p>
 <div class="highlight"><pre><code class="r">grep<span class="p">(</span><span class="s">&quot;[aeiou]$&quot;</span><span class="p">,</span> state.name<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 </code></pre></div>
-<p>The ^ sign inside of square brackets inverts the search.</p>
+<p>The <code>^</code> sign inside of square brackets inverts the search.</p>
 
 <p><strong>Exercise 5:</strong> Find state names that begin with non-vowels.</p>
 
 <p>You can specify ranges of characters inside square brackets:</p>
 
 <ul>
-<li>[0-9] : all digits</li>
-<li>[a-j] : the first 10 (lowercase) letters of the alphabet</li>
+<li><code>[0-9]</code> : all digits</li>
+<li><code>[a-j]</code> : the first 10 (lowercase) letters of the alphabet</li>
 </ul>
 
 <p>There are also a number of predefined character classes.  For example:</p>
 
-<p>[:punct:]
+<p><code>[:punct:]</code>
 Punctuation characters:
 ! &quot; # $ % &amp; &#39; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~.</p>
 
@@ -175,20 +178,20 @@ Punctuation characters:
 ? The preceding item is optional and will be matched at most once.</p>
 
 <ul>
-<li>*     The preceding item will be matched zero or more times.</li>
-<li>+     The preceding item will be matched one or more times.</li>
-<li>{n}   The preceding item is matched exactly n times.</li>
-<li>{n,}  The preceding item is matched n or more times.</li>
-<li>{n,m} The preceding item is matched at least n times, but not more than m times.</li>
+<li><code>*</code>     The preceding item will be matched zero or more times.</li>
+<li><code>+</code>     The preceding item will be matched one or more times.</li>
+<li><code>{n}</code>   The preceding item is matched exactly n times.</li>
+<li><code>{n,}</code>  The preceding item is matched n or more times.</li>
+<li><code>{n,m}</code> The preceding item is matched at least n times, but not more than m times.</li>
 </ul>
 
 <p><strong>Exercise 6:</strong> Find the state names that have two consecutive vowels in them.</p>
 
-<p><strong>Exercise 7:</strong> Using last weeks data set, count the number of babys with the name Stacey or Stacy.  Bonus 1: count Stacey, Stacy, or Staci.  Bonus 2 list the unique set of names that start with &quot;Stac&quot;.  The data set can be <a href="http://plyr.had.co.nz/09-user/plyr-tutorial.zip">downloaded here</a></p>
+<p><strong>Exercise 7:</strong> Using last weeks data set, count the number of babys with the name Stacey or Stacy.  Bonus 1: count Stacey, Stacy, or Staci.  Bonus 2 list the unique set of names that start with <code>Stac</code>.  The data set can be <a href="http://plyr.had.co.nz/09-user/plyr-tutorial.zip">downloaded here</a></p>
 
 <h3>Alternates</h3>
 
-<p>The &quot;|&quot; character can be read as &quot;or&quot; and can be used to specify alternates.</p>
+<p>The <code>|</code> character can be read as &quot;or&quot; and can be used to specify alternates.</p>
 <div class="highlight"><pre><code class="r"><span class="c1"># Example: change the path below to point to &#39;bnames.csv&#39; on your computer</span>
 bnames <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;~/Documents/Teaching/RClub/plyr-tutorial/examples/bnames.csv&quot;</span><span class="p">,</span> 
     as.is <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
@@ -198,14 +201,14 @@ bnames<span class="p">[</span>grep<span class="p">(</span><span class="s">&quot;
 
 <h3>Escapes</h3>
 
-<p>What if you want to match a &quot;.&quot; or other special character?  The following characters have special meaning in regular expressions: &quot;. \ | ( ) [ { ^ $ * + ?&quot; and if you want to search for them you have to do something special.</p>
+<p>What if you want to match a <code>.</code> or other special character?  The following characters have special meaning in regular expressions: <code>. \ | ( ) [ { ^ $ * + ?</code> and if you want to search for them you have to do something special.</p>
 <div class="highlight"><pre><code class="r"><span class="c1"># say you want all Chrom one ILs</span>
 ILs <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;IL.1.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.2.2&quot;</span><span class="p">,</span> <span class="s">&quot;IL.1.3&quot;</span><span class="p">,</span> <span class="s">&quot;IL.2.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.11.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.11.3&quot;</span><span class="p">,</span> <span class="s">&quot;IL.12.1&quot;</span><span class="p">,</span> 
     <span class="s">&quot;IL.12.2&quot;</span><span class="p">)</span>
 <span class="c1"># the following seems logical at first:</span>
 grep<span class="p">(</span><span class="s">&quot;IL.1.&quot;</span><span class="p">,</span> ILs<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 </code></pre></div>
-<p>What happened?  Remember that &quot;.&quot; matches any character.  We need to tell grep that the &quot;.&quot; is just a regular character, not a wildcard. To do this we &quot;escape&quot; it by preceding it with a &quot;\&quot;.  However, since &quot;\&quot; itself is a special character it must also be escaped. So we use two backslashes. </p>
+<p>What happened?  Remember that <code>.</code> matches any character.  We need to tell grep that the <code>.</code> is just a regular character, not a wildcard. To do this we &quot;escape&quot; it by preceding it with a <code>\</code>.  However, since <code>\</code> itself is a special character it must also be escaped. So we use two backslashes.</p>
 <div class="highlight"><pre><code class="r">grep<span class="p">(</span><span class="s">&quot;IL\\.1\\.&quot;</span><span class="p">,</span> ILs<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 <span class="c1"># an alternative, if you don&#39;t need any regex functionality is to use the</span>
 <span class="c1"># argument &#39;fixed=T&#39;</span>
@@ -213,7 +216,7 @@ grep<span class="p">(</span><span class="s">&quot;IL.1.&quot;</span><span class=
 </code></pre></div>
 <h3>Back references</h3>
 
-<p>One of the powerful tools in regexps is the ability to refer back to a previous match.  The item that you want to refer back to is enclosed in parentheses.  You backreference with a backslash and a digit.  A &quot;1&quot; would indicate the first group enclosed in a parentheses, a &quot;2&quot; would refer to the second group, etc.</p>
+<p>One of the powerful tools in regexps is the ability to refer back to a previous match.  The item that you want to refer back to is enclosed in parentheses.  You backreference with a backslash and a digit.  A <code>1</code> would indicate the first group enclosed in a parentheses, a <code>2</code> would refer to the second group, etc.</p>
 
 <p>Suppose we want to find all state names that have letters repeated twice in a row.</p>
 <div class="highlight"><pre><code class="r">grep<span class="p">(</span><span class="s">&quot;(.)\\1&quot;</span><span class="p">,</span> state.name<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
@@ -223,11 +226,11 @@ grep<span class="p">(</span><span class="s">&quot;IL.1.&quot;</span><span class=
 </code></pre></div>
 <p><strong>Exercise 9:</strong> Find all state names that have two vowels repeated.</p>
 
-<p>I find back references particularly helpful in combination with sub(), because you can use them in your replacement string.</p>
+<p>I find back references particularly helpful in combination with <code>sub()</code>, because you can use them in your replacement string.</p>
 
 <p><strong>Exercise 10:</strong> For all two-worded state names reverse the order of the two words and add a comma between the words.  (&quot;North Carolina&quot; should become &quot;Carolina, North&quot;)</p>
 
-<p><strong>Exercise 11:</strong> For all two-worded state names, abbreviate the first word to be the first letter, followed by a &quot;.&quot; (&quot;North Carolina&quot; becomes &quot;N. Carolina&quot;).</p>
+<p><strong>Exercise 11:</strong> For all two-worded state names, abbreviate the first word to be the first letter, followed by a <code>.</code> (&quot;North Carolina&quot; becomes &quot;N. Carolina&quot;).</p>
 
   </div>
 </div>

@@ -15,6 +15,7 @@ git checkout master
 CheckSuccess
 
 rm -r _site
+if [ -e _site/ ]; then echo "_site removed"; fi
 CheckSuccess
 
 jekyll
@@ -23,10 +24,12 @@ CheckSuccess
 git checkout gh-pages
 CheckSuccess
 
+shopt -s extglob
 rm -r !(_site)
 CheckSuccess
 
 mv _site/* ./
+[ "$(ls -A _site)" ] && echo "Something is wrong..." || echo "Looks good."
 CheckSuccess
 
 rmdir _site

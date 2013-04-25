@@ -15,7 +15,7 @@ git checkout master
 CheckSuccess
 
 rm -r _site
-if [ -e _site/ ]; then echo "_site removed"; fi
+if [ ! -e _site/ ]; then echo "'_site/' has been successfully removed"; fi
 CheckSuccess
 
 jekyll

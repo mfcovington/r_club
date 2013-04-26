@@ -88,7 +88,7 @@ sub("w", "_DoubleU_", state.name, ignore.case = T)
 ```
 
 
-**Excerise 2:** Try replacing all of the `i`s with `y`s.  Are results what you expected? Why or why not?
+**Excerise 2:** Try replacing all instances of `i` with `y`.  Are results what you expected? Why or why not?
 
 ### `gsub()`
 `sub()` only replaces the first occurrence of *pattern*.  **`gsub()`** will replace all occurrences.
@@ -108,12 +108,12 @@ Regular expressions (regexp) are a way of specifying wild cards in the search op
 Regexp have codes to match certain _classes_ of characters.
 
 * `.`  Matches any single character
-* `\w` Matches any character that would be found in a "word" including digits (excludes punctuation and white space)
-* `\W` Is the opposite of \w and matches any non-word character
-* `\d` Matches any digit character
-* `\D` Matches any non-digit character
-* `\s` Matches any white space character
-* `\S` Matches any non space character
+* `\\w` Matches any character that would be found in a "word" including digits (excludes punctuation and white space)
+* `\\W` Is the opposite of `\\w` and matches any non-word character
+* `\\d` Matches any digit character
+* `\\D` Matches any non-digit character
+* `\\s` Matches any white space character
+* `\\S` Matches any non space character
 
 The following match specific characters or locations but are worth mentioning here:
 
@@ -199,7 +199,7 @@ bnames[grep("Stac(y|i)", bnames$name), ]
 ```
 
 
-**Exercise 8:** Pull out the names "Jonathan" "Jonnie" and "Johnathon" but not other Jon names.  Bonus: Only have Jon listed once in your search string.
+**Exercise 8:** Pull out the names "Jonathan" "Jonnie" and "Jonathon" but not other Jon names.  Bonus: Only have Jon listed once in your search string.
 
 ###Escapes
 What if you want to match a `.` or other special character?  The following characters have special meaning in regular expressions: `. \ | ( ) [ { ^ $ * + ?` and if you want to search for them you have to do something special.
@@ -226,7 +226,7 @@ grep("IL.1.", ILs, value = T, fixed = T)
 
 
 ###Back references
-One of the powerful tools in regexps is the ability to refer back to a previous match.  The item that you want to refer back to is enclosed in parentheses.  You backreference with a backslash and a digit.  A `1` would indicate the first group enclosed in a parentheses, a `2` would refer to the second group, etc.
+One of the powerful tools in regexps is the ability to refer back to a previous match.  The item that you want to refer back to is enclosed in parentheses.  You backreference with a backslash and a digit.  A `\\1` would indicate the first group enclosed in a parentheses, a `\\2` would refer to the second group, etc.
 
 Suppose we want to find all state names that have letters repeated twice in a row.
 

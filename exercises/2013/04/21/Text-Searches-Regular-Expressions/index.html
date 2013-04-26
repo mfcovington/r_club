@@ -98,7 +98,7 @@ favorites<span class="p">[</span>favorites <span class="o">%in%</span> citrus<sp
 <div class="highlight"><pre><code class="r"><span class="c1"># lets say that we wanted to replace &#39;W&#39; with the phrase &#39;_DoubleU_&#39;</span>
 sub<span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">,</span> <span class="s">&quot;_DoubleU_&quot;</span><span class="p">,</span> state.name<span class="p">,</span> ignore.case <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 </code></pre></div>
-<p><strong>Excerise 2:</strong> Try replacing all of the <code>i</code>s with <code>y</code>s.  Are results what you expected? Why or why not?</p>
+<p><strong>Excerise 2:</strong> Try replacing all instances of <code>i</code> with <code>y</code>.  Are results what you expected? Why or why not?</p>
 
 <h3><code>gsub()</code></h3>
 
@@ -116,12 +116,12 @@ sub<span class="p">(</span><span class="s">&quot;w&quot;</span><span class="p">,
 
 <ul>
 <li><code>.</code>  Matches any single character</li>
-<li><code>\w</code> Matches any character that would be found in a &quot;word&quot; including digits (excludes punctuation and white space)</li>
-<li><code>\W</code> Is the opposite of \w and matches any non-word character</li>
-<li><code>\d</code> Matches any digit character</li>
-<li><code>\D</code> Matches any non-digit character</li>
-<li><code>\s</code> Matches any white space character</li>
-<li><code>\S</code> Matches any non space character</li>
+<li><code>\\w</code> Matches any character that would be found in a &quot;word&quot; including digits (excludes punctuation and white space)</li>
+<li><code>\\W</code> Is the opposite of <code>\\w</code> and matches any non-word character</li>
+<li><code>\\d</code> Matches any digit character</li>
+<li><code>\\D</code> Matches any non-digit character</li>
+<li><code>\\s</code> Matches any white space character</li>
+<li><code>\\S</code> Matches any non space character</li>
 </ul>
 
 <p>The following match specific characters or locations but are worth mentioning here:</p>
@@ -196,7 +196,7 @@ bnames <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class=
     as.is <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 bnames<span class="p">[</span>grep<span class="p">(</span><span class="s">&quot;Stac(y|i)&quot;</span><span class="p">,</span> bnames<span class="o">$</span>name<span class="p">),</span> <span class="p">]</span>
 </code></pre></div>
-<p><strong>Exercise 8:</strong> Pull out the names &quot;Jonathan&quot; &quot;Jonnie&quot; and &quot;Johnathon&quot; but not other Jon names.  Bonus: Only have Jon listed once in your search string.</p>
+<p><strong>Exercise 8:</strong> Pull out the names &quot;Jonathan&quot; &quot;Jonnie&quot; and &quot;Jonathon&quot; but not other Jon names.  Bonus: Only have Jon listed once in your search string.</p>
 
 <h3>Escapes</h3>
 
@@ -215,7 +215,7 @@ grep<span class="p">(</span><span class="s">&quot;IL.1.&quot;</span><span class=
 </code></pre></div>
 <h3>Back references</h3>
 
-<p>One of the powerful tools in regexps is the ability to refer back to a previous match.  The item that you want to refer back to is enclosed in parentheses.  You backreference with a backslash and a digit.  A <code>1</code> would indicate the first group enclosed in a parentheses, a <code>2</code> would refer to the second group, etc.</p>
+<p>One of the powerful tools in regexps is the ability to refer back to a previous match.  The item that you want to refer back to is enclosed in parentheses.  You backreference with a backslash and a digit.  A <code>\\1</code> would indicate the first group enclosed in a parentheses, a <code>\\2</code> would refer to the second group, etc.</p>
 
 <p>Suppose we want to find all state names that have letters repeated twice in a row.</p>
 <div class="highlight"><pre><code class="r">grep<span class="p">(</span><span class="s">&quot;(.)\\1&quot;</span><span class="p">,</span> state.name<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>

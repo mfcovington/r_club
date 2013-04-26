@@ -139,13 +139,13 @@ You can specify ranges of characters inside square brackets:
 
 There are also a number of predefined character classes.  For example:
 
-`[:punct:]`
-Punctuation characters:
-! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~.
+`[:punct:]` (punctuation characters):
+
+    ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
 
 See `?regex` for additional classes.
 
-Perhaps confusingly these classes must themselves be placed within square brackets
+Perhaps confusingly these classes must themselves be placed within square brackets (e.g., `[[:punct:]]`)
 
 ```{r regex 3}
 grep("[[:space:]]",state.name,value=T)
@@ -153,8 +153,8 @@ grep("[[:space:]]",state.name,value=T)
 
 ###Specifying repeats
 You can specify the number of times that a character or character class is repeated.
-? The preceding item is optional and will be matched at most once.
 
+* `?`     The preceding item is optional and will be matched at most once.
 * `*`     The preceding item will be matched zero or more times.
 * `+`     The preceding item will be matched one or more times.
 * `{n}`   The preceding item is matched exactly n times.

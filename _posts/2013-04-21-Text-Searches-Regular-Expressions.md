@@ -59,9 +59,9 @@ Use *`match()`* when you have two sets of values (lets call them Set A and Set B
 ```r
 # we have a list of favorite fruits and a list of citrus.  Which of the
 # favorites are citrus?
-favorites <- c("peach", "banana", "blueberry", "orange", "plum", "strawberry",
+favorites <- c("peach", "banana", "blueberry", "orange", "plum", "strawberry", 
     "mandarin")
-citrus <- c("kumquat", "grapefruit", "orange", "mandarin", "orange", "tangerine",
+citrus <- c("kumquat", "grapefruit", "orange", "mandarin", "orange", "tangerine", 
     "tangelo", "lemon", "lime")
 match(favorites, citrus)  #what do the numbers returned refer to?
 ```
@@ -159,13 +159,13 @@ You can specify ranges of characters inside square brackets:
 
 There are also a number of predefined character classes.  For example:
 
-`[:punct:]`
-Punctuation characters:
-! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~.
+`[:punct:]` (punctuation characters):
+
+    ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
 
 See `?regex` for additional classes.
 
-Perhaps confusingly these classes must themselves be placed within square brackets
+Perhaps confusingly these classes must themselves be placed within square brackets (e.g., `[[:punct:]]`)
 
 
 ```r
@@ -175,8 +175,8 @@ grep("[[:space:]]", state.name, value = T)
 
 ###Specifying repeats
 You can specify the number of times that a character or character class is repeated.
-? The preceding item is optional and will be matched at most once.
 
+* `?`     The preceding item is optional and will be matched at most once.
 * `*`     The preceding item will be matched zero or more times.
 * `+`     The preceding item will be matched one or more times.
 * `{n}`   The preceding item is matched exactly n times.
@@ -193,7 +193,7 @@ The `|` character can be read as "or" and can be used to specify alternates.
 
 ```r
 # Example: change the path below to point to 'bnames.csv' on your computer
-bnames <- read.csv("~/Documents/Teaching/RClub/plyr-tutorial/examples/bnames.csv",
+bnames <- read.csv("~/Documents/Teaching/RClub/plyr-tutorial/examples/bnames.csv", 
     as.is = T)
 bnames[grep("Stac(y|i)", bnames$name), ]
 ```
@@ -207,7 +207,7 @@ What if you want to match a `.` or other special character?  The following chara
 
 ```r
 # say you want all Chrom one ILs
-ILs <- c("IL.1.1", "IL.2.2", "IL.1.3", "IL.2.1", "IL.11.1", "IL.11.3", "IL.12.1",
+ILs <- c("IL.1.1", "IL.2.2", "IL.1.3", "IL.2.1", "IL.11.1", "IL.11.3", "IL.12.1", 
     "IL.12.2")
 # the following seems logical at first:
 grep("IL.1.", ILs, value = T)

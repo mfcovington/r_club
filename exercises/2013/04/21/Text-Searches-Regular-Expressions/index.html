@@ -80,9 +80,9 @@ sum<span class="p">(</span>grepl<span class="p">(</span>pattern <span class="o">
 <p>Use <em><code>match()</code></em> when you have two sets of values (lets call them Set A and Set B) and you want to know the (first) positions in Set B that match something that is in Set A.  Match only finds exact matches and can not be used with regular expressions.</p>
 <div class="highlight"><pre><code class="r"><span class="c1"># we have a list of favorite fruits and a list of citrus.  Which of the</span>
 <span class="c1"># favorites are citrus?</span>
-favorites <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;peach&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">,</span> <span class="s">&quot;blueberry&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;plum&quot;</span><span class="p">,</span> <span class="s">&quot;strawberry&quot;</span><span class="p">,</span>
+favorites <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;peach&quot;</span><span class="p">,</span> <span class="s">&quot;banana&quot;</span><span class="p">,</span> <span class="s">&quot;blueberry&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;plum&quot;</span><span class="p">,</span> <span class="s">&quot;strawberry&quot;</span><span class="p">,</span> 
     <span class="s">&quot;mandarin&quot;</span><span class="p">)</span>
-citrus <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;kumquat&quot;</span><span class="p">,</span> <span class="s">&quot;grapefruit&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;mandarin&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;tangerine&quot;</span><span class="p">,</span>
+citrus <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;kumquat&quot;</span><span class="p">,</span> <span class="s">&quot;grapefruit&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;mandarin&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;tangerine&quot;</span><span class="p">,</span> 
     <span class="s">&quot;tangelo&quot;</span><span class="p">,</span> <span class="s">&quot;lemon&quot;</span><span class="p">,</span> <span class="s">&quot;lime&quot;</span><span class="p">)</span>
 match<span class="p">(</span>favorites<span class="p">,</span> citrus<span class="p">)</span>  <span class="c1">#what do the numbers returned refer to?</span>
 </code></pre></div>
@@ -163,21 +163,20 @@ grep<span class="p">(</span><span class="s">&quot;a.a&quot;</span><span class="p
 
 <p>There are also a number of predefined character classes.  For example:</p>
 
-<p><code>[:punct:]</code>
-Punctuation characters:
-! &quot; # $ % &amp; &#39; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~.</p>
-
+<p><code>[:punct:]</code> (punctuation characters):</p>
+<div class="highlight"><pre><code class="text">! &quot; # $ % &amp; &#39; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~
+</code></pre></div>
 <p>See <code>?regex</code> for additional classes.</p>
 
-<p>Perhaps confusingly these classes must themselves be placed within square brackets</p>
+<p>Perhaps confusingly these classes must themselves be placed within square brackets (e.g., <code>[[:punct:]]</code>)</p>
 <div class="highlight"><pre><code class="r">grep<span class="p">(</span><span class="s">&quot;[[:space:]]&quot;</span><span class="p">,</span> state.name<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 </code></pre></div>
 <h3>Specifying repeats</h3>
 
-<p>You can specify the number of times that a character or character class is repeated.
-? The preceding item is optional and will be matched at most once.</p>
+<p>You can specify the number of times that a character or character class is repeated.</p>
 
 <ul>
+<li><code>?</code>     The preceding item is optional and will be matched at most once.</li>
 <li><code>*</code>     The preceding item will be matched zero or more times.</li>
 <li><code>+</code>     The preceding item will be matched one or more times.</li>
 <li><code>{n}</code>   The preceding item is matched exactly n times.</li>
@@ -193,7 +192,7 @@ Punctuation characters:
 
 <p>The <code>|</code> character can be read as &quot;or&quot; and can be used to specify alternates.</p>
 <div class="highlight"><pre><code class="r"><span class="c1"># Example: change the path below to point to &#39;bnames.csv&#39; on your computer</span>
-bnames <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;~/Documents/Teaching/RClub/plyr-tutorial/examples/bnames.csv&quot;</span><span class="p">,</span>
+bnames <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;~/Documents/Teaching/RClub/plyr-tutorial/examples/bnames.csv&quot;</span><span class="p">,</span> 
     as.is <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>
 bnames<span class="p">[</span>grep<span class="p">(</span><span class="s">&quot;Stac(y|i)&quot;</span><span class="p">,</span> bnames<span class="o">$</span>name<span class="p">),</span> <span class="p">]</span>
 </code></pre></div>
@@ -203,7 +202,7 @@ bnames<span class="p">[</span>grep<span class="p">(</span><span class="s">&quot;
 
 <p>What if you want to match a <code>.</code> or other special character?  The following characters have special meaning in regular expressions: <code>. \ | ( ) [ { ^ $ * + ?</code> and if you want to search for them you have to do something special.</p>
 <div class="highlight"><pre><code class="r"><span class="c1"># say you want all Chrom one ILs</span>
-ILs <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;IL.1.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.2.2&quot;</span><span class="p">,</span> <span class="s">&quot;IL.1.3&quot;</span><span class="p">,</span> <span class="s">&quot;IL.2.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.11.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.11.3&quot;</span><span class="p">,</span> <span class="s">&quot;IL.12.1&quot;</span><span class="p">,</span>
+ILs <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;IL.1.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.2.2&quot;</span><span class="p">,</span> <span class="s">&quot;IL.1.3&quot;</span><span class="p">,</span> <span class="s">&quot;IL.2.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.11.1&quot;</span><span class="p">,</span> <span class="s">&quot;IL.11.3&quot;</span><span class="p">,</span> <span class="s">&quot;IL.12.1&quot;</span><span class="p">,</span> 
     <span class="s">&quot;IL.12.2&quot;</span><span class="p">)</span>
 <span class="c1"># the following seems logical at first:</span>
 grep<span class="p">(</span><span class="s">&quot;IL.1.&quot;</span><span class="p">,</span> ILs<span class="p">,</span> value <span class="o">=</span> <span class="k-Variable">T</span><span class="p">)</span>

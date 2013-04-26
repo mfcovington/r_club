@@ -1,7 +1,7 @@
 ---
 title: Strings and Regular Expressions
 layout: post
-categories: resources
+categories: exercises
 comments: true
 duedate:
 author: Julin Maloof
@@ -18,7 +18,7 @@ R has extensive tools for searching for text (string) patterns and performing su
 
 These functions can search for exact matches or can make use of an extensive syntax for wildcards, known as *regular expressions*.  I will first describe the search functions and then explain regular expressions.
 
-In this excercise, type all of the code blocks into your computer to see what happens!  Experiment as you go!
+In this exercise, type all of the code blocks into your computer to see what happens!  Experiment as you go!
 
 Search Functions
 ----------------
@@ -59,9 +59,9 @@ Use *`match()`* when you have two sets of values (lets call them Set A and Set B
 ```r
 # we have a list of favorite fruits and a list of citrus.  Which of the
 # favorites are citrus?
-favorites <- c("peach", "bannana", "blueberry", "orange", "plum", "strawberry", 
+favorites <- c("peach", "banana", "blueberry", "orange", "plum", "strawberry",
     "mandarin")
-citrus <- c("kumquat", "grapefruit", "orange", "mandarin", "orange", "tangerine", 
+citrus <- c("kumquat", "grapefruit", "orange", "mandarin", "orange", "tangerine",
     "tangelo", "lemon", "lime")
 match(favorites, citrus)  #what do the numbers returned refer to?
 ```
@@ -193,7 +193,7 @@ The `|` character can be read as "or" and can be used to specify alternates.
 
 ```r
 # Example: change the path below to point to 'bnames.csv' on your computer
-bnames <- read.csv("~/Documents/Teaching/RClub/plyr-tutorial/examples/bnames.csv", 
+bnames <- read.csv("~/Documents/Teaching/RClub/plyr-tutorial/examples/bnames.csv",
     as.is = T)
 bnames[grep("Stac(y|i)", bnames$name), ]
 ```
@@ -207,7 +207,7 @@ What if you want to match a `.` or other special character?  The following chara
 
 ```r
 # say you want all Chrom one ILs
-ILs <- c("IL.1.1", "IL.2.2", "IL.1.3", "IL.2.1", "IL.11.1", "IL.11.3", "IL.12.1", 
+ILs <- c("IL.1.1", "IL.2.2", "IL.1.3", "IL.2.1", "IL.11.1", "IL.11.3", "IL.12.1",
     "IL.12.2")
 # the following seems logical at first:
 grep("IL.1.", ILs, value = T)

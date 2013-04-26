@@ -19,7 +19,7 @@ R has extensive tools for searching for text (string) patterns and performing su
 
 These functions can search for exact matches or can make use of an extensive syntax for wildcards, known as *regular expressions*.  I will first describe the search functions and then explain regular expressions.
 
-In this excercise, type all of the code blocks into your computer to see what happens!  Experiment as you go!
+In this exercise, type all of the code blocks into your computer to see what happens!  Experiment as you go!
 
 Search Functions
 ----------------
@@ -53,7 +53,7 @@ Use *`match()`* when you have two sets of values (lets call them Set A and Set B
 
 ```{r match example}
 #we have a list of favorite fruits and a list of citrus.  Which of the favorites are citrus?
-favorites <- c("peach","bannana","blueberry","orange","plum","strawberry","mandarin")
+favorites <- c("peach","banana","blueberry","orange","plum","strawberry","mandarin")
 citrus <- c("kumquat","grapefruit","orange","mandarin","orange","tangerine","tangelo","lemon","lime")
 match(favorites,citrus) #what do the numbers returned refer to?
 ```

@@ -3,6 +3,7 @@ title: Updating R and ggplot2
 layout: post
 categories: resources
 comments: true
+author: Mike Covington
 duedate:
 ---
 

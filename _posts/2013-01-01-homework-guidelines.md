@@ -3,7 +3,7 @@ title: Homework Guidelines
 layout: post
 categories:
 comments: true
-author: mike
+author: Mike Covington
 ---
 
 Coming Soon.

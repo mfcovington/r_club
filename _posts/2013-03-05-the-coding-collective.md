@@ -3,7 +3,7 @@ title: The Coding Collective™
 layout: post
 categories: resources
 comments: true
-author: mike
+author: Mike Covington
 ---
 
 # Comrades in R

@@ -4,6 +4,8 @@ layout: post
 categories: homework
 comments: true
 duedate: 2013-04-04
+related: 2013-04-03-Data-Types-and-Reshape-Answers
+author: Julin Maloof
 ---
 
 R Homework for April 4, 2013

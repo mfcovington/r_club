@@ -4,6 +4,7 @@ layout: post
 categories: solutions
 comments: true
 duedate:
+related: 2013-04-21-Text-Searches-Regular-Expressions
 author: Julin Maloof
 ---
 String Searching and Manipulation

@@ -5,6 +5,7 @@ categories: solutions
 comments: true
 duedate:
 related: 2013-02-26-peer-produced-plots
+author: Mike Covington
 ---
 
 # And wits were matched.

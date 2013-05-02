@@ -4,6 +4,8 @@ layout: post
 categories: resources
 comments: true
 duedate:
+related: 2013-03-27-DataStructures
+author: Julin Maloof
 ---
 
 Data Types

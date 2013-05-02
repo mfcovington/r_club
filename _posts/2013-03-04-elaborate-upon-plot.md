@@ -5,6 +5,7 @@ categories: homework
 comments: true
 duedate: 2013-03-07
 related: 2013-03-14-elaborate-upon-plot-solutions
+author: Mike Covington
 ---
 
 # Standing on the shoulders of giants

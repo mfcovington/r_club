@@ -5,6 +5,7 @@ categories: solutions
 comments: true
 duedate:
 related: [ "2013-03-04-elaborate-upon-plot", "2013-03-21-restyle" ]
+author: Mike Covington
 ---
 
 # Prep

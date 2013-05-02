@@ -5,6 +5,7 @@ categories: homework
 comments: true
 duedate: 2013-02-28
 related: 2013-02-28-peer-produced-plots-solutions
+author: Mike Covington
 ---
 
 # Time to match wits...

@@ -493,6 +493,10 @@ a.buttons:hover {
     text-align: right;
 }
 
+.author {
+    text-align: right;
+}
+
 /* Section - for main page content */
 
 section {

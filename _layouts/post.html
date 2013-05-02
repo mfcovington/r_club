@@ -21,6 +21,12 @@ layout: default
   {% endif %}
 </div>
 
+<div class = "author">
+  {% if page.author %}
+    posted by: {{ page.author }}
+  {% endif %}
+</div>
+
 <div class="content">
   <div id="post">
     {{ content }}

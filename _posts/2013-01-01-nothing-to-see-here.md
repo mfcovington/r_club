@@ -3,7 +3,7 @@ title: Move along...
 layout: post
 categories:
 comments: true
-author: mike
+author: Mike Covington
 ---
 
 # Nothing to see here

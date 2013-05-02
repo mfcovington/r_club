@@ -4,6 +4,7 @@ layout: post
 categories: homework
 comments: true
 duedate: 2013-02-28
+author: Mike Covington
 ---
 
 # Time to match wits...

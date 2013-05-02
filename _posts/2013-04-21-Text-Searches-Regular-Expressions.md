@@ -3,7 +3,8 @@ title: Strings and Regular Expressions
 layout: post
 categories: exercises
 comments: true
-duedate:
+duedate: 2013-05-02
+related: 2013-05-01-Text-Searches-Regular-Expressions-Answers
 author: Julin Maloof
 ---
 

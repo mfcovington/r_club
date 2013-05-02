@@ -1,7 +1,7 @@
 ---
-title: Strings and Regular Expressions
+title: Strings and Regular Expressions Answers
 layout: post
-categories: resources
+categories: solutions
 comments: true
 duedate:
 author: Julin Maloof

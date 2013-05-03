@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>solutions</title>
+    <title>More Regular Expressions...</title>
     <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/pygment_trac.css">
     <link rel="stylesheet" type="text/css" href="/r_club/stylesheets/styles.css">
     <link rel="shortcut icon" href="/r_club/favicon.ico" type="image/x-icon">
@@ -32,141 +32,89 @@
     <div class="wrapper">
       <header>
         <h1 class="header"><a href="/r_club/">R Club</a></h1>
-        <h2 class="header">solutions</h2>
+        <h2 class="header">More Regular Expressions...</h2>
       </header>
       <section>
-        <div class="content">
-    
+        <div class = "duedate">
+  
+    <h3>due by: 2013-05-09</h3>
+  
 </div>
 
-<div class="all-posts">
-<h3>All Solutions Posts</h3>
-<ul>
+<div class = "related">
   
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-      <li>
-        <a href="/r_club/solutions/2013/05/01/Text-Searches-Regular-Expressions-Answers/"><strong>Strings and Regular Expressions Answers</strong></a> - 2013-05-01
-      </li>
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-      <li>
-        <a href="/r_club/solutions/2013/04/03/Data-Types-and-Reshape-Answers/"><strong>Homework--Data Types and Reshape</strong></a> - 2013-04-03
-      </li>
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-      <li>
-        <a href="/r_club/solutions/2013/03/14/elaborate-upon-plot-solutions/"><strong>Elaborate upon a plot (solutions)</strong></a> - 2013-03-14
-      </li>
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-      <li>
-        <a href="/r_club/solutions/2013/02/28/peer-produced-plots-solutions/"><strong>Peer-produced plots (solutions)</strong></a> - 2013-02-28
-      </li>
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-      <li>
-        <a href="/r_club/solutions/2013/02/24/Heart-Doc/"><strong>Documentation for The Random Heart Generator</strong></a> - 2013-02-24
-      </li>
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-    
-    
-  
-</ul>
 </div>
+
+<div class = "author">
+  
+    posted by: Mike Covington
+  
+</div>
+
+<div class="content">
+  <div id="post">
+    <h1>Exercise 1: Extracting important info from filenames</h1>
+
+<p>You have a dataset and need to extract metadata for IL name, sun/shade treatment, and replicate number from the filenames:</p>
+<div class="highlight"><pre><code class="r">filename.1 <span class="o">&lt;-</span> <span class="s">&quot;a IL-9.2.4 crazy SH file rep1 name&quot;</span>
+filename.2 <span class="o">&lt;-</span> <span class="s">&quot;anotherIL-12.4sillySUfilerep20name&quot;</span>
+</code></pre></div>
+<p>You&#39;d like to convert the filenames into <code>IL-9.2.4,SH,rep1</code> and <code>IL-12.4,SU,rep20</code>, which can easily be split on the delimiting comma with <code>strsplit()</code>.</p>
+
+<p>Extract this metadata using <code>sub()</code> followed by <code>strsplit</code> to split the resulting string. You will need to make use of three capture groups.</p>
+
+<h1>Exercise 2: Character conversions</h1>
+
+<p>In last week&#39;s exercise #2, you were asked to replace all of the &quot;i&quot;s in state names with &quot;y&quot;s. Using <code>gsub(&quot;i&quot;, &quot;y&quot;, state.name, ignore.case = T)</code> accomplished that task, but resulted in state names beginning with lower case &quot;y&quot;s.</p>
+
+<p>There is another (non-regex) function that can be used instead: <code>chartr()</code> does character translations from one characer to another. To convert all &quot;i&quot;s to &quot;y&quot;s and all &quot;I&quot;s to &quot;Y&quot;s in the state names, we can use the following:</p>
+<div class="highlight"><pre><code class="r">data<span class="p">(</span>state<span class="p">)</span>
+chartr<span class="p">(</span><span class="s">&quot;Ii&quot;</span><span class="p">,</span> <span class="s">&quot;Yy&quot;</span><span class="p">,</span> state.name<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">##  [1] &quot;Alabama&quot;        &quot;Alaska&quot;         &quot;Aryzona&quot;        &quot;Arkansas&quot;      
+##  [5] &quot;Calyfornya&quot;     &quot;Colorado&quot;       &quot;Connectycut&quot;    &quot;Delaware&quot;      
+##  [9] &quot;Floryda&quot;        &quot;Georgya&quot;        &quot;Hawayy&quot;         &quot;Ydaho&quot;         
+## [13] &quot;Yllynoys&quot;       &quot;Yndyana&quot;        &quot;Yowa&quot;           &quot;Kansas&quot;        
+## [17] &quot;Kentucky&quot;       &quot;Louysyana&quot;      &quot;Mayne&quot;          &quot;Maryland&quot;      
+## [21] &quot;Massachusetts&quot;  &quot;Mychygan&quot;       &quot;Mynnesota&quot;      &quot;Myssyssyppy&quot;   
+## [25] &quot;Myssoury&quot;       &quot;Montana&quot;        &quot;Nebraska&quot;       &quot;Nevada&quot;        
+## [29] &quot;New Hampshyre&quot;  &quot;New Jersey&quot;     &quot;New Mexyco&quot;     &quot;New York&quot;      
+## [33] &quot;North Carolyna&quot; &quot;North Dakota&quot;   &quot;Ohyo&quot;           &quot;Oklahoma&quot;      
+## [37] &quot;Oregon&quot;         &quot;Pennsylvanya&quot;   &quot;Rhode Ysland&quot;   &quot;South Carolyna&quot;
+## [41] &quot;South Dakota&quot;   &quot;Tennessee&quot;      &quot;Texas&quot;          &quot;Utah&quot;          
+## [45] &quot;Vermont&quot;        &quot;Vyrgynya&quot;       &quot;Washyngton&quot;     &quot;West Vyrgynya&quot; 
+## [49] &quot;Wysconsyn&quot;      &quot;Wyomyng&quot;
+</code></pre></div>
+<p>Sidenote: two other non-regex functions used to convert text are <code>tolower()</code> and <code>toupper()</code>:</p>
+<div class="highlight"><pre><code class="r">x <span class="o">&lt;-</span> <span class="s">&quot;Oh my.... Look over there!&quot;</span>
+tolower<span class="p">(</span>x<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">## [1] &quot;oh my.... look over there!&quot;
+</code></pre></div><div class="highlight"><pre><code class="r">toupper<span class="p">(</span>x<span class="p">)</span>
+</code></pre></div><div class="highlight"><pre><code class="text">## [1] &quot;OH MY.... LOOK OVER THERE!&quot;
+</code></pre></div>
+<p><strong>Your task</strong>: You want to look cool, so use two of these functions to convert the state names such that all vowells are uppercase and all consonants are lower case.</p>
+
+<h1>Exercise 3: (in progress)</h1>
+
+  </div>
+</div>
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'rclub'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
       </section>
       <footer>
 

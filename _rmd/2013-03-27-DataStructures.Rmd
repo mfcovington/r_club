@@ -1,0 +1,124 @@
+---
+title: Data Structures
+layout: post
+categories: resources
+comments: true
+duedate:
+related: 2013-03-27-DataTypes
+author: Julin Maloof
+---
+
+Data Structures
+========================================================
+This document provides a brief introduciton to *Data Structures*: the different types of objects that R uses for storing data.  See a separate document on *Data Types*
+
+We will cover vectors, matrices, arrays, data frames, and lists.
+
+Vectors
+-------
+*Vectors* are 1 dimensionsal collections of items of the same data type*.
+
+```{r vector examples}
+#construction
+a <- 10:20 #a numeric vector
+a
+#you can add names
+names(a) <- letters[1:11]
+a
+b <- c("julin","siobhan","stacey") # a character vector
+b
+c <- c(T,T,F) # a logical vector
+#testing
+#query an object to see if it is a vector:
+is.vector(a)
+#subetting
+#by position
+a[4]
+a[3:6]
+a[c(3,5,7)]
+#by name
+a["c"]
+a[c("b","d","e")]
+```
+*exception: lists are technically vectors and can hold different data types
+
+
+Matrices
+--------
+*Matrices* are 2 dimensional collections of items of the same data type.
+
+```{r matrix examples}
+#you can use the matrix() function to make matrices
+m <- matrix(1:25,ncol=5)
+m
+is.matrix(m)
+dim(m)
+#you can also use rbind() or cbind()
+m2 <- rbind(c(1,2,3),
+            c(11,12,13),
+            c(21,22,23))
+m2
+```
+
+Arrays
+------
+*Arrays* are like matrices but have have 2 or more dimensions.  (Matrices are arrays but only have 2 dimensions)
+```{r array examples}
+#construction
+my.array <- array(1:27,dim=c(3,3,3)) # a 3D array
+my.array
+#testing
+is.array(my.array)
+#subsetting
+#you can access subsets of the array using square brackets
+my.array[1,,] # first row, across all columns and the 3rd Dim #note this is now 2 dimensions
+my.array[2,2,3] #now 1 dimension
+```
+
+Data Frames
+-----------
+*Data Frames* are 2 dimensional objects, like matrices, **but** each column can hold a different data type.  This is an exceptionaly useful data structure.
+
+```{r data frames}
+#construction
+df <- data.frame(genotype=c("phyB","Col","phyB","Col"),hyp.length=c(10,3,9,2))
+df
+#subsetting
+#get an individual column with "$"
+df$genotype
+#or get any subset by []
+df[3,2] #second column, third row
+df['hyp.length']
+#testing
+is.data.frame(df)
+#converting
+as.matrix(df)
+as.data.frame(m)
+
+```
+
+Lists
+-----
+Lists are 1 dimensionsal structures where each item can be any data type.
+```{r lists}
+#here we create a list that holds many of the earlier objects
+my.list <- list(my.matrix=m,my.df=df,my.array=my.array,my.first.vector=a,my.second.vector=b)
+my.list
+#testing
+is.list(my.list)
+#subsetting
+#you can use the $ extractor
+my.list$my.first.vector
+#you can use [], which will return a smaller list
+my.list[2] # the second item
+my.list[2:3] #second and third item.
+my.list["my.second.vector"]
+#you can use [[]] which will return the item itself
+my.list[[2]]
+is.data.frame(my.list[[2]])
+#compare with
+is.data.frame(my.list[2])
+#unlist() sometimes is helpful
+unlist(my.list[2])
+```
+*Posted by Julin Maloof*

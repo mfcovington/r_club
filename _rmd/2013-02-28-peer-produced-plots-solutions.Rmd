@@ -1,0 +1,484 @@
+---
+title: Peer-produced plots (solutions)
+layout: post
+categories: solutions
+comments: true
+duedate:
+related: 2013-02-26-peer-produced-plots
+author: Mike Covington
+---
+
+# And wits were matched.
+
+Your R Club buddies have been experimenting with ways to plot data with ggplot. Below is a sampling of their efforts. Your duty this week was to choose at least three plots and figure out how they were plotted.
+
+## Getting ready
+
+We'll start by reading in the Tomato Dataset and getting rid of `NA` values.
+
+```{r echo = -(1:2), tidy = FALSE}
+# prep
+setwd("~/git.repos/r_club/_classdocs/data/")
+tomato <- read.table("TomatoR2CSHL.csv", header = T, sep = ",")
+tomato <- na.omit(tomato)
+library(ggplot2)
+```
+
+In addition to the Tomato Dataset that we've been using, people have made plots with the `movies` and `mpg` datasets (which come with ggplot2 and are, therefore, loaded with `library(ggplot2)`). If the datasets don't look familiar, be sure to scroll down to the 'Data' section of the [ggplot2 docs](http://docs.ggplot2.org/current/).
+
+## Approach to solving challenges
+
+When trying to figure out how to write the code for a plot, I recommend making a quick set of observations:
+
+<aside class="hint">
+
+1. Which dataset is being used?
+2. Which aesthetics (`x`, `color`, `shape`, etc.) are *mapped* to which variables (length, treatment, species, etc.)?
+    - Look for x-/y-axis labels (histograms, density plots, etc. only use a single variable, so `y` won't be mapped to anything).
+    - Look for legend labels.
+    - Not only can an aesthetic be mapped to a variable, but also to a transformed variable (e.g., `log(length)`) or the output from a multi-variable equation (e.g., `(length * width) / sqrt(mass)`).
+3. Which aesthetics are *set* to constants?
+    - These may not be readily apparent until after you've made an initial plot and notice differences between it and the plot you are trying to reproduce.
+4. Which geoms are being used?
+5. Is the plot faceted? If so, by which variable(s)?
+    - Look at the labels along the top-most and/or right-most panels for clues to which variables were used for faceting.
+6. Is a non-cartesian coordinate system being used?
+    - I'm just including this for completeness since we have not yet looked at different coordinate systems.
+
+</aside>
+
+For many plots, you can take this information and plug it into some ggplot functions to get a decent first draft. Next you are ready to make a couple more observations to make further improvements:
+
+- Are any custom color, size, etc. scales being used? If so, is the relevant data discrete or continuous?
+- Have labels been customized?
+
+Taken together, these observations essentially serve as pseudocode for the plot in question.
+
+## Challenge 1
+
+Stacey used the [movies dataset](http://docs.ggplot2.org/current/movies.html) to plot movie rating since the dawn of cinematography (binned by density) .
+
+#### Figure 1A:
+
+```{r 2013-02-26-challenge01, tidy = FALSE, echo = FALSE}
+m <- ggplot(movies)
+m +  geom_hex(aes(year, rating, fill = ..density..), color = "black") +
+  scale_fill_gradientn(colours = rainbow(7))
+```
+
+<aside class="hint">
+
+1. dataset: `movies`
+2. mappings:
+    - `x`: year
+    - `y`: rating
+    - `fill`: density
+3. settings:
+    - `color`: black (This isn't really noticeable until you build the plot and find that there are no black borders on the hexagons)
+4. geom(s): `geom_hex()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
+
+Based on our observations, we see that **Figure 1A** uses `geom_hex()` (which bins a 2-dimensional plane into hexagons) to plot movie `rating` by `year`. By default, the hexagons are colored based on the number of counts in each hexagon; however, Stacey manually set the `fill = ..density..` when she made her plot:
+
+```{r 2013-02-26-challenge01a, tidy = FALSE, eval = FALSE}
+ggplot(movies) +
+  geom_hex(aes(x    = year,
+               y    = rating,
+               fill = ..density..),
+           color = "black") +
+  scale_fill_gradientn(colours = rainbow(7))
+```
+
+In this case, the only real difference between counts and density is seen with the scale bar in the legend. Below (**Fig. 1B**) is the same plot, but with the default fill (i.e., counts) being used. The graphical regions of the plot **Figures 1A** and **1B** are identical.
+
+#### Figure 1B:
+
+```{r 2013-02-26-challenge01b, tidy = FALSE}
+ggplot(movies) +
+  geom_hex(aes(x = year,
+               y = rating),
+           color = "black") +
+  scale_fill_gradientn(colours = rainbow(7))
+```
+
+However, if we were to instead make this plot faceted, we begin to see the difference between the 'counts' and 'density'. The next two figures are faceted by whether the movie being considered is a drama. The first one shows that with the default method, the fill color is scaled relative to all the data for the entire plot (**Fig. 1C**), whereas mapping `fill = ..density..` results in the data within each panel being scaled relative to the relevant panel (**Fig. 1D**).
+
+#### Figure 1C:
+
+```{r 2013-02-26-challenge01c, tidy = FALSE}
+ggplot(movies) +
+  geom_hex(aes(x = year,
+               y = rating),
+           color = "black") +
+  scale_fill_gradientn(colours = rainbow(7)) +
+  facet_grid(. ~ Drama)
+```
+
+#### Figure 1D:
+
+```{r 2013-02-26-challenge01d, tidy = FALSE}
+ggplot(movies) +
+  geom_hex(aes(x    = year,
+               y    = rating,
+               fill = ..density..),
+           color = "black") +
+  scale_fill_gradientn(colours = rainbow(7)) +
+  facet_grid(. ~ Drama)
+```
+
+When reproducing this plot, many people had issues with setting the border of each hexbin to black. To set the color successfully, you need to remember two things:
+
+- The color of lines, dots, borders, etc. is specified with `color` and the fill color for shapes with `fill`.
+- When you are mapping an aesthetic to a variable (of your dataset), you specify that inside `aes()`; however, when setting an aesthetic to a constant value, color, etc., it needs to be done *outside* of `aes()`. I've formatted the indentation pattern of the code snippets above to reinforce the fact that `x`, `y`, and, `fill` are aesthetics, but `color` is not.
+
+<aside class="warn">
+**Warning:** Most of the time, ggplot2 accepts `color` and `colour` interchangeably; however, inside `scale_fill_gradientn()` is currently an exception and `colour` must be used.
+</aside>
+
+## Challenge 2
+
+Ciera plotted MPAA movie rating trends over the last couple decades.
+
+#### Figure 2:
+
+```{r 2013-02-26-challenge02, tidy = FALSE, echo = FALSE}
+movies.mpaa.new <- subset(movies, mpaa != "" & year >= 1990)
+ggplot(movies.mpaa.new, aes(x=year, fill=mpaa)) +
+  geom_density(alpha=.5) +
+  labs(title = "The Density Distribution of MPAA Rated Films from 1990-2005") +
+  theme(legend.position = "bottom")
+```
+
+<aside class="hint">
+
+1. dataset: `movies`
+2. mappings:
+    - `x`: year
+    - `fill`: MPAA rating
+3. settings: NA
+4. geom(s): `geom_density()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
+
+We need to start by sub-setting the movies such that we are only considering movies with MPAA ratings since 1990. Here are two equally valid ways to subset the data:
+
+```{r 2013-02-26-challenge02a1, tidy = FALSE}
+movies.mpaa.new <- subset(movies, mpaa != "" & year >= 1990)
+```
+
+```{r 2013-02-26-challenge02a2, tidy = FALSE}
+movies.mpaa.new <- movies[movies$mpaa != "" & movies$year >= 1990, ]
+```
+
+There are multiple ways to assemble the code for building a plot. To emphasize the different layers/components of a ggplot2-generated figure, we'll assign each part of the plot to a separate variable and then combine them to generate **Figure 2**.
+
+For the base of the plot, we specify the data subset (`movies.mpaa.new`) that we just created and map the aesthetics `x` and `fill`. Unlike `geom_hex()` plots, `color` in a `geom_density()` plot defaults to black so we don't need to set it.
+
+```{r 2013-02-26-challenge02b, tidy = FALSE}
+base <- ggplot(movies.mpaa.new,
+               aes(x    = year,
+                   fill = mpaa))
+```
+
+Next, we specify the `geom_density()` layer. In order to see the densities for each MPAA rating, we need to change `alpha` (the transparency setting). For her plot, Ciera set `alpha = 1/2`. Note that it is not inside `aes()`, because we are setting it to an absolute value rather than mapping it to a data attribute. Also, we must place it inside `geom_density()`, not `ggplot()`. Typically, you only specify the dataset and aesthetics with `ggplot()`.
+
+```{r 2013-02-26-challenge02c, tidy = FALSE}
+density <- geom_density(alpha = 1/2)
+```
+
+Using `labs()`, we can customize the labels for the entire plot, the axes, and/or the legend scales.
+
+```{r 2013-02-26-challenge02d, tidy = FALSE}
+label <- labs(title = "The Density Distribution of MPAA Rated Films from 1990-2005")
+```
+
+To move the legend from the right-side of the figure to the bottom, we can set the `legend.position` element with `theme()`.
+
+```{r 2013-02-26-challenge02e, tidy = FALSE}
+theme.custom <- theme(legend.position = "bottom")
+```
+
+<aside class="warn">
+**Warning:** Remember that customizing the look of ggplots with `opts()` has been deprecated. If you are using `opts()`, find a different way to accomplish what you want. Even if `opts()` might work for you now, the functionality could change or break with any new release of ggplot2.
+</aside>
+
+Now that we've defined each component of **Figure 2**, we can put them together like this:
+
+```{r 2013-02-26-challenge02f, tidy = FALSE, eval = FALSE}
+base + density + label + theme.custom
+```
+
+I won't bother actually plotting this here, because it will be identical to **Figure 2**; however, I hope you can see the potential here for highly-readable modular customization. Rather than copy and pasting a big chunk of code for making small changes to create new plots, you can assign to variables any parts that you want to remain constant between your plots.
+
+## Challenge 3
+
+Miguel is a huge fan of the written word. One of his life goals is to bridge the gap between science and literature. He made this plot in hopes of advancing this cause.
+
+#### Figure 3A:
+
+```{r 2013-02-26-challenge03, tidy = FALSE, echo = FALSE}
+p<-ggplot(tomato, aes(alt, hyp))
+p+geom_text(aes(size=leafnum, label=species, color=trt, angle=30))+
+  facet_grid(.~who)+
+  xlab("ALTITUDE")+
+  ylab("HYPOCOTYL LENGTH")+
+  labs(title="TOMATO DATA IN WORDS")
+```
+
+<aside class="hint">
+
+1. dataset: `tomato`
+2. mappings:
+    - `x`: altitude
+    - `y`: hypocotyl length
+    - `label`: species (this is a `geom_text`-specific aesthetic)
+    - `color`: treatment
+    - `size`: leaf number
+3. settings:
+    - `angle`: 30° (This isn't really noticeable until you build the plot and find that the text is horizontal)
+4. geom(s): `geom_text()`
+5. facets: who
+6. coordinates: cartesian
+
+</aside>
+
+
+**Figure 3A** can be generated with:
+
+```{r 2013-02-26-challenge03a, tidy = FALSE, eval = FALSE}
+ggplot(tomato, aes(x     = alt,
+                   y     = hyp,
+                   size  = leafnum,
+                   label = species,
+                   color = trt,
+                   angle = 30)) +
+  geom_text() +
+  facet_grid(. ~ who) +
+  labs(title = "TOMATO DATA IN WORDS",
+       x     = "ALTITUDE",
+       y     = "HYPOCOTYL LENGTH")
+```
+
+Here, we see `geom_text()` in action. As usual, we start by specifying the dataset and aesthetics within `ggplot()`. If you look closely, you'll notice that `angle` is the exception to the rule regarding mapping vs. setting. Even though we are setting `angle = 30` rather than mapping it to a parameter from the dataset, it must be placed inside `aes()`. Putting it in what should be the proper place (`geom_text(angle = 30)`), causes the words to be plotted at a 30° angle, but also results in the letters in the legend to be angled as shown in **Figure 3B**.
+
+#### Figure 3B:
+
+```{r 2013-02-26-challenge03b, tidy = FALSE}
+ggplot(tomato, aes(x     = alt,
+                   y     = hyp,
+                   size  = leafnum,
+                   label = species,
+                   color = trt)) +
+  geom_text(angle = 30) +
+  facet_grid(. ~ who) +
+  labs(title = "TOMATO DATA IN WORDS",
+       x     = "ALTITUDE",
+       y     = "HYPOCOTYL LENGTH")
+```
+
+I think either approach is reasonable, but the legend in **Figure 3A** looks a bit more clean to me. As for the other parts of the code, note how `labs()` is used to specify labels for the entire plot and both axes. A less elegant, yet completely functional alternative approach is:
+
+```{r 2013-02-26-challenge03c, tidy = FALSE, eval = FALSE}
++ ggtitle("TOMATO DATA IN WORDS") +
+  xlab("ALTITUDE") +
+  ylab("HYPOCOTYL LENGTH")
+```
+
+## Challenge 4
+
+Cody found a geom that can be used to compare distributions by plotting them along the axes. Can you find it, too?
+
+#### Figure 4:
+
+```{r 2013-02-26-challenge04, tidy = FALSE, echo = FALSE}
+ggplot(tomato, aes(x=leafleng, y=leafwid, colour=who)) +
+    xlab("Leaf Length (mm)") +
+    ylab("Leaf Width (mm)") +
+    geom_point() +
+    geom_rug() +
+    theme(aspect.ratio = 1)
+```
+
+<aside class="hint">
+
+1. dataset: `tomato`
+2. mappings:
+    - `x`: leaf length
+    - `y`: leaf width
+    - `color`: who
+3. settings: NA
+4. geom(s):
+    - `geom_point()`
+    - `geom_rug()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
+
+
+```{r 2013-02-26-challenge04a, tidy = FALSE, eval = FALSE}
+ggplot(tomato, aes(x      = leafleng,
+                   y      = leafwid,
+                   colour = who)) +
+    geom_point() +
+    geom_rug() +
+    labs(x = "Leaf Length (mm)",
+         y = "Leaf Width (mm)") +
+    theme(aspect.ratio = 1)
+```
+
+## Challenge 5
+
+For Valentine's Day, Jessica received a $20 gift card for a local gas station. Before she redeems it, she wants to find out which types of car will get her to the Bay Area and back on five gallons.
+
+#### Figure 5:
+
+```{r 2013-02-26-challenge05, message = FALSE, tidy = FALSE, echo = FALSE}
+ggplot(mpg, aes(class,
+                hwy,
+                colour = manufacturer)) +
+  labs (x = "Class",
+        y = "Highway (mpg)") +
+  geom_dotplot(aes(fill = manufacturer),
+               binaxis  = "y",
+               stackdir = "center",
+               binpositions = "all") +
+  theme(aspect.ratio = 0.5,
+        axis.text.x = element_text(angle = 45))
+```
+
+<aside class="hint">
+
+1. dataset: `mpg`
+2. mappings:
+    - `x`: class
+    - `y`: highway mpg
+    - `fill`: manufacturer
+    - `color`: manufacturer (The default border color for `geom_dotplot()` dots is black)
+3. settings: NA
+4. geom(s): `geom_dotplot()`
+5. facets: NA
+6. coordinates: cartesian
+
+</aside>
+
+```{r 2013-02-26-challenge05a, message = FALSE, tidy = FALSE, eval = FALSE}
+ggplot(mpg, aes(x      = class,
+                y      = hwy,
+                colour = manufacturer,
+                fill   = manufacturer)) +
+  geom_dotplot(binaxis      = "y",
+               stackdir     = "center",
+               binpositions = "all") +
+  labs (x = "Class",
+        y = "Highway (mpg)") +
+  theme(aspect.ratio = 0.5,
+        axis.text.x  = element_text(angle = 45))
+```
+
+## Challenge 6
+
+Hsin-Yen was curious about the terrain and altitude where various tomato species have been found in the wild.
+
+#### Figure 6A:
+
+```{r 2013-02-26-challenge06, tidy = FALSE, echo = FALSE}
+library(ggmap)
+map <-  get_map(location = c(lon = -75, lat = -16),
+                zoom     = 5,
+                maptype  = 'satellite')
+tomato.map <- ggmap(map) +
+                geom_point(data = tomato, aes(lon, lat, colour = alt), size=2) +
+                facet_grid(. ~ species)
+tomato.map+scale_colour_continuous(low = "white", high = "red")
+```
+
+<aside class="hint">
+
+To get you started, I'll show you how to use the `get_map()` function from the `ggmap` library to extract a raster object of the map. (see pg. 11 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf)):
+
+```{r 2013-02-26-challenge06a, eval = FALSE, tidy = FALSE}
+install.packages("ggmap")
+library(ggmap)
+map <- get_map(location = c(lon = -75, lat = -16),
+               zoom     = 5,
+               maptype  = 'satellite')
+```
+
+**Hints:**
+
+- Start by plotting the map image with the `ggmap()` function from the `ggmap` library (see pg. 18 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
+- Add an additional layer with `geom_point()` (you'll need to specify the dataset to use inside `geom_point`)
+
+</aside>
+
+#### Figure 6B:
+
+```{r 2013-02-26-challenge06b, tidy = FALSE}
+ggmap(map)
+```
+
+```{r 2013-02-26-challenge06c, tidy = FALSE, eval = FALSE}
+ggmap(map) +
+  geom_point(aes(x      = lon,
+                 y      = lat,
+                 colour = alt),
+             data = tomato,
+             size = 2) +
+  facet_grid(. ~ species) +
+  scale_colour_continuous(low  = "white",
+                          high = "red")
+```
+
+
+## Challenge 7
+
+Not one to be outdone, Stacey demonstrates that she also knows the ways of the world by plotting the geographical position of tomato species collection points on top of not just a part of South America, but on top of the *entire* world.
+
+#### Figure 7A:
+
+```{r 2013-02-26-challenge07, tidy = FALSE, echo = FALSE}
+world <- map_data("world")
+worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
+  geom_polygon(fill="white", colour="black")
+worldmap +
+  geom_point(aes(lon, lat,fill = NULL,group = NULL), data=tomato, size=2, color="red")
+```
+
+<aside class="hint">
+
+**Hints:**
+
+- Start by plotting the world map using `geom_polygon()` with a data frame created with ggplot's `map_data()` function
+- Add an additional layer with another geom
+
+</aside>
+
+#### Figure 7B:
+
+```{r 2013-02-26-challenge07a, tidy = FALSE}
+world <- map_data("world")
+worldmap <- ggplot(world, aes(x     = long,
+                              y     = lat,
+                              group = group)) +
+  geom_polygon(fill   = "white",
+               colour = "black")
+worldmap
+```
+
+
+```{r 2013-02-26-challenge07b, tidy = FALSE, eval = FALSE}
+worldmap +
+  geom_point(aes(x     = lon,
+                 y     = lat,
+                 group = NULL),
+             data  = tomato,
+             size  = 2,
+             color = "red")
+```
+

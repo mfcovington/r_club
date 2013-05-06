@@ -1,0 +1,154 @@
+---
+layout: default
+---
+
+<div>
+
+  {% unless page.reading.first.title == null %}
+    <h2>Reading Assignment</h2>
+    <ul>
+      {% for read in page.reading %}
+        <li>
+          {% if read.link == null %}
+            {{ read.title }}
+          {% elsif read.link contains 'http://' %}
+            <a href="{{ read.link }}">{{ read.title }}</a>
+          {% else %}
+            <a href="{{ site.baseurl }}/reading/{{ read.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ read.title }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endunless %}
+
+  {% unless page.homework.first.q == null %}
+    <h2>Homework Assignment</h2>
+    <ul>
+      {% for hw in page.homework %}
+        {% capture id %}{{ hw.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' | prepend: '/homework/' }}{% endcapture %}
+        {% for hw in site.posts %}
+          {% if hw.id == id %}
+           {% capture title %}{{ hw.title }}{% endcapture %}
+          {% endif %}
+        {% endfor %}
+        <li>
+          {% unless hw.q == null %}
+            <a href="{{ site.baseurl }}/homework/{{ hw.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ title }}</a>
+          {% endunless %}
+          {% unless hw.a == null %}
+            [<a href="{{ site.baseurl }}/solutions/{{ hw.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">solution</a>]
+          {% endunless %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endunless %}
+
+  {% unless page.exercises.first.q == null %}
+    <h2>In-Class Exercises</h2>
+    <ul>
+      {% for exer in page.exercises %}
+        {% capture id %}{{ exer.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' | prepend: '/exercises/' }}{% endcapture %}
+        {% for exer in site.posts %}
+          {% if exer.id == id %}
+           {% capture title %}{{ exer.title }}{% endcapture %}
+          {% endif %}
+        {% endfor %}
+        <li>
+          {% unless exer.q == null %}
+            <a href="{{ site.baseurl }}/exercises/{{ exer.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ title }}</a>
+          {% endunless %}
+          {% unless exer.a == null %}
+            [<a href="{{ site.baseurl }}/solutions/{{ exer.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">solution</a>]
+          {% endunless %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endunless %}
+
+  {% unless page.resources.first.title == null %}
+    <h2>Resources</h2>
+    <ul>
+      {% for res in page.resources %}
+        <li>
+          <a href="{{ site.baseurl }}/resources/{{ res.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ res.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endunless %}
+
+</div>
+
+<div class="schedule">
+  <table>
+      <thead>
+        <tr>
+          <th class="date-col">Date</th>
+          <th class="reading-col">Reading</th>
+          <th class="info-col">Homework</th>
+          <th class="info-col">Exercises</th>
+          <th class="info-col">Resources</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-cell">{{ page.classdate }}</td>
+          <td class="reading-cell">
+            {% for read in page.reading %}
+              {% if read.link == null %}
+                {{ read.title }}
+              {% elsif read.link contains 'http://' %}
+                <a href="{{ read.link }}">{{ read.title }}</a>
+              {% else %}
+                <a href="{{ site.baseurl }}/reading/{{ read.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ read.title }}</a>
+              {% endif %}
+              <br>
+            {% endfor %}
+          </td>
+          <td class="homework-cell">
+            {% for hw in page.homework %}
+              {% unless hw.q == null %}
+                <a href="{{ site.baseurl }}/homework/{{ hw.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
+              {% endunless %}
+              {% unless hw.a == null %}
+                &amp; <a href="{{ site.baseurl }}/solutions/{{ hw.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
+              {% endunless %}
+              <br>
+            {% endfor %}
+          </td>
+          <td class="exercises-cell">
+            {% for exer in page.exercises %}
+              {% unless exer.q == null %}
+                <a href="{{ site.baseurl }}/exercises/{{ exer.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
+              {% endunless %}
+              {% unless exer.a == null %}
+                &amp; <a href="{{ site.baseurl }}/solutions/{{ exer.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
+              {% endunless %}
+              <br>
+            {% endfor %}
+          </td>
+          <td class="resources-cell">
+            {% for res in page.resources %}
+              <a href="{{ site.baseurl }}/resources/{{ res.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ res.title }}</a><br>
+            {% endfor %}
+          </td>
+        </tr>
+      </tbody>
+  </table>
+
+</div>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'rclub'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+

@@ -1,0 +1,85 @@
+---
+title: Data Types
+layout: post
+categories: resources
+comments: true
+duedate:
+related: 2013-03-27-DataStructures
+author: Julin Maloof
+---
+
+Data Types
+========================================================
+This document provides a brief introduction to *Data Types*: how data is represented in R.  A separate document discusses *Data Structures*: the kinds of objects that data can be stored in.
+
+R categorizes data as different types: numeric, character, factor, boolean/logical, date, etc.
+
+Numeric
+-------
+The *numeric* data type is for numbers.  Numbers can be used for calculations.  Some relevant functions are:
+```{r numeric}
+my.numbers <- c(4,5) # a numeric vector
+sum(my.numbers)
+is.numeric(my.numbers)
+my.text.numbers <- c("4","5") # a character vector
+sum(my.text.numbers)
+is.numeric(my.text.numbers)
+as.numeric(my.text.numbers)
+sum(as.numeric(my.text.numbers))
+```
+
+Character
+---------
+The *character* data type is for representing text.  You can tell if something is a charcter type in R because it will be enclosed in quotes.
+```{r character}
+my.text <- c("Julin","Maloof")
+my.text
+is.character(my.text)
+#converting numbers to characters
+my.numbers
+as.character(my.numbers) # note the quotation marks
+```
+
+Factor
+------
+The *factor* data type is used to designate groups.  Factors have associated levels that represent each possible group available in the factor.
+```{r factors}
+genotypes <- factor(c("wildtype","mutant1","mutant2","wildtype"))
+genotypes #note that the levels are listed and the values are not in quotes
+class(genotypes)
+is.factor(genotypes)
+is.character(genotypes)
+as.character(genotypes) # note the quotes
+levels(genotypes) #alpabetical by default
+nlevels(genotypes)
+#often you want wildtype to be the first level
+genotypes <- relevel(genotypes,ref="wildtype")
+levels(genotypes)
+#or maybe you want to have a custom order for everything
+genotypes <- factor(genotypes,levels=c("mutant2","wildtype","mutant1"))
+genotypes
+```
+
+Logical
+-------
+The *logical* data type is used for true/false values
+```{r logical}
+my.boolean <- c(F,T,T,F) #you could also use TRUE and FALSE
+my.boolean
+is.logical(my.boolean)
+# The '!' reverses the values (logical NOT)
+!my.boolean
+#logicals can be used in extraction
+genotypes[my.boolean]
+genotypes[genotypes=="wildtype"] #here you are creating a logical inside the square brackets.
+genotypes=="wildtype"
+#conversions:
+as.numeric(my.boolean) # 1 is true, 0 is false.  This can be useful for summing, ie
+sum(genotypes=="wildtype")
+as.logical(c(1, 0, 1, 0))
+as.character(my.boolean)
+#converting from text
+as.logical(c("T","True","true","TRUE","F","False","FALSE","false","not logical"))
+```
+
+*Posted by Julin Maloof*

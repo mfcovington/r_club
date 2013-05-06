@@ -1,0 +1,137 @@
+---
+title: Peer-produced plots
+layout: post
+categories: homework
+comments: true
+duedate: 2013-02-28
+author: Mike Covington
+---
+
+# Time to match wits...
+
+Your R Club buddies have been experimenting with ways to plot data with ggplot. Below is a sampling of their efforts. Your duty this week is to choose at least three plots and figure out how they were plotted.
+
+If the datasets don't look familiar, be sure to scroll down to the 'Data' section of the [ggplot2 docs](http://docs.ggplot2.org/current/).
+
+```{r echo = FALSE}
+# prep
+setwd("~/git.repos/r_club/_classdocs/data/")
+tomato <- read.table("TomatoR2CSHL.csv", header = T, sep = ",")
+tomato <- na.omit(tomato)
+library("ggplot2")
+```
+
+## Challenge 1
+
+Stacey plotted movie rating since the dawn of cinematography (binned by density) .
+
+```{r 2013-02-26-challenge01, echo = FALSE}
+m <- ggplot(movies)
+m +  stat_binhex(aes(year, rating, fill = ..density..), color = "black") +
+  scale_fill_gradientn(colours = rainbow(7))
+```
+
+## Challenge 2
+
+Ciera plotted MPAA movie rating trends over the last couple decades.
+
+```{r 2013-02-26-challenge02, echo = FALSE}
+movies.mpaa.new <- subset(movies, mpaa != "" & year >= 1990)
+ggplot(movies.mpaa.new, aes(x=year, fill=mpaa)) +
+        geom_density(binwidth =1, alpha=.5) +
+        labs(title = "The Density Distribution of MPAA Rated Films from 1990-2005") +
+        theme(legend.position = "bottom")
+```
+
+Hint: You need to subset the movies such that you are only considering movies with MPAA ratings since 1990.
+
+## Challenge 3
+
+Miguel is a huge fan of the written word. One of his life goals is to bridge the gap between science and literature. He made this plot in hopes of advancing this cause.
+
+```{r 2013-02-26-challenge03, echo = FALSE}
+p<-ggplot(tomato, aes(alt, hyp))
+p+geom_text(aes(size=leafnum, label=species, color=trt, angle=30))+
+  facet_grid(.~who)+
+  xlab("ALTITUDE")+
+  ylab("HYPOCOTYL LENGTH")+
+  labs(title="TOMATO DATA IN WORDS")
+```
+
+## Challenge 4
+
+Cody found a geom that can be used to compare distributions by plotting them along the axes. Can you find it, too?
+
+```{r 2013-02-26-challenge04, echo = FALSE}
+ggplot(tomato, aes(x=leafleng, y=leafwid, colour=who)) +
+    xlab("Leaf Length (mm)") +
+    ylab("Leaf Width (mm)") +
+    geom_point() +
+    geom_rug() +
+    theme(aspect.ratio = 1)
+```
+
+## Challenge 5
+
+For Valentine's Day, Jessica received a $20 gift card for a local gas station. Before she redeems it, she wants to find out which types of car will get her to the Bay Area and back on five gallons.
+
+```{r 2013-02-26-challenge05, message = FALSE, echo = FALSE}
+ggplot(mpg, aes(class,
+                hwy,
+                colour = manufacturer)) +
+  labs (x = "Class",
+        y = "Highway (mpg)") +
+  geom_dotplot(aes(fill = manufacturer),
+               binaxis = "y",
+               stackdir = "center",
+               binpositions = "all") +
+  theme(aspect.ratio = 0.5,
+        axis.text.x = element_text(angle = 45))
+```
+
+
+## Challenge 6
+
+Hsin-Yen was curious about the terrain and altitude where various tomato species have been found in the wild.
+
+```{r 2013-02-26-challenge06, echo = FALSE}
+library(ggmap)
+map <-  get_map(location = c(lon = -75, lat = -16),
+                zoom = 5,
+                maptype = 'satellite')
+tomato.map <- ggmap(map) +
+                geom_point(data = tomato, aes(lon, lat, colour = alt), size=2) +
+                facet_grid(. ~ species)
+tomato.map+scale_colour_continuous(low = "white", high = "red")
+```
+
+To get you started, I'll show you how to use the `get_map()` function from the `ggmap` library to extract a raster object of the map. (see pg. 11 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
+
+```{r eval = FALSE, tidy = FALSE}
+library(ggmap)
+map <- get_map(location = c(lon = -75, lat = -16),
+               zoom = 5,
+               maptype = 'satellite')
+```
+
+Hints:
+
+- Start by plotting the map image with the `ggmap()` function from the `ggmap` library (see pg. 18 of the [`ggmap` documentation](http://cran.r-project.org/web/packages/ggmap/ggmap.pdf))
+- Add an additional layer with `geom_point()`
+
+## Challenge 7
+
+Not one to be outdone, Stacey demonstrates that she also knows the ways of the world by plotting the geographical position of tomato species collection points on top of not just a part of South America, but on top of the *entire* world.
+
+```{r 2013-02-26-challenge07, echo = FALSE}
+world <- map_data("world")
+worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
+  geom_polygon(fill="white", colour="black")
+worldmap +
+  geom_point(aes(lon, lat,fill = NULL,group = NULL), data=tomato, size=2, color="red")
+```
+
+Hints:
+
+- Start by plotting the world map using `geom_polygon()` with a data frame created with ggplot's `map_data()` function
+- Add an additional layer with another geom

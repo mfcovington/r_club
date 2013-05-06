@@ -38,10 +38,45 @@ title: UCD Plant Biologists Learning R
             {% if post.categories.first == 'schedule' %}
               <tr>
                 <td class="date-cell">{{ post.classdate }}</td>
-                <td class="reading-cell">{% for item in post.reading %}{% if item.last == '' %}{{ item.first }}{% elsif item.last contains 'http://' %}<a href="{{ item.last }}">{{ item.first }}</a>{% else %}<a href="{{ site.baseurl }}/reading/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ item.first  }}</a>{% endif %}<br>{% endfor %}</td>
-                <td class="homework-cell">{% for item in post.homework %}{% unless item.first == '' %}<a href="{{ site.baseurl }}/homework/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
-                <td class="exercises-cell">{% for item in post.exercises %}{% unless item.first == '' %}<a href="{{ site.baseurl }}/exercises/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>{% endunless %} {% unless item.last == '' %}&amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>{% endunless %}<br>{% endfor %}</td>
-                <td class="resources-cell">{% for item in post.resources %}<a href="{{ site.baseurl }}/resources/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ item.last }}</a><br>{% endfor %}</td>
+                <td class="reading-cell">
+                  {% for read in post.reading %}
+                    {% if read.link == null %}
+                      {{ read.title }}
+                    {% elsif read.link contains 'http://' %}
+                      <a href="{{ read.link }}">{{ read.title }}</a>
+                    {% else %}
+                      <a href="{{ site.baseurl }}/reading/{{ read.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ read.title }}</a>
+                    {% endif %}
+                    <br>
+                  {% endfor %}
+                </td>
+                <td class="homework-cell">
+                  {% for hw in post.homework %}
+                    {% unless hw.q == null %}
+                      <a href="{{ site.baseurl }}/homework/{{ hw.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
+                    {% endunless %}
+                    {% unless hw.a == null %}
+                      &amp; <a href="{{ site.baseurl }}/solutions/{{ hw.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
+                    {% endunless %}
+                    <br>
+                  {% endfor %}
+                </td>
+                <td class="exercises-cell">
+                  {% for exer in post.exercises %}
+                    {% unless exer.q == null %}
+                      <a href="{{ site.baseurl }}/exercises/{{ exer.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
+                    {% endunless %}
+                    {% unless exer.a == null %}
+                      &amp; <a href="{{ site.baseurl }}/solutions/{{ exer.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
+                    {% endunless %}
+                    <br>
+                  {% endfor %}
+                </td>
+                <td class="resources-cell">
+                  {% for res in post.resources %}
+                    <a href="{{ site.baseurl }}/resources/{{ res.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ res.title }}</a><br>
+                  {% endfor %}
+                </td>
               </tr>
             {% endif %}
           {% endfor %}
@@ -54,9 +89,9 @@ title: UCD Plant Biologists Learning R
     <h3>Recent Posts</h3>
     <ul>
       {% for post in site.posts limit: 5 %}
-      <li>
-    <a href="{{ site.baseurl }}{{ post.url }}"><strong>{{ post.title }}</strong></a>{% for cat in post.categories %} [{{ cat }}]{% endfor %}{% for tag in post.tags %} [{{ tag }}]{% endfor %} - {{ post.date | date: "%Y-%m-%d" }}
-      </li>
+        <li>
+          <a href="{{ site.baseurl }}{{ post.url }}"><strong>{{ post.title }}</strong></a>{% for cat in post.categories %} [{{ cat }}]{% endfor %}{% for tag in post.tags %} [{{ tag }}]{% endfor %} - {{ post.date | date: "%Y-%m-%d" }}
+        </li>
       {% endfor %}
     </ul>
   </div>

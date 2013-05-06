@@ -39,42 +39,42 @@ title: UCD Plant Biologists Learning R
               <tr>
                 <td class="date-cell">{{ post.classdate }}</td>
                 <td class="reading-cell">
-                  {% for item in post.reading %}
-                    {% if item.last == '' %}
-                      {{ item.first }}
-                    {% elsif item.last contains 'http://' %}
-                      <a href="{{ item.last }}">{{ item.first }}</a>
+                  {% for read in post.reading %}
+                    {% if read.link == null %}
+                      {{ read.title }}
+                    {% elsif read.link contains 'http://' %}
+                      <a href="{{ read.link }}">{{ read.title }}</a>
                     {% else %}
-                      <a href="{{ site.baseurl }}/reading/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ item.first  }}</a>
+                      <a href="{{ site.baseurl }}/reading/{{ read.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ read.title }}</a>
                     {% endif %}
                     <br>
                   {% endfor %}
                 </td>
                 <td class="homework-cell">
-                  {% for item in post.homework %}
-                    {% unless item.first == '' %}
-                      <a href="{{ site.baseurl }}/homework/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
+                  {% for hw in post.homework %}
+                    {% unless hw.q == null %}
+                      <a href="{{ site.baseurl }}/homework/{{ hw.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
                     {% endunless %}
-                    {% unless item.last == '' %}
-                      &amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
+                    {% unless hw.a == null %}
+                      &amp; <a href="{{ site.baseurl }}/solutions/{{ hw.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
                     {% endunless %}
                     <br>
                   {% endfor %}
                 </td>
                 <td class="exercises-cell">
-                  {% for item in post.exercises %}
-                    {% unless item.first == '' %}
-                      <a href="{{ site.baseurl }}/exercises/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
+                  {% for exer in post.exercises %}
+                    {% unless exer.q == null %}
+                      <a href="{{ site.baseurl }}/exercises/{{ exer.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
                     {% endunless %}
-                    {% unless item.last == '' %}
-                      &amp; <a href="{{ site.baseurl }}/solutions/{{ item.last | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
+                    {% unless exer.a == null %}
+                      &amp; <a href="{{ site.baseurl }}/solutions/{{ exer.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
                     {% endunless %}
                     <br>
                   {% endfor %}
                 </td>
                 <td class="resources-cell">
-                  {% for item in post.resources %}
-                    <a href="{{ site.baseurl }}/resources/{{ item.first | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ item.last }}</a><br>
+                  {% for res in post.resources %}
+                    <a href="{{ site.baseurl }}/resources/{{ res.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ res.title }}</a><br>
                   {% endfor %}
                 </td>
               </tr>

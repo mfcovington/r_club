@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/stylesheets/styles.css">
+    <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ site.baseurl }}/favicon.ico" type="image/x-icon">
+    <script src="{{ site.baseurl }}/javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38722088-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header"><a href="{{ site.baseurl }}/">R Club</a></h1>
+        <h2 class="header">{{ page.title }}</h2>
+      </header>
+      <section>
+        {{ content }}
+      </section>
+      <footer>
+
+        <div class="categories">
+          {% assign mainCats = "homework|exercises|solutions|resources" | split: "|" %}
+          <h3>Categories</h3>
+          {% for category in mainCats %}
+            <h4><a href="{{ site.baseurl }}/{{ category}}">{{ category}} ({{ site.categories[category] | size}})</a></h4>
+            <ul>
+              {% for post in site.categories[category] limit: 2 %}
+                <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+
+          {% capture otherCount %}{% increment j %}{% endcapture %}
+          {% for post in site.posts %}
+            {% capture cat %}{{ post.categories | first }}{% endcapture %}
+            {% unless mainCats contains cat %}
+              {% capture otherCount %}{% increment j %}{% endcapture %}
+            {% endunless %}
+          {% endfor %}
+          <h4><a href="{{ site.baseurl }}/other">other ({{ otherCount }})</a></h4>
+
+          <ul>
+            {% for post in site.posts %}
+              {% capture cat %}{{ post.categories | first }}{% endcapture %}
+              {% unless mainCats contains cat %}
+                {% capture count %}{% increment i %}{% endcapture %}
+                {% case  count %}
+                  {% when '0' or '1' %}
+                    <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
+                {% endcase %}
+              {% endunless %}
+            {% endfor %}
+          </ul>
+        </div>
+
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

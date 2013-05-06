@@ -1,0 +1,21 @@
+---
+layout: default
+---
+
+<div class="content">
+    {{ content }}
+</div>
+
+<div class="all-posts">
+<h3>All {{ page.title | capitalize }} Posts</h3>
+<ul>
+  {% for post in site.posts %}
+    {% capture cat %}{{ post.categories | first }}{% endcapture %}
+    {% if cat == page.title  %}
+      <li>
+        <a href="{{ site.baseurl }}{{ post.url }}"><strong>{{ post.title }}</strong></a> - {{ post.date | date: "%Y-%m-%d" }}{% if post.duedate %} [due: {{ post.duedate }}]{% endif %}
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
+</div>

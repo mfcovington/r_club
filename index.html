@@ -5,6 +5,19 @@ title: UCD Plant Biologists Learning R
 
 <div class="content">
 
+
+  <div class="announcements">
+    {% for post in site.posts %}
+      {% if post.categories.first == 'news' %}
+        {% unless post.announcements.first.date == null %}
+          <aside class="hint">
+            <strong>Announcement ({{ post.announcements.first.date }}):</strong> {{ post.announcements.first.text }} <a href="{{ site.baseurl }}{% post_url 2013-01-01-announcements %}"> <span class="right-float">[All past announcements]</span></a>
+          </aside>
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
   <div class="quicklinks">
     <h3>Quick Links</h3>
     <div class="two-col">

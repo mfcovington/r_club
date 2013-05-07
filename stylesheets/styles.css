@@ -69,6 +69,10 @@ footer h4 {
   margin:0px 0 0px;
 }
 
+span.right-float {
+  float: right;
+}
+
 aside.hint p, aside.hint ul, aside.hint ol {
   margin:0 0 5px;
 }
@@ -87,6 +91,10 @@ aside.hint {
     -webkit-border-radius: 4px;
     -moz-box-shadow: inset 0px 3px 3px;
     -moz-border-radius: 4px;
+}
+
+.announcements aside.hint {
+    margin: 30px 0 10px;
 }
 
 aside.hover {

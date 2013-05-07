@@ -75,7 +75,6 @@ toupper(x)
 
 **Your task**: You want to look cool, so use two of these functions to convert the state names such that all vowells are uppercase and all consonants are lower case.
 
-# Exercise 3: (in progress)
 
 
 

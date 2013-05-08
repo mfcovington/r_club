@@ -18,15 +18,15 @@ announcements:
 
 ---
 
-<h3>Past announcements</h3>
-
-{% for post in site.posts %}
-  {% if post.categories.first == 'news' %}
-    {% for announce in post.announcements %}
-      {% unless announce.date == null %}
-<!-- The following line must not be indented. -->
-<p><strong>{{ announce.date }}:</strong> {{ announce.text }}</p>
-      {% endunless %}
-    {% endfor %}
-  {% endif %}
-{% endfor %}
+<div>
+  <h3>Past announcements</h3>
+  {% for post in site.posts %}
+    {% if post.categories.first == 'news' %}
+      {% for announce in post.announcements %}
+        {% unless announce.date == null %}
+          <p><strong>{{ announce.date }}:</strong> {{ announce.text }}</p>
+        {% endunless %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+</div>

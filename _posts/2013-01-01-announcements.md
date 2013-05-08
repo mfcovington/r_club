@@ -11,7 +11,7 @@ announcements:
 # no values for the first 'date'/'text' key combo.
 
  - date: 2013-05-06
-   text: Answers for regex exercises are due Thursday (2013-05-09) by 2PM. This week we will cover the use of git (a version control system for keeping track of changes in your code). In preparation, be sure to do the short homework (which will be posted Tuesday) for this week before we meet.
+   text: Answers for regex exercises are due Thursday (2013-05-09) by 2PM. This week we will cover the use of git (a version control system for keeping track of changes in your code). In preparation, be sure to do the short homework for this week before we meet.
 
  - date: 
    text: 

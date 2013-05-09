@@ -1,0 +1,58 @@
+---
+title:      More Regex Solutions...
+layout:     post
+categories: solutions
+comments:   true
+duedate:
+related:    2013-05-02-more-regex
+author:     Mike Covington
+---
+
+
+# Exercise 1: Extracting important info from filenames
+
+We need to extract IL name, sun/shade treatment, and replicate number from these filenames:
+
+```{r moreregex.answers.01a, tidy = F}
+filename.1 <- "a IL-9.2.4 crazy SH file rep1 name"
+filename.2 <- "anotherIL-12.4sillySUfilerep20name"
+```
+
+A good approach is to focus on what we want to capture rather than building our regex pattern based on the junk we are trying to avoid. This helps the substitution work correctly on a broader set of filenames. In the regex pattern below, remember that the `(?:` in `(?:\\d|\\.)` makes the parentheses into a 'non-capturing' pair of parentheses that doesn't create a back-reference.
+
+```{r moreregex.answers.01b, tidy = F}
+pattern     <- "^.*(IL-(?:\\d|\\.)+).*(S[HU]).*(rep\\d+).*$"
+replacement <- "\\1,\\2,\\3"
+
+extract <- sub(pattern, replacement, c(filename.1, filename.2))
+extract
+```
+
+Another regex pattern that also matches:
+
+```{r moreregex.answers.01c, tidy = F}
+pattern <- "^.*(IL-[0-9.]+).*(SH|SU).*(rep[0-9]+).*$"
+sub(pattern, replacement, c(filename.1, filename.2))
+```
+
+Next, we need to split the comma-delimited string at every comma:
+
+```{r moreregex.answers.01d, tidy = F}
+strsplit(extract, ',')
+```
+
+# Exercise 2: Character conversions
+
+A simple two-step process will convert state names such that All vOwEls ArE uppErcAsE And cOnsOnAnts ArE lOwErcAsE. We can start by converting the names to all lowercase. Then we just need to swap lowercase vowels for their uppercase counterparts.
+
+```{r moreregex.answers.02}
+data(state)
+state.lc <- tolower(state.name)
+head(state.lc)
+
+chartr("aeiou", "AEIOU", state.lc)
+```
+
+
+
+

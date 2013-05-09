@@ -1,11 +1,11 @@
 ---
-title: More Regular Expressions...
-layout: post
+title:      More Regular Expressions...
+layout:     post
 categories: exercises
-comments: true
-duedate: 2013-05-09
-related:
-author: Mike Covington
+comments:   true
+duedate:    2013-05-09
+related:    2013-05-09-more-regex-answers
+author:     Mike Covington
 ---
 
 # Exercise 1: Extracting important info from filenames

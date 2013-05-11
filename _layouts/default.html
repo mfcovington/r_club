@@ -43,7 +43,7 @@
           {% assign mainCats = "homework|exercises|solutions|resources" | split: "|" %}
           <h3>Categories</h3>
           {% for category in mainCats %}
-            <h4><a href="{{ site.baseurl }}/{{ category}}">{{ category}} ({{ site.categories[category] | size}})</a></h4>
+            <h4><a href="{{ site.baseurl }}/{{ category}}">{{ category}} <small>({{ site.categories[category] | size}})</small></a></h4>
             <ul>
               {% for post in site.categories[category] limit: 2 %}
                 <li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
@@ -58,7 +58,7 @@
               {% capture otherCount %}{% increment j %}{% endcapture %}
             {% endunless %}
           {% endfor %}
-          <h4><a href="{{ site.baseurl }}/other">other ({{ otherCount }})</a></h4>
+          <h4><a href="{{ site.baseurl }}/other">other <small>({{ otherCount }})</small></a></h4>
 
           <ul>
             {% for post in site.posts %}

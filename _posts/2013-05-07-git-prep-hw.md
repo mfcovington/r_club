@@ -12,4 +12,4 @@ author:     Mike Covington
 
 - Read the [Git prep]({{ site.baseurl }}/{% post_url 2013-05-07-git-prep %}) resource.
 - Install [SourceTree](http://sourcetreeapp.com/)
-- Register for [GitHub](https://github.com/) and/or [Bitbucket](https://bitbucket.org/) accounts.
+- Register for [GitHub](https://github.com/) and [Bitbucket](https://bitbucket.org/) accounts.

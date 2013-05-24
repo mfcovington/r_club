@@ -5,6 +5,7 @@ categories: exercises
 comments:   true
 duedate:    2013-05-23
 author:     Stacey Harmer
+related:    2013-05-23-venn-euler-exercise-key
 ---
 
 Venn and Euler Diagrams

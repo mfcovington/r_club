@@ -3,7 +3,7 @@ title:      Venn and Euler diagrams exercise key
 layout:     post
 categories: solutions
 comments:   true
-duedate:
+related:    2013-05-15-venn-euler-demo
 author:     Stacey Harmer
 ---
 

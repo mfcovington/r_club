@@ -55,7 +55,10 @@ To make your git repository available remotely, you can **push** a local reposit
 
 <iframe width="560" height="315" src="http://www.youtube.com/embed/Hs_Z99nOKM8" frameborder="0" allowfullscreen></iframe>
 
+# Optional: Command line git
 
+If you want to know how to interact with git at the command line, then check out these tutorials:
 
-
-
+* [Try Github](https://try.github.io/levels/1/challenges/1)
+* [GitHub for beginners Part 1](http://readwrite.com/2013/09/30/understanding-github-a-journey-for-beginners-part-1)
+* [GitHub for beginners Part 2](http://readwrite.com/2013/10/02/github-for-beginners-part-2)

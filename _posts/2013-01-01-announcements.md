@@ -30,7 +30,7 @@ announcements:
     {% if post.categories.first == 'news' %}
       {% for announce in post.announcements %}
         {% unless announce.date == null %}
-          <p><strong>{{ announce.date }}:</strong> {{ announce.text }}</p>
+          <p><strong>{{ announce.date }}:</strong> {{ announce.text | markdownify }}</p>
         {% endunless %}
       {% endfor %}
     {% endif %}

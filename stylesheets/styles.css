@@ -97,6 +97,10 @@ aside.hint {
     margin: 30px 0 10px;
 }
 
+.announcements aside.hint p {
+  display: inline;
+}
+
 aside.hover {
   display: inline-block;
   width: 87%;

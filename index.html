@@ -11,7 +11,11 @@ title: UCD Plant Biologists Learning R
       {% if post.categories.first == 'news' %}
         {% unless post.announcements.first.date == null %}
           <aside class="hint">
-            <strong>Announcement ({{ post.announcements.first.date }}):</strong> {{ post.announcements.first.text }} <a href="{{ site.baseurl }}{% post_url 2013-01-01-announcements %}"> <span class="right-float"><small>[All past announcements]</small></span></a>
+            <strong>Announcement ({{ post.announcements.first.date }}):</strong>
+            {{ post.announcements.first.text | markdownify }}
+            <a href="{{ site.baseurl }}{% post_url 2013-01-01-announcements %}">
+              <span class="right-float"><small>[All past announcements]</small></span>
+            </a>
           </aside>
         {% endunless %}
       {% endif %}

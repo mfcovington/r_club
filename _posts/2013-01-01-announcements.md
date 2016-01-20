@@ -10,9 +10,9 @@ announcements:
 # order). If no announcement is desired for the front page, use an entry with
 # no values for the first 'date'/'text' key combo.
 
-- date: 2016-01-19
-  text: R Club is being revived!  There will be a focus on learning Bayesian statistics using Richard McElreath's book [Statistical Rethinking](http://xcelab.net/rm/statistical-rethinking/).  More info soon.
-  
+ - date: 2016-01-19
+   text: R Club is being revived!  There will be a focus on learning Bayesian statistics using Richard McElreath's book [Statistical Rethinking](http://xcelab.net/rm/statistical-rethinking/).  More info soon.
+
  - date: 2013-05-15
    text: I think our last git discussion quickly grew too complicated. I've added a new resource that demonstrates the basics of git as well as a simple homework assignment to put what you learn to use. Also, Stacey will be giving a short presentation on the VennDiagram R package
 

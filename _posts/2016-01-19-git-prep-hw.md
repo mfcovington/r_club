@@ -14,4 +14,3 @@ author:     Mike Covington
 - Read the [article by Karthik Ram](http://scfbm.biomedcentral.com/articles/10.1186/1751-0473-8-7) about why Git is important for scientists to use
 - Install [SourceTree](http://sourcetreeapp.com/)
 - Register for [GitHub](https://github.com/) and [Bitbucket](https://bitbucket.org/)
-- Email Julin your github username.

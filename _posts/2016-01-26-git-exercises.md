@@ -30,7 +30,7 @@ __First Mike or Julin will demo adding a collaborator to a github repository.__
 
 __Now with your partner, complete the exercises below__
 
-__Partner 1:__ Create a repository "Favorites".  Create a Add partner 2 as a collaborator.
+__Partner 1:__ Create a repository "Favorites".  Add partner 2 as a collaborator.  Anybody can clone your public repository, but only collaborators can push code directly to it.
 
 __Partner 2:__ Clone the repository.  Create a text file "Foods" that has your name and a favorite food.  Stage, commit, and push your changes.
 
@@ -42,4 +42,4 @@ __Partner 1:__ Add your entry to the "Foods" file.
 
 __Partner 2:__ Add your entry to the "Drinks" file.
 
-__Partners 1 and 2:__ Stage, commit, and push your changes, pull your partners changes and make sure that you have a complete "Foods" and "Drinks" file.
+__Partners 1 and 2:__ Stage, commit, and push your changes.  Pull your partners changes and make sure that you have a complete "Foods" and "Drinks" file.

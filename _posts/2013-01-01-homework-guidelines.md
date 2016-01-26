@@ -7,3 +7,5 @@ author: Julin Maloof
 ---
 
 Homework should use good coding practices and be well commented and easy to understand.  All homework is to be turned in via github.  More details soon.
+
+Homework is due __9AM on the day of R Club__

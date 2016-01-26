@@ -11,7 +11,11 @@ title: UCD Plant Biologists Learning R
       {% if post.categories.first == 'news' %}
         {% unless post.announcements.first.date == null %}
           <aside class="hint">
-            <strong>Announcement ({{ post.announcements.first.date }}):</strong> {{ post.announcements.first.text }} <a href="{{ site.baseurl }}{% post_url 2013-01-01-announcements %}"> <span class="right-float"><small>[All past announcements]</small></span></a>
+            <strong>Announcement ({{ post.announcements.first.date }}):</strong>
+            {{ post.announcements.first.text | markdownify }}
+            <a href="{{ site.baseurl }}{% post_url 2013-01-01-announcements %}">
+              <span class="right-float"><small>[All past announcements]</small></span>
+            </a>
           </aside>
         {% endunless %}
       {% endif %}
@@ -34,7 +38,14 @@ title: UCD Plant Biologists Learning R
 
 
   <div class="schedule">
-    <h3>R Club Schedule</h3>
+
+    <h3>
+      R Club Schedule
+      <a href="{{ site.baseurl }}{% post_url 2013-01-01-schedule %}">
+        <small>(see full schedule)</small>
+      </a>
+    </h3>
+
     <table>
 
       <thead>
@@ -48,53 +59,16 @@ title: UCD Plant Biologists Learning R
       </thead>
 
       <tbody>
+          {% assign current_time = site.time | date:'%s' %}
+          {% assign seconds_post_is_active = site.days_posts_are_active | times:24 | times:60 | times:60 %}
+
           {% for post in site.posts %}
             {% if post.categories.first == 'dates' %}
               {% for class in post.classes %}
-                {% unless class.classdate == null %}
-                  <tr>
-                    <td class="date-cell">{{ class.classdate }}</td>
-                    <td class="reading-cell">
-                      {% for read in class.reading %}
-                        {% if read.link == null %}
-                          {{ read.title }}
-                        {% elsif read.link contains 'http://' %}
-                          <a href="{{ read.link }}">{{ read.title }}</a>
-                        {% else %}
-                          <a href="{{ site.baseurl }}/reading/{{ read.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}">{{ read.title }}</a>
-                        {% endif %}
-                        <br>
-                      {% endfor %}
-                    </td>
-                    <td class="homework-cell">
-                      {% for hw in class.homework %}
-                        {% unless hw.q == null %}
-                          <a href="{{ site.baseurl }}/homework/{{ hw.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
-                        {% endunless %}
-                        {% unless hw.a == null %}
-                          &amp; <a href="{{ site.baseurl }}/solutions/{{ hw.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
-                        {% endunless %}
-                        <br>
-                      {% endfor %}
-                    </td>
-                    <td class="exercises-cell">
-                      {% for exer in class.exercises %}
-                        {% unless exer.q == null %}
-                          <a href="{{ site.baseurl }}/exercises/{{ exer.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
-                        {% endunless %}
-                        {% unless exer.a == null %}
-                          &amp; <a href="{{ site.baseurl }}/solutions/{{ exer.a | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>A</strong></a>
-                        {% endunless %}
-                        <br>
-                      {% endfor %}
-                    </td>
-                    <td class="resources-cell">
-                      {% for res in class.resources %}
-                        <a href="{{ site.baseurl }}/resources/{{ res.link | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/">{{ res.title }}</a><br>
-                      {% endfor %}
-                    </td>
-                  </tr>
-                {% endunless %}
+                {% assign post_expires = class.classdate | date:'%s' | plus:seconds_post_is_active | date:'%s' %}
+                {% if (class.classdate != null) and (current_time < post_expires) %}
+                  {% include schedule-table-row.html %}
+                {% endif %}
               {% endfor %}
             {% endif %}
           {% endfor %}

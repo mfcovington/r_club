@@ -10,7 +10,7 @@ related:    2016-01-19-git-prep.md
 ---
 
 ## Part 1: Questions
-Split up into groups of two or three and answer these questions.  Be prepared to present your answers to everyone.
+Mike and Julin will assign you to groups of two or three.  With your partner(s) answer these questions.  Be prepared to present your answers to everyone.
 
 1. What is git vs github/bitbucket?
 2. What does it mean to _stage_ changes?

@@ -14,6 +14,9 @@
 </td>
 <td class="homework-cell">
   {% for hw in class.homework %}
+    {% unless hw.title == null %}
+      {{ hw.title }}
+    {% endunless %}
     {% unless hw.q == null %}
       <a href="{{ site.baseurl }}/homework/{{ hw.q | replace_first:'-','/' | replace_first:'-','/' | replace_first:'-','/' | remove: '.md' }}/"><strong>Q</strong></a>
     {% endunless %}

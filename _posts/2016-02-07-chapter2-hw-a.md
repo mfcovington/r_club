@@ -24,6 +24,8 @@ The file is a [markdown](https://daringfireball.net/projects/markdown/) file.  M
 
  You can edit the markdown file with any text editor, but if you use [Rstudio](https://www.rstudio.com/) then you can preview the formatted text (click on the "preview" button near the top of the editor).  Another nice option is to use a programmer's editor such as [atom](https://atom.io/) or [sublime text](https://www.sublimetext.com/3); with appropriate plugins these will do syntax highlighting and previews for .md files.  Finally, there are many dedicated markdown editors such as [MacDown](http://macdown.uranusjr.com/) that will display an editor and a formatted text window at the same time.  __Whatever you do, DO NOT use a word processor, such as Word__
 
+ If you don't want to think about markdown at this point, just open the file and type your answers in the appropriate spot.
+
 ### Getting and turning in the assignments
 
  * Use your web browser to go to [GitHub](http://github.com)

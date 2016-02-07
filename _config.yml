@@ -6,3 +6,4 @@ pygments: true
 markdown: redcarpet
 # auto: true
 days_posts_are_active: 180
+future: true

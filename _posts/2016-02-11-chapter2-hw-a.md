@@ -4,7 +4,6 @@ layout:     post
 categories: homework
 comments:   true
 duedate:    2016-02-11
-related:    
 author:     Julin Maloof
 ---
 

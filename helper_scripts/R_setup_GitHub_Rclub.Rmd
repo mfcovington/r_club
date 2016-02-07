@@ -1,0 +1,175 @@
+---
+title: "R Github"
+output: html_document
+---
+
+# Github and R 
+
+I need programatic interaction with github so that I can set up user repositories, etc
+
+## References
+
+[GitHub API](https://developer.github.com/v3/)  
+[R GitHub bindings](https://github.com/cscheid/rgithub)
+
+## setting up
+
+Only needs to be done once (from R).  
+
+```{r install}
+library(devtools) #Library that allows installation of libraries from GitHub
+install_github("jnmaloof/rgithub",ref="develop") #Julin's fork that fixes a big in getting group repositories. Also allows download of up to 100 repos at a time (instead of default 30)
+
+#install_github("cscheid/rgithub") #original repository
+```
+  
+## Trying it
+
+First generate a token by going to https://github.com/settings/applications and then selecting "Personal Access Token > Generate New Token".  
+
+Do NOT share the token with anyone or place it in a publically readable place.  You can follow [this recommendation](http://stat545-ubc.github.io/bit003_api-key-env-var.html) instead to not expose it in your scripts.
+
+Initialize the context.  This effectively logs the API into your account
+```{r init}
+library(github)
+# note: setting verbose=TRUE below can help with trouble shooting as it allows 
+ctx <- create.github.context(access_token = Sys.getenv("GITHUB_TOKEN"),verbose=F)
+```
+
+List repositories
+```{r list_repos,eval=FALSE}
+my.repos <- get.my.repositories(ctx)
+names(my.repos) #the main info is in "content"
+names(my.repos$content[[1]])
+unlist(lapply(my.repos$content,function(x) get("full_name",x)))
+```
+
+Create a team and add a member
+```{r create_Team,eval=FALSE}
+new.team <- create.team(org="UCD-pbio-rclub",content=list(name="testteam3",description="testing team3",permission="push"),ctx)
+get.organization.teams("UCD-pbio-rclub",ctx)
+
+#important: the team is referred to by its id (which is a number), not its name!!
+add.member.results <- add.member.to.team(new.team$content$id,user="jnmaloof",ctx)
+```
+
+Delete a team
+```{r delete_team,eval=FALSE}
+delete.team(new.team$content$id,ctx)$ok
+```
+
+Create a repository
+```{r create_repos,eval=FALSE}
+create.repo.output <- create.repository(name="my_new_repos2",ctx=ctx)
+```
+
+## Creating repository for student assignments
+
+For this I will
+
+* download the list of github usernames
+* for each user
+  * create a team with the user name
+  * add the user to the team
+  * create a private repository and have the team assigned to it
+
+Get class GitHub Usernames
+```{r get_users,eval=FALSE}
+library(googlesheets)
+gs_rclub <- gs_title("R Club Registration WQ 2016 (Responses)")
+users <- gs_read(gs_rclub)
+head(users)
+users$team.name <- make.names(paste(users$First.Name,users$Last.Name))
+```
+
+Get existing teams on GitHub and compare to imported spreadsheet
+```{r get_existing_teams,eval=FALSE}
+teams <- get.organization.teams("UCD-pbio-rclub",ctx)
+current.teams <- data.frame(team.name=sapply(teams$content, function(x) x$name),
+                            team.id=sapply(teams$content, function(x) x$id))
+
+new.teams <- users[! users$team.name %in% current.teams$team.name,]
+```
+
+Create new teams
+```{r new_teams,eval=FALSE}
+create.team.out <- apply(new.teams,1,function(team) {
+  create.team(org = "UCD-pbio-rclub",
+              content = list(name=team[["team.name"]],
+                             description=paste("Team for",team[["First.Name"]],
+                                               "to turn in Rclub hommework"),
+                             permission="push")
+              ,ctx)
+  })
+new.team.results <- as.data.frame(t(sapply(create.team.out,function(x) c(x$ok,x$content$name,x$content$id))))
+names(new.team.results) <- c("ok","team.name","team.id")
+new.team.results
+new.teams <- merge(new.teams,new.team.results,by="team.name")
+```
+
+Add members to teams
+```{r Add_members,eval=FALSE}
+add.members.out <- apply(new.teams,1,function(team) {
+  if (team[["ok"]]) add.member.to.team(id = team[["team.id"]],
+                                  user = team[["github.username"]],
+                                  ctx)
+  })
+all(sapply(add.members.out,function(x) x$ok))
+```
+
+Create repository for new or exisiting teams
+```{r new_repositories,eval=FALSE}
+repo.prefix <- "Rclub-rethinking"
+repo.description <- "Repository for Rclub Statisical Rethinking"
+
+################################################################################
+## Choose one of the two below and comment the other out
+#teams <- current.teams[!grepl("(Owners|Teachers)",current.teams$team.name),]
+teams <- new.teams[as.logical(new.teams$ok),]
+################################################################################
+
+create.repository.out <- apply(teams,1,function(team) {
+  create.organization.repository(
+    org="UCD-pbio-rclub",
+    name=paste(repo.prefix,team[["team.name"]],sep="_"),
+    description=paste(repo.description,"from",team[["team.name"]]),
+    #private=TRUE,
+    team_id=team[["team.id"]],
+    ctx=ctx)
+  })
+all(sapply(create.repository.out,function(x) x$ok))
+```
+
+Add teachers team to each repository (not strictly necessary because as owners of the organization we already have access)
+```{r add_team,eval=FALSE}
+add.team.out <- apply(teams,1,function(team) {
+  add.repository.to.team(
+    id=current.teams$team.id[current.teams$team.name=="Teachers"],
+    owner="UCD-pbio-rclub",
+    repo=paste(repo.prefix,team[["team.name"]],sep="_"),
+    ctx)
+})
+all(sapply(add.team.out,function(x) x$ok))
+```
+
+To delete repositories (Not Run):
+```{r delete_repositories,eval=FALSE}
+BIS180Lrepos <- get.organization.repositories("UCD-pbio-rclub",ctx)
+BIS180Lrepos.names <- sapply(BIS180Lrepos$content,function(x) x$name)
+for (r in BIS180Lrepos.names[!grepl("gh-usernames",BIS180Lrepos.names)]) { # I want to keep the first one
+  delete.repository("UCD-pbio-rclub",r,ctx)
+  }
+```
+
+To delete teams (Not Run):
+```{r delete_teams,eval=FALSE}
+BIS180Lteams <- get.organization.teams(org = "UCD-pbio-rclub",ctx)
+BIS180Lteam.names.ids <- data.frame(
+  name=sapply(BIS180Lteams$content,function(x) x$name),
+  id=sapply(BIS180Lteams$content,function(x) x$id))
+BIS180Lteam.ids.remove <- BIS180Lteam.names.ids$id[grep(".",BIS180Lteam.names.ids$name,fixed=TRUE)] #remove the teams I want to keep from the list.
+for (id in BIS180Lteam.ids.remove) {
+  delete.team(id,ctx)
+  }
+```
+

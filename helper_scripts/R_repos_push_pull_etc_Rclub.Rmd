@@ -1,0 +1,140 @@
+---
+title: "2015-04-18-Modify-Repo"
+author: "Julin Maloof"
+date: "April 18, 2015"
+output: html_document
+---
+
+This is a file to demonstrate how to add folders and/or files to a set of github repositories and then to push those changes.
+
+```{r init}
+repos.dir <- "~/git/r_club_members" # root directory for the repositories
+# repos.dir <- "~/Work/Code/BIS180L_Grading" # for Kristen
+library(github)
+library(plyr)
+ctx <- create.github.context(access_token = Sys.getenv("GITHUB_TOKEN"),verbose=F)
+```
+
+```{r get_repos}
+repos <- get.organization.repositories("UCD-pbio-rclub",ctx)
+repo.names <- sapply(repos$content,function(x) x$name)
+```
+
+reduces repository list to those that match our keyword
+```{r filter_repos}
+keyword <- "Rclub-rethinking_"
+repos$content <- repos$content[grepl(keyword,repo.names)]
+repo.names <- sapply(repos$content,function(x) x$name)
+```
+
+pull any changes into the current repositories
+```{r pull_repos}
+for(repo in repo.names) {
+  repo.path <- file.path(repos.dir,repo)
+  error <- system(paste("cd",repo.path,"; pwd; git pull")) #error will be 0 if success, 1 if failure
+  if(error) warning(paste("Error pulling into", repo.path))
+  }
+```
+
+Add a directory (if necessary)
+```{r add_dir}
+new.dir <- "Assignment_2016_02_11"
+for(repo in repo.names) {
+  new.dir.path <- file.path(repos.dir,repo,new.dir)
+  if(! file.exists(new.dir.path)) dir.create(new.dir.path)
+  
+  # create a .gitignore file so that the directory can be added to the repository.  
+  #The "cat" command in this form creates an empty file.
+  if(! file.exists(file.path(new.dir.path,".gitignore"))) cat(file=file.path(new.dir.path,".gitignore"))
+  }
+```
+
+Commit and push empty directory
+```{r push_repos}
+for(repo in repo.names) {
+  repo.path <- file.path(repos.dir,repo,new.dir)
+  if(! file.exists(file.path(new.dir.path,".gitignore"))) cat(file=file.path(new.dir.path,".gitignore"))
+  error <- system(paste("cd",repo.path,
+                        "; git add",file.path(repo.path,"*"),
+                        "; git commit -m 'added folder",new.dir,
+                        "'; git push")) #error will be 0 if success, 1 if failure
+  if(error) stop(paste("Error pushing into",repo.path))
+  }
+```
+
+
+Copy file(s) to a repo directory
+```{r copy.files}
+dest.dir <- "Assignment_2016_02_11/"
+source.file.dir <- "~/git/r_club_templates/Assignment_2016_02_11/"
+source.files <- dir(source.file.dir,full.names=T,pattern = "(Midterm1.Rmd)|(Mystery1.fa)|(test.tar.gz)")
+if (length(source.files)==0) stop(paste("Error",source.file.dir,"empty"))
+source.files.string <- paste(source.files,collapse=" ")
+for(repo in repo.names) {
+  repo.path <- file.path(repos.dir,repo,dest.dir)
+  error <- system(paste("cp",source.files.string,repo.path)) #error will be 0 if success, 1 if failure
+  if(error) stop(paste("Error copying files from",source.file.dir,"to",repo.path))
+  }
+```
+
+commit and push changes
+```{r push_repos}
+for(repo in repo.names) {
+  repo.path <- file.path(repos.dir,repo,dest.dir)
+  source.files.base.string <- paste(basename(source.files),collapse=" ")
+  error <- system(paste("cd",repo.path,
+                        "; pwd; git add",source.files.base.string,
+                        "; git commit -m 'added",source.files.base.string,
+                        "'; git push")) #error will be 0 if success, 1 if failure
+  if(error) stop(paste("Error pushing into",repo.path))
+  }
+```
+
+commit all and push changes
+```{r push_repos}
+for(repo in repo.names) {
+  repo.path <- file.path(repos.dir,repo)
+  error <- system(paste("cd",repo.path,
+                        "; pwd; git commit -am 'JNM Added first assignment directory'; git push")) #error will be 0 if success, 1 if failure
+  if(error) stop(paste("Error pushing into",repo.path))
+  }
+```
+
+get repository commits
+```{r get commits}
+#get the commits
+commits <- list()
+for(repo in repo.names) {
+commits[[repo]] <- get.repository.commits("UCD-pbio-rclub",repo,ctx)
+  }
+
+#check to see if there were any errors
+if (all(sapply(commits,function(x) (x$ok)))) {
+  print("All commits downloaded successfully")
+  } else {
+    names(sapply(commits,function(x) (x$ok)))[!sapply(commits,function(x) (x$ok))]
+          }
+
+#commits is a list with a length equal to the number of repos
+#go through each repo
+commit.results <- sapply(commits,function(repo.commits) {
+  #for each repo get the commits and extract info
+  t(sapply(repo.commits$content, function(commit) {
+    c(name=commit$commit$committer$name,
+      msg=commit$commit$message,
+      time=strftime(as.POSIXct(
+        #this is ugly but it manages to convert to out timezone
+        sub("T"," ",commit$commit$committer$date),"GMT"),"")
+      )
+    }
+    ))
+  }
+  )
+
+commit.results$BIS180L_Assignments_Andy.Peng
+
+#or maybe you prefer it in one table:
+
+commit.results.table <- ldply(commit.results)
+head(commit.results.table)
+```

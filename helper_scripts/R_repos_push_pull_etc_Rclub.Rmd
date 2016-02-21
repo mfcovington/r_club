@@ -38,7 +38,7 @@ for(repo in repo.names) {
 
 Add a directory (if necessary)
 ```{r add_dir}
-new.dir <- "Assignment_2016_02_11"
+new.dir <- "Assignment_Chapter_03"
 for(repo in repo.names) {
   new.dir.path <- file.path(repos.dir,repo,new.dir)
   if(! file.exists(new.dir.path)) dir.create(new.dir.path)
@@ -65,9 +65,9 @@ for(repo in repo.names) {
 
 Copy file(s) to a repo directory
 ```{r copy.files}
-dest.dir <- "Assignment_2016_02_11/"
+dest.dir <- "Assignment_Chapter_03/"
 source.file.dir <- "~/git/r_club/assignment_templates/"
-source.files <- dir(source.file.dir,full.names=T,pattern = "2016-02-11-assignment.md")
+source.files <- dir(source.file.dir,full.names=T,pattern = "Chapter-03-assignment.Rmd")
 if (length(source.files)==0) stop(paste("Error",source.file.dir,"empty"))
 source.files.string <- paste(source.files,collapse=" ")
 for(repo in repo.names) {

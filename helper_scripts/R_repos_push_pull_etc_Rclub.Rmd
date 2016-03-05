@@ -38,7 +38,7 @@ for(repo in repo.names) {
 
 Add a directory (if necessary)
 ```{r add_dir}
-new.dir <- "Assignment_Chapter_03"
+new.dir <- "Assignment_Chapter_04"
 for(repo in repo.names) {
   new.dir.path <- file.path(repos.dir,repo,new.dir)
   if(! file.exists(new.dir.path)) dir.create(new.dir.path)
@@ -48,6 +48,16 @@ for(repo in repo.names) {
   if(! file.exists(file.path(new.dir.path,".gitignore"))) cat(file=file.path(new.dir.path,".gitignore"))
   }
 ```
+
+Delete a directory (if necessary)
+```{r add_dir, eval=FALSE}
+del.dir <- "Assignment_Chapter_04"
+for(repo in repo.names) {
+  del.dir.path <- file.path(repos.dir,repo,del.dir)
+  if(dir.exists(del.dir.path)) system(paste("rm -r ",del.dir.path))
+  }
+```
+
 
 Commit and push empty directory
 ```{r push_repos}
@@ -65,9 +75,9 @@ for(repo in repo.names) {
 
 Copy file(s) to a repo directory
 ```{r copy.files}
-dest.dir <- "Assignment_Chapter_03/"
-source.file.dir <- "~/git/r_club/assignment_templates/"
-source.files <- dir(source.file.dir,full.names=T,pattern = "Chapter-03-assignment.Rmd")
+dest.dir <- "Assignment_Chapter_04/"
+source.file.dir <- "~/git/r_club/_assignment_templates/"
+source.files <- dir(source.file.dir,full.names=T,pattern = "Chapter-04-assignment.Rmd")
 if (length(source.files)==0) stop(paste("Error",source.file.dir,"empty"))
 source.files.string <- paste(source.files,collapse=" ")
 for(repo in repo.names) {

@@ -16,7 +16,7 @@ ctx <- create.github.context(access_token = Sys.getenv("GITHUB_TOKEN"),verbose=F
 ```
 
 ```{r get_repos}
-repos <- get.organization.repositories("UCD-pbio-rclub",ctx)
+repos <- get.organization.repositories(org="UCD-pbio-rclub",ctx=ctx)
 repo.names <- sapply(repos$content,function(x) x$name)
 ```
 
@@ -77,7 +77,7 @@ Copy file(s) to a repo directory
 ```{r copy.files}
 dest.dir <- "Assignment_Chapter_05/"
 source.file.dir <- "~/git/r_club/_assignment_templates/"
-source.files <- dir(source.file.dir,full.names=T,pattern = "Chapter-05-part1-assignment.Rmd")
+source.files <- dir(source.file.dir,full.names=T,pattern = "Chapter-05-part2-assignment.Rmd")
 if (length(source.files)==0) stop(paste("Error",source.file.dir,"empty"))
 source.files.string <- paste(source.files,collapse=" ")
 for(repo in repo.names) {

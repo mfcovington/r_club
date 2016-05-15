@@ -9,7 +9,6 @@ This is a file to demonstrate how to add folders and/or files to a set of github
 
 ```{r init}
 repos.dir <- "~/git/r_club_members" # root directory for the repositories
-# repos.dir <- "~/Work/Code/BIS180L_Grading" # for Kristen
 library(github)
 library(plyr)
 ctx <- create.github.context(access_token = Sys.getenv("GITHUB_TOKEN"),verbose=F)

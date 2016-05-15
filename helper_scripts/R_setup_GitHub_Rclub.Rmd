@@ -23,7 +23,12 @@ install_github("jnmaloof/rgithub",ref="develop") #Julin's fork that fixes a big 
 #install_github("cscheid/rgithub") #original repository
 ```
   
+  
+  
 ## Trying it
+```{r downgrade httr}
+install_version("httr","1.0.0")
+```
 
 First generate a token by going to https://github.com/settings/applications and then selecting "Personal Access Token > Generate New Token".  
 
@@ -89,6 +94,7 @@ current.teams <- data.frame(team.name=sapply(teams$content, function(x) x$name),
                             team.id=sapply(teams$content, function(x) x$id))
 
 new.teams <- users[! users$team.name %in% current.teams$team.name,]
+new.teams <- new.teams[duplicated(new.teams$github.username),]
 ```
 
 Create new teams

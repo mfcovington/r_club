@@ -1,0 +1,38 @@
+# Statistical Rethinking Chapter 4 problems
+
+__Name:__
+
+
+# For 03/17/16
+
+## 4E1
+
+## 4E2
+
+## 4E3
+
+## 4M1
+
+## 4M2
+
+# For 03/24/16
+
+## 4E4
+
+## 4E5
+
+## 4M3
+
+## 4M4
+
+## 4M5
+
+## 4M6
+
+# For 03/31/16
+
+## 4H1
+
+## 4H2
+
+## 4H3

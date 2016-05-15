@@ -2,8 +2,8 @@ name: R Club
 baseurl: /r_club
 figurl: /r_club/figure
 permalink: pretty
-pygments: true
-markdown: redcarpet
+highligher: pygments
+markdown: kramdown
 # auto: true
 days_posts_are_active: 180
 future: true

@@ -8,27 +8,30 @@ output: html_document
 This is a file to demonstrate how to add folders and/or files to a set of github repositories and then to push those changes.
 
 ```{r init}
-repos.dir <- "~/git/r_club_members" # root directory for the repositories
-library(github)
+repos.dir <- path.expand(file.path("~/git/r_club_members/")) # Root directory for repos
+organization <- "UCD-pbio-rclub"
+library(gh)
 library(plyr)
-ctx <- create.github.context(access_token = Sys.getenv("GITHUB_TOKEN"),verbose=F)
 ```
 
 ```{r get_repos}
-repos <- get.organization.repositories(org="UCD-pbio-rclub",ctx=ctx)
-repo.names <- sapply(repos$content,function(x) x$name)
+repos <- gh("GET /orgs/:org/repos",org=organization,.limit=Inf)
+repos.df <- data.frame(name=sapply(repos,function(x) x$name),
+                       url=sapply(repos,function(x) x$ssh_url)
+                       )
+repos.df
 ```
 
 reduces repository list to those that match our keyword
 ```{r filter_repos}
-keyword <- "Rclub-rethinking_"
-repos$content <- repos$content[grepl(keyword,repo.names)]
-repo.names <- sapply(repos$content,function(x) x$name)
+keyword <- "Assignment_2"
+repos.df <- repos.df[grep(keyword,repos.df$name),]
+repos.df
 ```
 
 pull any changes into the current repositories
 ```{r pull_repos}
-for(repo in repo.names) {
+for(repo in repos.df$name) {
   repo.path <- file.path(repos.dir,repo)
   error <- system(paste("cd",repo.path,"; pwd; git pull")) #error will be 0 if success, 1 if failure
   if(error) warning(paste("Error pulling into", repo.path))
@@ -37,58 +40,30 @@ for(repo in repo.names) {
 
 Add a directory (if necessary)
 ```{r add_dir}
-new.dir <- "Assignment_Chapter_05"
-for(repo in repo.names) {
+new.dir <- "Midterm"
+for(repo in repos.df$name) {
   new.dir.path <- file.path(repos.dir,repo,new.dir)
   if(! file.exists(new.dir.path)) dir.create(new.dir.path)
-  
-  # create a .gitignore file so that the directory can be added to the repository.  
-  #The "cat" command in this form creates an empty file.
-  if(! file.exists(file.path(new.dir.path,".gitignore"))) cat(file=file.path(new.dir.path,".gitignore"))
   }
 ```
-
-Delete a directory (if necessary)
-```{r add_dir, eval=FALSE}
-del.dir <- "Assignment_Chapter_04"
-for(repo in repo.names) {
-  del.dir.path <- file.path(repos.dir,repo,del.dir)
-  if(dir.exists(del.dir.path)) system(paste("rm -r ",del.dir.path))
-  }
-```
-
-
-Commit and push empty directory
-```{r push_repos}
-for(repo in repo.names) {
-  repo.path <- file.path(repos.dir,repo,new.dir)
-  if(! file.exists(file.path(new.dir.path,".gitignore"))) cat(file=file.path(new.dir.path,".gitignore"))
-  error <- system(paste("cd",repo.path,
-                        "; git add",file.path(repo.path,"*"),
-                        "; git commit -m 'added folder",new.dir,
-                        "'; git push")) #error will be 0 if success, 1 if failure
-  if(error) stop(paste("Error pushing into",repo.path))
-  }
-```
-
 
 Copy file(s) to a repo directory
 ```{r copy.files}
-dest.dir <- "Assignment_Chapter_05/"
-source.file.dir <- "~/git/r_club/_assignment_templates/"
-source.files <- dir(source.file.dir,full.names=T,pattern = "Chapter-05-part2-assignment.Rmd")
+dest.dir <- "./"
+source.file.dir <- "~/git/BIS180L_templates/gitignore"
+source.files <- dir(source.file.dir,full.names=T,pattern = "gitignore",all.files = TRUE)
 if (length(source.files)==0) stop(paste("Error",source.file.dir,"empty"))
 source.files.string <- paste(source.files,collapse=" ")
-for(repo in repo.names) {
+for(repo in repos.df$name) {
   repo.path <- file.path(repos.dir,repo,dest.dir)
-  error <- system(paste("cp -n",source.files.string,repo.path)) #error will be 0 if success, 1 if failure
+  error <- system(paste("cp",source.files.string,repo.path)) #error will be 0 if success, 1 if failure
   if(error) stop(paste("Error copying files from",source.file.dir,"to",repo.path))
   }
 ```
 
 commit and push changes
 ```{r push_repos}
-for(repo in repo.names) {
+for(repo in repos.df$name) {
   repo.path <- file.path(repos.dir,repo,dest.dir)
   source.files.base.string <- paste(basename(source.files),collapse=" ")
   error <- system(paste("cd",repo.path,
@@ -99,22 +74,24 @@ for(repo in repo.names) {
   }
 ```
 
-commit all and push changes
+commit and push all (-am)
 ```{r push_repos}
-for(repo in repo.names) {
+for(repo in repos.df$name) {
   repo.path <- file.path(repos.dir,repo)
   error <- system(paste("cd",repo.path,
-                        "; pwd; git commit -am 'JNM Added first assignment directory'; git push")) #error will be 0 if success, 1 if failure
+                        "; pwd; git commit -am 'JNM Final Grading round 2'; git push")) #error will be 0 if success, 1 if failure
   if(error) stop(paste("Error pushing into",repo.path))
   }
 ```
+
+# Function below still needs to be updated for gh library
 
 get repository commits
 ```{r get commits}
 #get the commits
 commits <- list()
 for(repo in repo.names) {
-commits[[repo]] <- get.repository.commits("UCD-pbio-rclub",repo,ctx)
+commits[[repo]] <- get.repository.commits("UCDBIS180L",repo,ctx)
   }
 
 #check to see if there were any errors

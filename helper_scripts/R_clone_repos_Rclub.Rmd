@@ -11,25 +11,38 @@ Having learned how to create respoitories and teams programatically I now want t
 Note, if you ssh key is out of date or non-existant you need to [generate one](https://help.github.com/articles/generating-ssh-keys/)
 
 ```{r init}
-library(github)
-ctx <- create.github.context(access_token = Sys.getenv("GITHUB_TOKEN"),verbose=F)
+library(gh)
+organization <- "UCD-pbio-rclub"
+repos.directory <- path.expand(file.path("~/git/r_club_members/"))# Directory to clone repos into
+if (!file.exists(repos.directory)) dir.create(repos.directory)
 ```
 
 ```{r get_repos}
-repos <- get.organization.repositories("UCD-pbio-rclub",ctx)
-repos.names <- sapply(repos$content,function(x) x$name)
+repos <- gh("GET /orgs/:org/repos",org=organization, .limit=Inf)
+repos.df <- data.frame(name=sapply(repos,function(x) x$name),
+                       url=sapply(repos,function(x) x$ssh_url),
+                       stringsAsFactors = FALSE
+                       )
+repos.df
 ```
+
+Filter repos
+```{r}
+#filter <- "Assignment_1"
+filter <- paste(new.teams$team.name,collapse="|")
+repos.df <- repos.df[grep(filter,repos.df$name),]
+repos.df
+```
+
 
 ```{r clone_repositories}
-git.directory <- "~/git/r_club_members"
-if(! file.exists(git.directory)) dir.create(git.directory)
 
-for(repo in repos$content) {
-  if(! file.exists(file.path(git.directory,repo$name))) {
-    system(paste("git clone",repo$ssh_url,file.path(git.directory,repo$name)))
+apply(repos.df,1,function(repo) {
+  if(! file.exists(file.path(repos.directory,repo["name"]))) {
+    print(repo["name"])
+    system(paste("git clone",repo["url"],file.path(repos.directory,repo["name"])))
     }
-    }
+    } )
 ```
-
 
 
